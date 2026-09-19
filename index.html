@@ -9,6 +9,8 @@
 :root{--bg:#0b0712;--surface:#151020;--surface2:#1c1428;--line:#30213d;--text:#fff8fc;--muted:#a99caf;--pink:#ff4f9a;--violet:#8b5cf6;--gold:#ffd166;--green:#5eead4;--shadow:0 20px 60px #0008}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 500px at 50% -10%,#6b1c50 0,#241035 35%,var(--bg) 72%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
 button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;margin:auto;padding:20px 16px 110px}.top{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 22px}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));box-shadow:0 10px 30px #ff4f9a33;font-weight:900}.brand h1{font-size:22px;margin:0}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.iconbtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#ffffff08;color:white}.hero{padding:24px 4px 12px}.eyebrow{color:#ff9fc8;text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}.hero h2{font-size:42px;line-height:.98;margin:9px 0 10px;letter-spacing:-2px}.hero p{color:var(--muted);margin:0;max-width:480px;line-height:1.5}.pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);background:#ffffff08;border-radius:999px;color:#ddd0e2;font-size:12px;font-weight:700}.online{width:7px;height:7px;background:#58e39e;border-radius:50%;box-shadow:0 0 12px #58e39e}.scorecard{margin-top:22px;padding:18px;border:1px solid #5a2c61;border-radius:26px;background:linear-gradient(135deg,#2b1539,#171020 70%);box-shadow:var(--shadow);position:relative;overflow:hidden}.scorecard:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-80px;top:-100px;background:#ff4f9a33;filter:blur(8px)}.scoretop{display:flex;justify-content:space-between;align-items:center}.scorebig{font-size:38px;font-weight:900;letter-spacing:-1px}.progress{height:8px;background:#ffffff0d;border-radius:99px;overflow:hidden;margin:14px 0 8px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));border-radius:99px;transition:.35s}.scoremeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px}.sectionhead h3{margin:0;font-size:18px}.sectionhead button{background:none;border:0;color:#ff9fc8;font-size:12px}.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mode{min-height:150px;padding:17px;border-radius:23px;text-align:left;border:1px solid var(--line);background:linear-gradient(145deg,#1c1326,#120d19);color:white;transition:.18s;position:relative;overflow:hidden}.mode:hover{transform:translateY(-2px);border-color:#69406f}.mode .mi{font-size:30px}.mode b{display:block;font-size:17px;margin:11px 0 5px}.mode span{display:block;color:var(--muted);font-size:12px;line-height:1.35}.mode em{position:absolute;right:12px;top:12px;font-style:normal;font-size:10px;color:#ffb6d4;background:#ff4f9a15;border:1px solid #ff4f9a2a;padding:5px 7px;border-radius:99px}.wide{grid-column:1/-1}.daily{padding:19px;border:1px solid #3e3150;background:linear-gradient(135deg,#151026,#1e172b);border-radius:24px}.dailyrow{display:flex;gap:15px;align-items:center}.dailyicon{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:#ffd16618;font-size:25px}.daily h4{margin:0 0 5px;font-size:16px}.daily p{margin:0;color:var(--muted);font-size:12px}.primary{width:100%;border:0;border-radius:18px;padding:15px;margin-top:15px;color:white;font-weight:850;background:linear-gradient(100deg,var(--pink),var(--violet));box-shadow:0 12px 30px #8b5cf633}.ghost{border:1px solid var(--line);background:#ffffff08;color:white;border-radius:15px;padding:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:15px;border:1px solid var(--line);background:#ffffff06;border-radius:19px}.stat b{display:block;font-size:22px}.stat span{font-size:11px;color:var(--muted)}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(720px,100%);padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#0d0915eF;backdrop-filter:blur(18px);border-top:1px solid #ffffff0c;display:grid;grid-template-columns:repeat(4,1fr);z-index:20}.nav button{border:0;background:none;color:#8f8495;padding:7px 3px;font-size:11px}.nav button.active{color:white}.nav i{font-style:normal;font-size:20px;display:block;margin-bottom:2px}.view{display:none}.view.active{display:block}.modal{position:fixed;inset:0;background:#0009;backdrop-filter:blur(8px);z-index:50;display:none;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(720px,100%);max-height:92vh;overflow:auto;background:#120c19;border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:22px 18px 28px;box-shadow:0 -30px 80px #000b}.sheethead{display:flex;justify-content:space-between;align-items:center}.sheet h3{margin:0;font-size:22px}.close{border:0;background:#ffffff0b;color:white;width:38px;height:38px;border-radius:12px}.promptcard{margin-top:18px;border-radius:25px;padding:28px 20px;background:linear-gradient(145deg,#321638,#181022);border:1px solid #5c315f;min-height:260px;display:flex;flex-direction:column;justify-content:center;text-align:center}.promptcard .cat{color:#ff9fc8;text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:2px}.promptcard h2{font-size:27px;line-height:1.2;margin:15px 0}.promptcard p{color:var(--muted);font-size:12px}.actions{display:grid;grid-template-columns:1fr 1.5fr;gap:10px;margin-top:12px}.field{margin-top:15px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}.field input,.field select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#0d0913;color:white;outline:none}.featurelist{display:grid;gap:10px;margin-top:16px}.feature{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:17px;background:#ffffff05}.feature strong{display:block;font-size:13px}.feature span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#fff;color:#160b19;padding:11px 15px;border-radius:99px;font-size:12px;font-weight:800;z-index:80;transition:.25s;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translate(-50%,0)}.badges{display:grid;grid-template-columns:1fr 1fr;gap:10px}.badge{padding:16px;border:1px solid var(--line);border-radius:18px;background:#ffffff05}.badge.locked{opacity:.4}.badge b{display:block;font-size:13px}.badge span{color:var(--muted);font-size:11px}.list{display:grid;gap:10px}.row{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:17px;background:#ffffff05}.row .left{display:flex;align-items:center;gap:12px}.avatar{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#ff4f9a,#8b5cf6);font-weight:900}.row small{color:var(--muted)}.toggle{width:48px;height:28px;border-radius:99px;border:0;background:#3b3042;padding:3px}.toggle.on{background:var(--pink)}.toggle span{display:block;width:22px;height:22px;border-radius:50%;background:white;transition:.2s}.toggle.on span{transform:translateX(20px)}@media(max-width:430px){.hero h2{font-size:37px}.modes{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
+
+.connection{position:fixed;inset:0;background:#09060eF5;backdrop-filter:blur(18px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.connection.show{display:flex}.connectsheet{width:min(520px,100%);background:#120c19;border:1px solid #4a2a55;border-radius:30px;padding:26px 20px;box-shadow:0 30px 100px #000}.connectlogo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));font-weight:900;font-size:26px;margin-bottom:18px}.connectsheet h2{margin:0;font-size:31px;letter-spacing:-1px}.connectsheet p{color:var(--muted);line-height:1.5;font-size:13px}.connectactions{display:grid;gap:10px;margin-top:18px}.codebox{margin:18px 0;padding:18px;border:1px dashed #6a3d72;border-radius:20px;background:#ff4f9a0b;text-align:center}.codebox strong{display:block;font-size:32px;letter-spacing:8px;color:#fff}.codebox span{display:block;color:var(--muted);font-size:11px;margin-top:7px}.connection .field{margin-top:13px}.connection .field input{text-transform:none}.connectedpill{margin-top:14px;padding:12px 14px;border:1px solid #2e4f43;border-radius:15px;background:#58e39e0a;color:#bfffe6;font-size:12px}.statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#58e39e;margin-right:7px}.statusdot.off{background:#665d6b}.connection-error{color:#ff9ebf;font-size:12px;min-height:18px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -93,11 +95,36 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;marg
 
 <div class="modal" id="settingsModal" onclick="if(event.target===this)closeSettings()"><div class="sheet">
  <div class="sheethead"><h3>Settings</h3><button class="close" onclick="closeSettings()">×</button></div>
- <div class="field"><label>Player 1</label><input id="set1" placeholder="Player One"></div>
- <div class="field"><label>Player 2</label><input id="set2" placeholder="Player Two"></div>
- <button class="primary" onclick="saveSettings()">Save couple</button>
+ <div class="field"><label>Your name</label><input id="set1" maxlength="40" placeholder="Your name"></div>
+ <div class="connectedpill"><span class="statusdot" id="settingsPartnerDot"></span><span id="settingsPartner">Partner not connected</span></div>
+ <div class="codebox"><strong id="settingsCode" style="font-size:25px;letter-spacing:5px">------</strong><span>Your private couple code</span></div>
+ <button class="primary" onclick="saveSettings()">Save my name</button>
  <div class="section"><div class="featurelist"><div class="feature"><span>💎</span><div><strong>Everything is free</strong><span>Yarper has no premium tier in this build. All modes, prompts, progression and settings are accessible.</span></div></div></div></div>
 </div></div>
+
+<div class="connection" id="connectionGate">
+  <div class="connectsheet">
+    <div class="connectlogo">Y</div>
+    <div class="eyebrow">Private couples space</div>
+    <h2>Make Yarper yours.</h2>
+    <p>Create your private couple or join your partner with a 6-character code. Your device gets its own side, while your shared game progress stays connected.</p>
+    <div id="connectHome" class="connectactions">
+      <button class="primary" onclick="showConnectMode('create')">Create a couple</button>
+      <button class="ghost" onclick="showConnectMode('join')">Join with a couple code</button>
+    </div>
+    <div id="connectForm" style="display:none">
+      <div class="field"><label id="connectNameLabel">Your name</label><input id="connectName" maxlength="40" placeholder="Enter your name"></div>
+      <div class="field" id="codeField" style="display:none"><label>Couple code</label><input id="connectCode" maxlength="6" placeholder="ABC234" autocapitalize="characters"></div>
+      <div class="connection-error" id="connectError"></div>
+      <div class="connectactions"><button class="primary" id="connectSubmit" onclick="submitConnect()">Continue</button><button class="ghost" onclick="showConnectHome()">Back</button></div>
+    </div>
+    <div id="connectSuccess" style="display:none">
+      <div class="codebox"><strong id="myCode">------</strong><span>Share this code with your partner.</span></div>
+      <div class="connectedpill"><span class="statusdot" id="partnerDot"></span><span id="partnerStatus">Waiting for your partner to join…</span></div>
+      <button class="primary" onclick="enterYarper()">Enter Yarper</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -113,49 +140,111 @@ cards:[
 date:[
 ["VIBE: Cozy. Build a pillow nest, choose a playlist, then ask each other three questions.","date"],["VIBE: Adventure. Pick a place neither of you has tried and make a mini plan.","date"],["VIBE: At-home luxury. Dress up, make a simple snack, dim the lights and play five rounds.","date"],["VIBE: Memory lane. Look through old photos and each choose one story to retell.","date"],["VIBE: Chaos night. Snacks, funny videos, silly challenges and absolutely no serious competition.","date"]]
 };
-const state=JSON.parse(localStorage.getItem("yarperState")||"null")||{xp:0,rounds:0,streak:0,lastDay:"",daily:"",dailyDone:false,streakClaimed:false,p1:"Player One",p2:"Player Two"};
-let currentMode="questions",currentIndex=0;
-const dailyPool=["Give each other one genuine compliment you have never said before.","Each choose a song that describes today and explain why.","Take a funny couple selfie and give it a ridiculous caption.","Tell each other one thing you are looking forward to together.","Spend two minutes asking only questions about each other's day."];
-function save(){localStorage.setItem("yarperState",JSON.stringify(state));render()}
-function day(){return new Date().toISOString().slice(0,10)}
-function ensureDay(){let d=day();if(state.lastDay!==d){let y=new Date();y.setDate(y.getDate()-1);let yd=y.toISOString().slice(0,10);if(state.lastDay===yd)state.streak=(state.streak||0)+1;else state.streak=1;state.lastDay=d;state.dailyDone=false;state.streakClaimed=false;state.daily=dailyPool[Math.floor(Math.random()*dailyPool.length)];save()}}
+
+const API="https://xjehryhkqvjpbduqumso.supabase.co/functions/v1/yarper-api";
+let state={xp:0,rounds:0,streak:0,lastDay:"",daily:"",dailyDone:false,streakClaimed:false,p1:"Player One",p2:"Your Person",role:"player1",code:""};
+let sessionToken=localStorage.getItem("yarperToken")||"";
+let currentMode="questions",currentIndex=0,partnerOnline=false,connected=false;
+
+async function api(action,payload={}) {
+  const headers={"Content-Type":"application/json"};
+  if(sessionToken) headers["x-yarper-token"]=sessionToken;
+  const res=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...payload})});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok || data.error) throw new Error(data.error||"Request failed");
+  return data;
+}
+function applySnapshot(data){
+  if(!data) return;
+  const s=data.state||{};
+  state.xp=s.xp||0; state.rounds=s.rounds||0; state.streak=s.streak||0;
+  state.daily=s.daily||""; state.dailyDone=!!s.daily_done; state.streakClaimed=!!s.streak_claimed;
+  state.role=data.me?.role||state.role; state.p1=data.me?.role==="player1"?(data.me?.display_name||"Player One"):(data.partner?.display_name||"Player One");
+  state.p2=data.me?.role==="player2"?(data.me?.display_name||"Player Two"):(data.partner?.display_name||"Your Person");
+  state.code=data.code||state.code||"";
+  partnerOnline=!!data.partner?.online; connected=!!data.me;
+  if(data.me?.role==="player1") state.p1=data.me.display_name; if(data.me?.role==="player2") state.p2=data.me.display_name;
+  render();
+  updateConnectionStatus(data);
+}
+function updateConnectionStatus(data){
+  const p=data?.partner;
+  const text=p ? (p.online ? p.display_name+" is online" : p.display_name+" is offline") : "Waiting for your partner to join…";
+  const dot=document.getElementById("partnerDot"); if(dot) dot.classList.toggle("off",!p?.online);
+  const pd=document.getElementById("partnerStatus"); if(pd) pd.textContent=text;
+  const sd=document.getElementById("settingsPartnerDot"); if(sd) sd.classList.toggle("off",!p?.online);
+  const sp=document.getElementById("settingsPartner"); if(sp) sp.textContent=p ? (p.display_name+" · "+(p.online?"Online":"Offline")) : "Partner not connected";
+  const sc=document.getElementById("settingsCode"); if(sc) sc.textContent=state.code||"------";
+}
+function save(){ localStorage.setItem("yarperToken",sessionToken); render(); }
 function level(){return Math.floor(state.xp/100)+1}
 function render(){
-ensureDay();
-let l=level(),within=state.xp%100;
-document.getElementById("level").textContent="Level "+l;document.getElementById("xpbar").style.width=within+"%";document.getElementById("xptext").textContent=within+" / 100 XP";document.getElementById("scoreText").textContent=state.xp+" points";
-document.getElementById("roundStat").textContent=state.rounds;document.getElementById("streakStat").textContent=state.streak;document.getElementById("badgeStat").textContent=badges().filter(x=>x.earned).length;
-document.getElementById("dailyText").textContent=state.daily||dailyPool[0];
-document.getElementById("rewardXp").textContent=state.xp;document.getElementById("rewardLevel").textContent=l;
-document.getElementById("pRounds").textContent=state.rounds;document.getElementById("pPoints").textContent=state.xp;document.getElementById("pStreak").textContent=state.streak;
-document.getElementById("name1").textContent=state.p1;document.getElementById("name2").textContent=state.p2;document.getElementById("a1").textContent=(state.p1[0]||"P").toUpperCase();document.getElementById("a2").textContent=(state.p2[0]||"P").toUpperCase();document.getElementById("coupleTitle").textContent=state.p1+" + "+state.p2;
-renderBadges();
+  const l=level(),within=state.xp%100;
+  document.getElementById("level").textContent="Level "+l;
+  document.getElementById("xpbar").style.width=within+"%";
+  document.getElementById("xptext").textContent=within+" / 100 XP";
+  document.getElementById("scoreText").textContent=state.xp+" points";
+  document.getElementById("roundStat").textContent=state.rounds;
+  document.getElementById("streakStat").textContent=state.streak;
+  document.getElementById("badgeStat").textContent=badges().filter(x=>x.earned).length;
+  document.getElementById("dailyText").textContent=state.daily||"Complete a couple quest together.";
+  document.getElementById("rewardXp").textContent=state.xp;
+  document.getElementById("rewardLevel").textContent=l;
+  document.getElementById("pRounds").textContent=state.rounds;
+  document.getElementById("pPoints").textContent=state.xp;
+  document.getElementById("pStreak").textContent=state.streak;
+  document.getElementById("name1").textContent=state.p1;
+  document.getElementById("name2").textContent=state.p2;
+  document.getElementById("a1").textContent=(state.p1[0]||"P").toUpperCase();
+  document.getElementById("a2").textContent=(state.p2[0]||"P").toUpperCase();
+  document.getElementById("coupleTitle").textContent=state.p1+" + "+state.p2;
+  renderBadges();
 }
 function showView(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));window.scrollTo(0,0)}
 function startGame(mode){currentMode=mode;currentIndex=Math.floor(Math.random()*BANK[mode].length);document.getElementById("gameModal").classList.add("show");nextPrompt(true)}
 function nextPrompt(first=false){let list=BANK[currentMode];if(!first)currentIndex=Math.floor(Math.random()*list.length);let item=list[currentIndex];document.getElementById("gameMode").textContent=currentMode.toUpperCase();document.getElementById("gameTitle").textContent=currentMode==="truth"?"Truth or Dare":currentMode==="date"?"Date Night":"Your turn";document.getElementById("promptCat").textContent=item[1].toUpperCase();document.getElementById("prompt").textContent=item[0];let who=(state.rounds%2===0?state.p1:state.p2);document.getElementById("turnText").textContent=who+"'s turn";currentIndex=(currentIndex+1)%list.length}
-function skipPrompt(){state.rounds++;save();nextPrompt()}
-function completeRound(){state.xp+=10;state.rounds++;save();toast("+10 XP — keep going");nextPrompt()}
-function completeDaily(){if(state.dailyDone){toast("Today's quest is already complete");return}state.dailyDone=true;state.xp+=25;save();toast("+25 XP — daily quest complete")}
-function claimStreak(){if(state.streakClaimed){toast("Streak bonus already claimed");return}state.streakClaimed=true;state.xp+=15;save();toast("+15 XP — streak protected")}
+function skipPrompt(){nextPrompt()}
+async function completeRound(){try{const d=await api("complete_round");applySnapshot(d);toast("+10 XP — synced for both of you");nextPrompt()}catch(e){toast(e.message)}}
+async function completeDaily(){try{const d=await api("complete_daily");applySnapshot(d);toast("+25 XP — daily quest complete")}catch(e){toast(e.message)}}
+async function claimStreak(){try{const d=await api("claim_streak");applySnapshot(d);toast("+15 XP — streak protected")}catch(e){toast(e.message)}}
 function randomGame(){let k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
 function quickPrompt(kind){let all=BANK.questions.concat(BANK.challenges,BANK.truth,BANK.cards);let f=all.filter(x=>kind==="spicy"?["flirty"].includes(x[1]):kind==="soft"?["soft","romantic","deep"].includes(x[1]):["fun","chaos","playful","mini"].includes(x[1]));let item=f[Math.floor(Math.random()*f.length)];currentMode="questions";document.getElementById("gameModal").classList.add("show");document.getElementById("gameMode").textContent=kind.toUpperCase();document.getElementById("gameTitle").textContent="Quick pick";document.getElementById("promptCat").textContent=item[1].toUpperCase();document.getElementById("prompt").textContent=item[0];document.getElementById("turnText").textContent=(state.rounds%2===0?state.p1:state.p2)+"'s turn"}
-function badges(){return[
-{name:"First Spark",icon:"✨",desc:"Complete your first round",earned:state.rounds>=1},
-{name:"Ten Down",icon:"🔥",desc:"Complete 10 rounds",earned:state.rounds>=10},
-{name:"Century",icon:"💯",desc:"Earn 100 XP",earned:state.xp>=100},
-{name:"On Fire",icon:"⚡",desc:"Reach a 3-day streak",earned:state.streak>=3},
-{name:"Power Couple",icon:"💗",desc:"Reach Level 5",earned:level()>=5},
-{name:"Yarper Regular",icon:"🎮",desc:"Complete 25 rounds",earned:state.rounds>=25}
-]}
+function badges(){return[{name:"First Spark",icon:"✨",desc:"Complete your first round",earned:state.rounds>=1},{name:"Ten Down",icon:"🔥",desc:"Complete 10 rounds",earned:state.rounds>=10},{name:"Century",icon:"💯",desc:"Earn 100 XP",earned:state.xp>=100},{name:"On Fire",icon:"⚡",desc:"Reach a 3-day streak",earned:state.streak>=3},{name:"Power Couple",icon:"💗",desc:"Reach Level 5",earned:level()>=5},{name:"Yarper Regular",icon:"🎮",desc:"Complete 25 rounds",earned:state.rounds>=25}]}
 function renderBadges(){document.getElementById("badges").innerHTML=badges().map(b=>'<div class="badge '+(b.earned?'':'locked')+'"><div style="font-size:24px">'+b.icon+'</div><b>'+b.name+'</b><span>'+b.desc+(b.earned?' · Unlocked':' · Locked')+'</span></div>').join("")}
-function openSettings(){document.getElementById("set1").value=state.p1;document.getElementById("set2").value=state.p2;document.getElementById("settingsModal").classList.add("show")}
+function openSettings(){document.getElementById("set1").value=state.role==="player1"?state.p1:state.p2;updateConnectionStatus({partner:{display_name:state.role==="player1"?state.p2:state.p1,online:partnerOnline}});document.getElementById("settingsModal").classList.add("show")}
 function closeSettings(){document.getElementById("settingsModal").classList.remove("show")}
-function saveSettings(){state.p1=document.getElementById("set1").value.trim()||"Player One";state.p2=document.getElementById("set2").value.trim()||"Player Two";save();closeSettings();toast("Couple profile saved")}
+async function saveSettings(){const name=document.getElementById("set1").value.trim()||"Player";try{const d=await api("rename",{name});applySnapshot(d);closeSettings();toast("Your name is saved")}catch(e){toast(e.message)}}
 function editNames(){openSettings()}
 function closeModal(){document.getElementById("gameModal").classList.remove("show")}
 function toast(msg){let t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.remove("show"),1800)}
-ensureDay();render();
+
+function showConnectHome(){document.getElementById("connectHome").style.display="grid";document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="none";document.getElementById("connectError").textContent=""}
+function showConnectMode(mode){document.getElementById("connectHome").style.display="none";document.getElementById("connectForm").style.display="block";document.getElementById("connectSuccess").style.display="none";document.getElementById("codeField").style.display=mode==="join"?"block":"none";document.getElementById("connectSubmit").dataset.mode=mode;document.getElementById("connectName").value="";document.getElementById("connectError").textContent="";document.getElementById("connectName").focus()}
+async function submitConnect(){
+  const mode=document.getElementById("connectSubmit").dataset.mode;
+  const name=document.getElementById("connectName").value.trim();
+  const code=(document.getElementById("connectCode").value||"").trim().toUpperCase();
+  const err=document.getElementById("connectError");err.textContent="";
+  try{
+    const data=await api(mode,{name,code});
+    sessionToken=data.token; localStorage.setItem("yarperToken",sessionToken); localStorage.setItem("yarperCode",data.code);
+    applySnapshot(data);
+    document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";document.getElementById("myCode").textContent=data.code;
+    updateConnectionStatus(data);
+  }catch(e){err.textContent=e.message}
+}
+function enterYarper(){document.getElementById("connectionGate").classList.remove("show");showView("home");}
+async function boot(){
+  if(!sessionToken){document.getElementById("connectionGate").classList.add("show");return}
+  try{
+    const data=await api("me"); state.code=localStorage.getItem("yarperCode")||""; applySnapshot(data);
+    document.getElementById("connectionGate").classList.add("show");document.getElementById("myCode").textContent=state.code||"------";document.getElementById("connectHome").style.display="none";document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";updateConnectionStatus(data);
+    setTimeout(enterYarper,900);
+  }catch(e){localStorage.removeItem("yarperToken");sessionToken="";document.getElementById("connectionGate").classList.add("show");}
+}
+setInterval(async()=>{if(!sessionToken)return;try{const d=await api("heartbeat");state.code=localStorage.getItem("yarperCode")||state.code;applySnapshot(d)}catch(e){}},5000);
+boot();
+
 </script>
 </body>
 </html>
