@@ -203,7 +203,31 @@ async function submitConnect(){const mode=$("connectBtn").dataset.mode,name=$("c
 function enterApp(){if(!partner){toast("Your partner must connect the code first.");return}localStorage.setItem("yarperUnlocked","1");$("gate").classList.remove("show");showView("home")}
 async function initRealtime(id){if(!id||realtimeChannel)return;try{const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");realtimeClient=createClient("https://xjehryhkqvjpbduqumso.supabase.co","sb_publishable_B3lU9kcDWaZYRrSgewQGiw_3p___zFl");realtimeChannel=realtimeClient.channel("yarper:"+id).on("broadcast",{event:"refresh"},async()=>{try{apply(await api("me"))}catch{}}).subscribe()}catch{}}
 async function boot(){if(!token){$("gate").classList.add("show");return}try{const d=await api("me");state.code=localStorage.getItem("yarperCode")||"";apply(d);initRealtime(d.couple_id);if(localStorage.getItem("yarperUnlocked")==="1" || d.partner){if(d.partner)localStorage.setItem("yarperUnlocked","1");$("gate").classList.remove("show")}else{$("gate").classList.add("show")}}catch{$("gate").classList.add("show");localStorage.removeItem("yarperToken");token=""}}
-setInterval(async()=>{if(!token)return;try{apply(await api("heartbeat"))}catch{}},2000);boot();
+let syncTimer=null,syncBusy=false;
+async function syncPresence(){
+  if(!token||syncBusy)return;
+  syncBusy=true;
+  try{
+    const d=await api("heartbeat");
+    apply(d);
+  }catch(e){
+    console.warn("Yarper sync:",e.message);
+  }finally{
+    syncBusy=false;
+  }
+}
+function startPresenceSync(){
+  if(syncTimer)clearTimeout(syncTimer);
+  const loop=async()=>{
+    await syncPresence();
+    syncTimer=setTimeout(loop,1500);
+  };
+  loop();
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncPresence()});
+window.addEventListener("pageshow",()=>syncPresence());
+window.addEventListener("focus",()=>syncPresence());
+boot().finally(startPresenceSync);
 
 /* Added: Couple Toolkit — no existing feature changed */
 const TOOLKIT={
