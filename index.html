@@ -1,315 +1,95 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0712">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0610"><meta name="apple-mobile-web-app-capable" content="yes">
 <title>Yarper — Just You Two</title>
 <style>
-:root{--bg:#0b0712;--surface:#151020;--surface2:#1c1428;--line:#30213d;--text:#fff8fc;--muted:#a99caf;--pink:#ff4f9a;--violet:#8b5cf6;--gold:#ffd166;--green:#5eead4;--shadow:0 20px 60px #0008}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 500px at 50% -10%,#6b1c50 0,#241035 35%,var(--bg) 72%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;margin:auto;padding:20px 16px 110px}.top{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 22px}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));box-shadow:0 10px 30px #ff4f9a33;font-weight:900}.brand h1{font-size:22px;margin:0}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.iconbtn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#ffffff08;color:white}.hero{padding:24px 4px 12px}.eyebrow{color:#ff9fc8;text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}.hero h2{font-size:42px;line-height:.98;margin:9px 0 10px;letter-spacing:-2px}.hero p{color:var(--muted);margin:0;max-width:480px;line-height:1.5}.pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);background:#ffffff08;border-radius:999px;color:#ddd0e2;font-size:12px;font-weight:700}.online{width:7px;height:7px;background:#58e39e;border-radius:50%;box-shadow:0 0 12px #58e39e}.scorecard{margin-top:22px;padding:18px;border:1px solid #5a2c61;border-radius:26px;background:linear-gradient(135deg,#2b1539,#171020 70%);box-shadow:var(--shadow);position:relative;overflow:hidden}.scorecard:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-80px;top:-100px;background:#ff4f9a33;filter:blur(8px)}.scoretop{display:flex;justify-content:space-between;align-items:center}.scorebig{font-size:38px;font-weight:900;letter-spacing:-1px}.progress{height:8px;background:#ffffff0d;border-radius:99px;overflow:hidden;margin:14px 0 8px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));border-radius:99px;transition:.35s}.scoremeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px}.sectionhead h3{margin:0;font-size:18px}.sectionhead button{background:none;border:0;color:#ff9fc8;font-size:12px}.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mode{min-height:150px;padding:17px;border-radius:23px;text-align:left;border:1px solid var(--line);background:linear-gradient(145deg,#1c1326,#120d19);color:white;transition:.18s;position:relative;overflow:hidden}.mode:hover{transform:translateY(-2px);border-color:#69406f}.mode .mi{font-size:30px}.mode b{display:block;font-size:17px;margin:11px 0 5px}.mode span{display:block;color:var(--muted);font-size:12px;line-height:1.35}.mode em{position:absolute;right:12px;top:12px;font-style:normal;font-size:10px;color:#ffb6d4;background:#ff4f9a15;border:1px solid #ff4f9a2a;padding:5px 7px;border-radius:99px}.wide{grid-column:1/-1}.daily{padding:19px;border:1px solid #3e3150;background:linear-gradient(135deg,#151026,#1e172b);border-radius:24px}.dailyrow{display:flex;gap:15px;align-items:center}.dailyicon{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:#ffd16618;font-size:25px}.daily h4{margin:0 0 5px;font-size:16px}.daily p{margin:0;color:var(--muted);font-size:12px}.primary{width:100%;border:0;border-radius:18px;padding:15px;margin-top:15px;color:white;font-weight:850;background:linear-gradient(100deg,var(--pink),var(--violet));box-shadow:0 12px 30px #8b5cf633}.ghost{border:1px solid var(--line);background:#ffffff08;color:white;border-radius:15px;padding:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:15px;border:1px solid var(--line);background:#ffffff06;border-radius:19px}.stat b{display:block;font-size:22px}.stat span{font-size:11px;color:var(--muted)}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(720px,100%);padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#0d0915eF;backdrop-filter:blur(18px);border-top:1px solid #ffffff0c;display:grid;grid-template-columns:repeat(4,1fr);z-index:20}.nav button{border:0;background:none;color:#8f8495;padding:7px 3px;font-size:11px}.nav button.active{color:white}.nav i{font-style:normal;font-size:20px;display:block;margin-bottom:2px}.view{display:none}.view.active{display:block}.modal{position:fixed;inset:0;background:#0009;backdrop-filter:blur(8px);z-index:50;display:none;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(720px,100%);max-height:92vh;overflow:auto;background:#120c19;border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:22px 18px 28px;box-shadow:0 -30px 80px #000b}.sheethead{display:flex;justify-content:space-between;align-items:center}.sheet h3{margin:0;font-size:22px}.close{border:0;background:#ffffff0b;color:white;width:38px;height:38px;border-radius:12px}.promptcard{margin-top:18px;border-radius:25px;padding:28px 20px;background:linear-gradient(145deg,#321638,#181022);border:1px solid #5c315f;min-height:260px;display:flex;flex-direction:column;justify-content:center;text-align:center}.promptcard .cat{color:#ff9fc8;text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:2px}.promptcard h2{font-size:27px;line-height:1.2;margin:15px 0}.promptcard p{color:var(--muted);font-size:12px}.actions{display:grid;grid-template-columns:1fr 1.5fr;gap:10px;margin-top:12px}.field{margin-top:15px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}.field input,.field select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#0d0913;color:white;outline:none}.featurelist{display:grid;gap:10px;margin-top:16px}.feature{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:17px;background:#ffffff05}.feature strong{display:block;font-size:13px}.feature span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#fff;color:#160b19;padding:11px 15px;border-radius:99px;font-size:12px;font-weight:800;z-index:80;transition:.25s;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translate(-50%,0)}.badges{display:grid;grid-template-columns:1fr 1fr;gap:10px}.badge{padding:16px;border:1px solid var(--line);border-radius:18px;background:#ffffff05}.badge.locked{opacity:.4}.badge b{display:block;font-size:13px}.badge span{color:var(--muted);font-size:11px}.list{display:grid;gap:10px}.row{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:17px;background:#ffffff05}.row .left{display:flex;align-items:center;gap:12px}.avatar{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#ff4f9a,#8b5cf6);font-weight:900}.row small{color:var(--muted)}.toggle{width:48px;height:28px;border-radius:99px;border:0;background:#3b3042;padding:3px}.toggle.on{background:var(--pink)}.toggle span{display:block;width:22px;height:22px;border-radius:50%;background:white;transition:.2s}.toggle.on span{transform:translateX(20px)}@media(max-width:430px){.hero h2{font-size:37px}.modes{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
-
-.connection{position:fixed;inset:0;background:#09060eF5;backdrop-filter:blur(18px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.connection.show{display:flex}.connectsheet{width:min(520px,100%);background:#120c19;border:1px solid #4a2a55;border-radius:30px;padding:26px 20px;box-shadow:0 30px 100px #000}.connectlogo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));font-weight:900;font-size:26px;margin-bottom:18px}.connectsheet h2{margin:0;font-size:31px;letter-spacing:-1px}.connectsheet p{color:var(--muted);line-height:1.5;font-size:13px}.connectactions{display:grid;gap:10px;margin-top:18px}.codebox{margin:18px 0;padding:18px;border:1px dashed #6a3d72;border-radius:20px;background:#ff4f9a0b;text-align:center}.codebox strong{display:block;font-size:32px;letter-spacing:8px;color:#fff}.codebox span{display:block;color:var(--muted);font-size:11px;margin-top:7px}.connection .field{margin-top:13px}.connection .field input{text-transform:none}.connectedpill{margin-top:14px;padding:12px 14px;border:1px solid #2e4f43;border-radius:15px;background:#58e39e0a;color:#bfffe6;font-size:12px}.statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#58e39e;margin-right:7px}.statusdot.off{background:#665d6b}.connection-error{color:#ff9ebf;font-size:12px;min-height:18px;margin-top:8px}
+:root{--bg:#09050e;--panel:#140b1b;--panel2:#1b1024;--line:#302039;--text:#fff8fc;--muted:#a99aac;--pink:#ff4f9a;--violet:#9b6cff;--gold:#ffd166;--green:#62e6aa;--danger:#ff6f91;--shadow:0 24px 80px #0009}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(900px 500px at 50% -15%,#70204f 0,#24102f 38%,var(--bg) 75%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer;color:inherit}.app{width:min(760px,100%);margin:auto;padding:18px 16px 105px}.top{display:flex;align-items:center;justify-content:space-between;padding:5px 1px 18px}.brand{display:flex;align-items:center;gap:11px}.logo{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));font-weight:950;box-shadow:0 12px 35px #ff4f9a38}.brand b{font-size:21px;display:block}.brand small{font-size:10px;color:var(--muted)}.icon{width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:#ffffff08}.view{display:none;animation:in .35s ease}.view.active{display:block}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{padding:12px 2px 8px}.eyebrow{color:#ff9fc8;font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:43px;line-height:.96;letter-spacing:-2.6px;margin:8px 0 11px}.hero p{margin:0;color:var(--muted);line-height:1.55;font-size:13px;max-width:540px}.glass{border:1px solid #ffffff12;background:#ffffff07;backdrop-filter:blur(18px)}.status{display:flex;align-items:center;gap:8px;margin-top:16px;padding:10px 12px;border-radius:999px;width:max-content;font-size:11px;font-weight:800}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 14px #62e6aa}.dot.off{background:#62566a;box-shadow:none}.score{margin-top:18px;padding:19px;border:1px solid #5b2b60;border-radius:27px;background:linear-gradient(140deg,#32143e,#15101c 72%);box-shadow:var(--shadow);overflow:hidden;position:relative}.score:after{content:"";position:absolute;width:220px;height:220px;right:-120px;top:-130px;border-radius:50%;background:#ff4f9a30;filter:blur(12px)}.scoretop{display:flex;justify-content:space-between;gap:12px;position:relative;z-index:1}.scorebig{font-size:35px;font-weight:950;letter-spacing:-1px}.tag{border:1px solid #ffffff16;background:#ffffff09;border-radius:999px;padding:8px 10px;height:max-content;font-size:10px;font-weight:850}.bar{height:8px;border-radius:99px;background:#ffffff0c;overflow:hidden;margin:14px 0 8px}.bar span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .5s}.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.section{margin-top:27px}.head{display:flex;align-items:end;justify-content:space-between;margin-bottom:12px}.head h2{font-size:18px;margin:0}.head button{border:0;background:none;color:#ff9fc8;font-size:11px;font-weight:800}.modes{display:grid;grid-template-columns:1fr 1fr;gap:11px}.mode{min-height:153px;text-align:left;padding:16px;border:1px solid var(--line);border-radius:23px;background:linear-gradient(145deg,#1c1026,#100914);position:relative;overflow:hidden;transition:.2s}.mode:hover{transform:translateY(-3px);border-color:#70436f}.mode:active{transform:scale(.98)}.mode .emoji{font-size:29px}.mode b{display:block;font-size:16px;margin:10px 0 5px}.mode span{display:block;color:var(--muted);font-size:11px;line-height:1.4}.free{position:absolute;top:12px;right:12px;font-size:9px;color:#ffb5d2;border:1px solid #ff4f9a30;background:#ff4f9a10;padding:5px 7px;border-radius:99px;font-weight:900}.wide{grid-column:1/-1}.quest{padding:18px;border-radius:24px;border:1px solid #3b3047;background:linear-gradient(135deg,#181022,#21162b)}.questrow{display:flex;gap:13px;align-items:center}.qicon{width:50px;height:50px;border-radius:17px;background:#ffd16614;display:grid;place-items:center;font-size:23px}.quest h3{font-size:15px;margin:0 0 4px}.quest p{font-size:11px;color:var(--muted);margin:0;line-height:1.45}.primary{width:100%;border:0;border-radius:17px;padding:14px 16px;margin-top:14px;background:linear-gradient(100deg,var(--pink),var(--violet));font-weight:900;box-shadow:0 14px 30px #8b5cf633}.ghost{border:1px solid var(--line);background:#ffffff07;border-radius:15px;padding:12px 14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:15px;border:1px solid var(--line);border-radius:19px;background:#ffffff05}.stat b{font-size:22px;display:block}.stat small{font-size:10px;color:var(--muted)}.list{display:grid;gap:10px}.row{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left;padding:15px;border:1px solid var(--line);border-radius:18px;background:#ffffff05}.left{display:flex;align-items:center;gap:12px}.avatar{width:41px;height:41px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));font-weight:950}.row small{color:var(--muted)}.badgegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.badge{padding:15px;border:1px solid var(--line);border-radius:18px;background:#ffffff05}.badge.lock{opacity:.38}.badge div{font-size:23px}.badge b{display:block;font-size:12px;margin-top:7px}.badge span{display:block;color:var(--muted);font-size:10px;line-height:1.4;margin-top:3px}.activity{display:grid;gap:9px}.activityitem{padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:#ffffff05}.activityitem b{font-size:11px}.activityitem p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.45}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);padding:9px 10px calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);background:#0b0711eF;border-top:1px solid #ffffff0c;backdrop-filter:blur(20px);z-index:30}.nav button{border:0;background:none;color:#877b8d;font-size:10px;padding:5px}.nav button.active{color:white}.nav i{font-style:normal;font-size:20px;display:block;margin-bottom:2px}.modal,.gate{position:fixed;inset:0;background:#000b;backdrop-filter:blur(10px);z-index:60;display:none;align-items:flex-end;justify-content:center}.modal.show,.gate.show{display:flex}.sheet{width:min(760px,100%);max-height:94vh;overflow:auto;background:#100914;border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:20px 17px 30px;box-shadow:0 -30px 100px #000b}.sheettop{display:flex;justify-content:space-between;align-items:start}.close{width:38px;height:38px;border:0;border-radius:12px;background:#ffffff0a}.prompt{margin-top:16px;min-height:270px;padding:27px 20px;border:1px solid #5c315f;border-radius:25px;background:radial-gradient(circle at top,#4b1d4b,#171020 62%);display:flex;flex-direction:column;justify-content:center;text-align:center}.prompt .cat{font-size:10px;color:#ff9fc8;font-weight:900;letter-spacing:2px}.prompt h2{font-size:26px;line-height:1.22;margin:14px 0}.prompt p{font-size:11px;color:var(--muted);line-height:1.5}.pickgrid{display:grid;gap:9px;margin-top:15px}.pick{display:flex;gap:11px;align-items:center;text-align:left;padding:14px;border:1px solid var(--line);border-radius:17px;background:#ffffff05}.pick strong{font-size:12px}.pick span{display:block;color:var(--muted);font-size:10px;margin-top:3px}.field{margin-top:13px}.field label{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:#0b0710;color:white;padding:13px;outline:none}.field textarea{min-height:120px;resize:vertical}.reactionbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}.react{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:#ffffff07;font-size:19px}.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:white;color:#170b19;border-radius:99px;padding:11px 15px;font-size:11px;font-weight:900;z-index:90;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}.gate{align-items:center;padding:18px}.gatebox{width:min(520px,100%);background:#110a17;border:1px solid #4d2b57;border-radius:30px;padding:25px 20px;box-shadow:var(--shadow)}.gatebox .biglogo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));font-size:26px;font-weight:950;margin-bottom:17px}.gatebox h1{font-size:31px;letter-spacing:-1px;margin:0}.gatebox p{font-size:12px;color:var(--muted);line-height:1.55}.connectcode{text-align:center;padding:17px;margin-top:14px;border:1px dashed #704071;border-radius:20px;background:#ff4f9a0b}.connectcode strong{font-size:31px;letter-spacing:7px}.connectcode small{display:block;color:var(--muted);font-size:10px;margin-top:6px}.err{color:#ff91ae;font-size:11px;min-height:18px;margin-top:8px}.hidden{display:none!important}@media(max-width:440px){.hero h1{font-size:37px}.modes{grid-template-columns:1fr}.wide{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top">
-  <div class="brand"><div class="logo">Y</div><div><h1>Yarper</h1><small>Just you two.</small></div></div>
-  <button class="iconbtn" onclick="openSettings()">⚙</button>
-</header>
+<header class="top"><div class="brand"><div class="logo">Y</div><div><b>Yarper</b><small>Just you two.</small></div></div><button class="icon" onclick="openSettings()">⚙</button></header>
 
-<main>
 <section id="home" class="view active">
-  <div class="hero"><span class="eyebrow">Your private playground</span><h2>Play closer.<br>Laugh harder.</h2><p>A couples game built for flirting, bonding, competition and those “only us” moments.</p></div>
-  <div class="scorecard">
-    <div class="scoretop"><div><div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px">Couple level</div><div class="scorebig" id="level">Level 1</div></div><span class="pill"><i class="online"></i> Everything unlocked</span></div>
-    <div class="progress"><span id="xpbar"></span></div><div class="scoremeta"><span id="xptext">0 / 100 XP</span><span id="scoreText">0 points</span></div>
-  </div>
-  <div class="section"><div class="sectionhead"><h3>Choose your game</h3><button onclick="randomGame()">Surprise us</button></div>
-    <div class="modes">
-      <button class="mode" onclick="startGame('questions')"><em>FREE</em><div class="mi">💬</div><b>Questions</b><span>Deep, funny, romantic and flirty conversation starters.</span></button>
-      <button class="mode" onclick="startGame('challenges')"><em>FREE</em><div class="mi">🔥</div><b>Challenges</b><span>Do something together and earn points.</span></button>
-      <button class="mode" onclick="startGame('truth')"><em>FREE</em><div class="mi">🎭</div><b>Truth or Dare</b><span>Pick truth, dare or let Yarper decide.</span></button>
-      <button class="mode" onclick="startGame('cards')"><em>FREE</em><div class="mi">🃏</div><b>Couple Cards</b><span>Fast mini-games, choices and surprise cards.</span></button>
-      <button class="mode wide" onclick="startGame('date')"><em>FREE</em><div class="mi">💗</div><b>Date Night</b><span>Build a complete mini date: pick a vibe, get a plan, then play through it.</span></button>
-    </div>
-  </div>
-  <div class="section"><div class="daily"><div class="dailyrow"><div class="dailyicon">✨</div><div><h4>Today's Couple Quest</h4><p id="dailyText">Give each other one genuine compliment you have never said before.</p></div></div><button class="primary" onclick="completeDaily()">Complete quest · +25 XP</button></div></div>
-  <div class="section"><div class="sectionhead"><h3>Your progress</h3><button onclick="showView('profile')">See all</button></div><div class="stats"><div class="stat"><b id="roundStat">0</b><span>Rounds played</span></div><div class="stat"><b id="streakStat">0</b><span>Day streak</span></div><div class="stat"><b id="badgeStat">1</b><span>Badges earned</span></div></div></div>
+<div class="hero"><span class="eyebrow">Private couple playground</span><h1>Play closer.<br>Laugh harder.</h1><p>Your shared space for questions, challenges, truth-or-dare, couple cards and date-night games.</p><div class="status glass"><span id="onlineDot" class="dot"></span><span id="onlineText">Connecting…</span></div></div>
+<div class="score"><div class="scoretop"><div><small style="color:var(--muted);font-size:10px;text-transform:uppercase">Couple level</small><div class="scorebig" id="level">Level 1</div></div><div class="tag">🔓 ALL UNLOCKED</div></div><div class="bar"><span id="xpbar"></span></div><div class="meta"><span id="xptext">0 / 100 XP</span><span id="scoretext">0 points</span></div></div>
+<div class="section"><div class="head"><h2>Choose your game</h2><button onclick="randomGame()">Surprise us</button></div><div class="modes">
+<button class="mode" onclick="startGame('questions')"><i class="emoji">💬</i><em class="free">FREE</em><b>Questions</b><span>Deep, funny, romantic and flirty conversation.</span></button>
+<button class="mode" onclick="startGame('challenges')"><i class="emoji">🔥</i><em class="free">FREE</em><b>Challenges</b><span>Do something together and earn XP.</span></button>
+<button class="mode" onclick="startGame('truth')"><i class="emoji">🎭</i><em class="free">FREE</em><b>Truth or Dare</b><span>Truths, dares and playful chaos.</span></button>
+<button class="mode" onclick="startGame('cards')"><i class="emoji">🃏</i><em class="free">FREE</em><b>Couple Cards</b><span>Quick choices, mini-games and surprises.</span></button>
+<button class="mode wide" onclick="startGame('date')"><i class="emoji">🌙</i><em class="free">FREE</em><b>Date Night</b><span>Build a complete mini date around your mood.</span></button>
+</div></div>
+<div class="section"><div class="quest"><div class="questrow"><div class="qicon">✨</div><div><h3>Today's Couple Quest</h3><p id="daily">Loading your quest…</p></div></div><button id="dailyBtn" class="primary" onclick="completeDaily()">Complete quest · +25 XP</button></div></div>
+<div class="section"><div class="head"><h2>Your progress</h2><button onclick="showView('rewards')">See all</button></div><div class="stats"><div class="stat"><b id="rounds">0</b><small>Rounds played</small></div><div class="stat"><b id="streak">0</b><small>Day streak</small></div><div class="stat"><b id="partnerMini">—</b><small>Partner status</small></div></div></div>
 </section>
 
-<section id="games" class="view">
-  <div class="hero"><span class="eyebrow">Game room</span><h2>Pick a mood.</h2><p>Every mode is available. No locked decks, no premium rounds.</p></div>
-  <div class="modes">
-    <button class="mode" onclick="startGame('questions')"><div class="mi">💬</div><b>Questions</b><span>Get closer with meaningful prompts.</span></button>
-    <button class="mode" onclick="startGame('challenges')"><div class="mi">🔥</div><b>Challenges</b><span>Complete it together for XP.</span></button>
-    <button class="mode" onclick="startGame('truth')"><div class="mi">🎭</div><b>Truth or Dare</b><span>Choose your side.</span></button>
-    <button class="mode" onclick="startGame('cards')"><div class="mi">🃏</div><b>Couple Cards</b><span>Quick games and choices.</span></button>
-    <button class="mode wide" onclick="startGame('date')"><div class="mi">🌙</div><b>Date Night</b><span>Turn one evening into a full Yarper session.</span></button>
-  </div>
-  <div class="section"><div class="sectionhead"><h3>Quick picks</h3></div><div class="list">
-    <button class="row" onclick="quickPrompt('soft')"><div class="left"><div class="avatar">♡</div><div><b>Soft & romantic</b><br><small>Warm up slowly.</small></div></div><span>›</span></button>
-    <button class="row" onclick="quickPrompt('spicy')"><div class="left"><div class="avatar">✦</div><div><b>Flirty & spicy</b><br><small>Turn up the tension.</small></div></div><span>›</span></button>
-    <button class="row" onclick="quickPrompt('chaos')"><div class="left"><div class="avatar">⚡</div><div><b>Funny & chaotic</b><br><small>Prepare to embarrass each other.</small></div></div><span>›</span></button>
-  </div></div>
-</section>
+<section id="games" class="view"><div class="hero"><span class="eyebrow">Game room</span><h1>Pick a mood.</h1><p>Every game mode is open. Take turns and keep your shared streak moving.</p></div><div class="modes">
+<button class="mode" onclick="startGame('questions')"><i class="emoji">💬</i><b>Questions</b><span>Get closer.</span></button>
+<button class="mode" onclick="startGame('challenges')"><i class="emoji">🔥</i><b>Challenges</b><span>Do it together.</span></button>
+<button class="mode" onclick="startGame('truth')"><i class="emoji">🎭</i><b>Truth or Dare</b><span>Be honest or be brave.</span></button>
+<button class="mode" onclick="startGame('cards')"><i class="emoji">🃏</i><b>Couple Cards</b><span>Fast mini-games.</span></button>
+<button class="mode wide" onclick="startGame('date')"><i class="emoji">🌙</i><b>Date Night</b><span>Turn tonight into a Yarper session.</span></button>
+</div><div class="section"><div class="head"><h2>Quick picks</h2></div><div class="list"><button class="row" onclick="startGame('questions')"><div class="left"><div class="avatar">♡</div><div><b>Soft & romantic</b><br><small>Warm up slowly.</small></div></div>›</button><button class="row" onclick="startGame('truth')"><div class="left"><div class="avatar">✦</div><div><b>Flirty & spicy</b><br><small>Turn up the tension.</small></div></div>›</button><button class="row" onclick="startGame('cards')"><div class="left"><div class="avatar">⚡</div><div><b>Funny & chaotic</b><br><small>Prepare to embarrass each other.</small></div></div>›</button></div></div></section>
 
-<section id="rewards" class="view">
-  <div class="hero"><span class="eyebrow">Couple progression</span><h2>Earn it together.</h2><p>Points, levels, streaks and badges are all part of the free experience.</p></div>
-  <div class="scorecard"><div class="scoretop"><div><div style="color:var(--muted);font-size:11px">TOTAL XP</div><div class="scorebig" id="rewardXp">0</div></div><div style="text-align:right"><div style="color:var(--muted);font-size:11px">LEVEL</div><b id="rewardLevel" style="font-size:25px">1</b></div></div></div>
-  <div class="section"><div class="sectionhead"><h3>Badges</h3></div><div class="badges" id="badges"></div></div>
-  <div class="section"><div class="daily"><h4 style="margin:0 0 7px">Streak bonus</h4><p style="color:var(--muted);font-size:12px;margin:0">Play or complete a quest each day to keep your streak alive.</p><button class="primary" onclick="claimStreak()">Claim today's streak · +15 XP</button></div></div>
-</section>
+<section id="rewards" class="view"><div class="hero"><span class="eyebrow">Couple progression</span><h1>Earn it together.</h1><p>XP, levels, streaks and milestones are part of the shared experience.</p></div><div class="score"><div class="scoretop"><div><small style="color:var(--muted);font-size:10px">TOTAL XP</small><div class="scorebig" id="rewardXp">0</div></div><div><small style="color:var(--muted);font-size:10px">LEVEL</small><div class="scorebig" id="rewardLevel">1</div></div></div></div><div class="section"><div class="head"><h2>Milestones</h2></div><div class="badgegrid" id="badges"></div></div><div class="section"><div class="quest"><h3 style="margin:0 0 5px">Streak bonus</h3><p>Keep showing up together each day.</p><button id="streakBtn" class="primary" onclick="claimStreak()">Claim today's streak · +15 XP</button></div></div></section>
 
-<section id="profile" class="view">
-  <div class="hero"><span class="eyebrow">Your couple</span><h2 id="coupleTitle">You + Your Person</h2><p>Make Yarper feel like yours. Everything here is available for free.</p></div>
-  <div class="list">
-    <div class="row"><div class="left"><div class="avatar" id="a1">A</div><div><b id="name1">Player One</b><br><small>Partner one</small></div></div><button class="ghost" onclick="editNames()">Edit</button></div>
-    <div class="row"><div class="left"><div class="avatar" id="a2">M</div><div><b id="name2">Player Two</b><br><small>Partner two</small></div></div><span>♡</span></div>
-  </div>
-  <div class="section"><div class="sectionhead"><h3>Session stats</h3></div><div class="stats"><div class="stat"><b id="pRounds">0</b><span>Rounds</span></div><div class="stat"><b id="pPoints">0</b><span>Points</span></div><div class="stat"><b id="pStreak">0</b><span>Streak</span></div></div></div>
-  <div class="section"><div class="featurelist">
-    <div class="feature"><span>🔓</span><div><strong>All game modes unlocked</strong><span>No paywall or premium-only decks.</span></div></div>
-    <div class="feature"><span>💾</span><div><strong>Saved on this device</strong><span>Your couple connection and progress sync securely across both devices.</span></div></div>
-    <div class="feature"><span>🫶</span><div><strong>Built for two</strong><span>Take turns, compete, cooperate and stay connected with your partner.</span></div></div>
-  </div></div>
-</section>
-</main>
+<section id="profile" class="view"><div class="hero"><span class="eyebrow">Your couple</span><h1 id="coupleTitle">You + Your Person</h1><p>Your private code, your side, your shared progress.</p></div><div class="list"><div class="row"><div class="left"><div class="avatar" id="a1">A</div><div><b id="name1">Player One</b><br><small>Player one</small></div></div><span id="status1">●</span></div><div class="row"><div class="left"><div class="avatar" id="a2">P</div><div><b id="name2">Your Person</b><br><small id="role2">Partner</small></div></div><span id="status2">○</span></div></div><div class="section"><div class="head"><h2>Session stats</h2></div><div class="stats"><div class="stat"><b id="pRounds">0</b><small>Rounds</small></div><div class="stat"><b id="pPoints">0</b><small>Points</small></div><div class="stat"><b id="pStreak">0</b><small>Streak</small></div></div></div><div class="section"><div class="connectcode"><strong id="myCode">------</strong><small>Private couple code · share only with your partner</small></div></div></section>
 </div>
 
-<nav class="nav">
-<button class="active" data-view="home" onclick="showView('home')"><i>⌂</i>Home</button>
-<button data-view="games" onclick="showView('games')"><i>🎮</i>Games</button>
-<button data-view="rewards" onclick="showView('rewards')"><i>🏆</i>Rewards</button>
-<button data-view="profile" onclick="showView('profile')"><i>♡</i>Couple</button>
-</nav>
+<nav class="nav"><button class="active" data-v="home" onclick="showView('home')"><i>⌂</i>Home</button><button data-v="games" onclick="showView('games')"><i>🎮</i>Games</button><button data-v="rewards" onclick="showView('rewards')"><i>🏆</i>Rewards</button><button data-v="profile" onclick="showView('profile')"><i>♡</i>Couple</button></nav>
 
-<div class="modal" id="gameModal" onclick="if(event.target===this)closeModal()"><div class="sheet">
-  <div class="sheethead"><div><span class="eyebrow" id="gameMode">QUESTIONS</span><h3 id="gameTitle">Choose a question</h3></div><button class="close" onclick="closeModal()">×</button></div>
-  <div id="gameStage"></div>
-</div></div>
+<div class="modal" id="gameModal" onclick="if(event.target===this)closeGame()"><div class="sheet"><div class="sheettop"><div><span class="eyebrow" id="gameMode">QUESTIONS</span><h2 id="gameTitle" style="margin:5px 0 0;font-size:22px">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div></div></div>
 
-<div class="modal" id="settingsModal" onclick="if(event.target===this)closeSettings()"><div class="sheet">
- <div class="sheethead"><h3>Settings</h3><button class="close" onclick="closeSettings()">×</button></div>
- <div class="field"><label>Your name</label><input id="set1" maxlength="40" placeholder="Your name"></div>
- <div class="connectedpill"><span class="statusdot" id="settingsPartnerDot"></span><span id="settingsPartner">Partner not connected</span></div>
- <div class="codebox"><strong id="settingsCode" style="font-size:25px;letter-spacing:5px">------</strong><span>Your private couple code</span></div>
- <button class="primary" onclick="saveSettings()">Save my name</button>
- <div class="section"><div class="featurelist"><div class="feature"><span>💎</span><div><strong>Everything is free</strong><span>Yarper has no premium tier in this build. All modes, prompts, progression and settings are accessible.</span></div></div></div></div>
-</div></div>
+<div class="modal" id="settingsModal" onclick="if(event.target===this)closeSettings()"><div class="sheet"><div class="sheettop"><h2 style="margin:0">Settings</h2><button class="close" onclick="closeSettings()">×</button></div><div class="field"><label>Your name</label><input id="setName" maxlength="40"></div><div class="connectcode"><strong id="setCode" style="font-size:25px;letter-spacing:5px">------</strong><small>Couple code</small></div><div id="setPartner" class="status glass">Partner not connected</div><button class="primary" onclick="saveSettings()">Save changes</button></div></div>
 
-<div class="connection" id="connectionGate">
-  <div class="connectsheet">
-    <div class="connectlogo">Y</div>
-    <div class="eyebrow">Private couples space</div>
-    <h2>Make Yarper yours.</h2>
-    <p>Create your private couple or join your partner with a 6-character code. Your device gets its own side, while your shared game progress stays connected.</p>
-    <div id="connectHome" class="connectactions">
-      <button class="primary" onclick="showConnectMode('create')">Create a couple</button>
-      <button class="ghost" onclick="showConnectMode('join')">Join with a couple code</button>
-    </div>
-    <div id="connectForm" style="display:none">
-      <div class="field"><label id="connectNameLabel">Your name</label><input id="connectName" maxlength="40" placeholder="Enter your name"></div>
-      <div class="field" id="codeField" style="display:none"><label>Couple code</label><input id="connectCode" maxlength="6" placeholder="ABC234" autocapitalize="characters"></div>
-      <div class="connection-error" id="connectError"></div>
-      <div class="connectactions"><button class="primary" id="connectSubmit" onclick="submitConnect()">Continue</button><button class="ghost" onclick="showConnectHome()">Back</button></div>
-    </div>
-    <div id="connectSuccess" style="display:none">
-      <div class="codebox"><strong id="myCode">------</strong><span>Share this code with your partner.</span></div>
-      <div class="connectedpill"><span class="statusdot" id="partnerDot"></span><span id="partnerStatus">Waiting for your partner to join…</span></div>
-      <button class="primary" onclick="enterYarper()">Enter Yarper</button>
-    </div>
-  </div>
-</div>
+<div class="gate show" id="gate"><div class="gatebox"><div class="biglogo">Y</div><span class="eyebrow">Private couples space</span><h1>Make Yarper yours.</h1><p>Create your private couple or join your partner with a six-character code. Each device gets its own side, while the progress stays shared.</p><div id="gateHome"><button class="primary" onclick="connectMode('create')">Create a couple</button><button class="ghost" style="width:100%;margin-top:9px" onclick="connectMode('join')">Join with a couple code</button></div><div id="gateForm" class="hidden"><div class="field"><label>Your name</label><input id="connectName" maxlength="40" placeholder="Your name"></div><div id="codeWrap" class="field hidden"><label>Couple code</label><input id="connectCode" maxlength="6" placeholder="ABC234" autocapitalize="characters"></div><div id="gateErr" class="err"></div><button id="connectBtn" class="primary" onclick="submitConnect()">Continue</button><button class="ghost" style="width:100%;margin-top:9px" onclick="resetGate()">Back</button></div><div id="gateSuccess" class="hidden"><div class="connectcode"><strong id="successCode">------</strong><small>Share this with your partner.</small></div><div id="successStatus" class="status glass">Waiting for your partner…</div><button class="primary" onclick="enterApp()">Enter Yarper</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const BANK={
-questions:[
-["What is one tiny thing I do that always makes you smile?","soft"],["What memory of us would you replay forever?","soft"],["What is something you want us to experience together this year?","soft"],["What was your first “okay, I really like this person” moment?","romantic"],["Describe our relationship using three movie titles.","fun"],["What is one thing you wish I could read in your mind right now?","deep"],["What kind of date would make you feel completely spoiled?","romantic"],["What is a silly habit of mine you secretly love?","fun"],["What song feels like us?","romantic"],["What is one compliment you think I don't hear enough?","deep"],["What would our dream weekend look like if money didn't matter?","dream"],["What is something you want us to get better at together?","deep"],["What is your favorite look I've ever worn?","flirty"],["What is one moment between us that gave you butterflies?","flirty"],["What should our next spontaneous adventure be?","chaos"]],
-challenges:[
-["Give your partner a 20-second compliment without repeating a word.","soft"],["Hold hands and make eye contact for 30 seconds.","romantic"],["Do your best impression of your partner.","fun"],["Create a secret handshake in under one minute.","chaos"],["Send your partner a ridiculous selfie pose.","fun"],["Let your partner choose the next song and dance together for 30 seconds.","playful"],["Give each other a three-word pep talk.","soft"],["Recreate your first date using only things around you.","romantic"],["Whisper something sweet that would make your partner blush.","flirty"],["Rock-paper-scissors: loser does a 30-second silly dance.","chaos"],["Give your partner a genuine five-second hug and don't say anything.","romantic"]],
-truth:[
-["Truth: What was the first thing you found attractive about me?","flirty"],["Dare: Give your partner a dramatic movie-style compliment.","playful"],["Truth: What is your favorite part of our chemistry?","flirty"],["Dare: Do your funniest impression of your partner.","fun"],["Truth: What is one secret dream you have for us?","deep"],["Dare: Let your partner pick your next silly nickname.","chaos"],["Truth: When do you feel closest to me?","deep"],["Dare: Hold hands and invent a ridiculous couple slogan.","fun"],["Truth: What is one thing you want more of in our relationship?","deep"],["Dare: Give your partner a 10-second runway walk.","chaos"],["Truth: What moment with me still gives you butterflies?","flirty"]],
-cards:[
-["Two truths and a lie: make them about your relationship. Guess the lie.","mini"],["Both point at the person who is more likely to survive a zombie apocalypse.","vote"],["Finish this sentence: “I knew we were going to be special when…”","romantic"],["Pick a number 1–5. Your partner gives you that many compliments.","compliment"],["Each person chooses one emoji that describes the relationship today. Explain.","check-in"],["Make a 30-second plan for a surprise date under a tiny budget.","date"],["Who is more dramatic? Defend your answer.","chaos"],["Choose: movie night, food adventure, or late-night walk.","choice"],["Both name one thing you appreciate about the other.","soft"],["Rock-paper-scissors. Winner chooses the next game mode.","mini"]],
-date:[
-["VIBE: Cozy. Build a pillow nest, choose a playlist, then ask each other three questions.","date"],["VIBE: Adventure. Pick a place neither of you has tried and make a mini plan.","date"],["VIBE: At-home luxury. Dress up, make a simple snack, dim the lights and play five rounds.","date"],["VIBE: Memory lane. Look through old photos and each choose one story to retell.","date"],["VIBE: Chaos night. Snacks, funny videos, silly challenges and absolutely no serious competition.","date"]]
+questions:[["What is one tiny thing I do that always makes you smile?","soft"],["What memory of us would you replay forever?","soft"],["What is something you want us to experience together this year?","romantic"],["What was your first “okay, I really like this person” moment?","romantic"],["Describe our relationship using three movie titles.","fun"],["What is one thing you wish I could read in your mind right now?","deep"],["What kind of date would make you feel completely spoiled?","romantic"],["What is a silly habit of mine you secretly love?","fun"],["What song feels like us?","romantic"],["What is one compliment you think I don't hear enough?","deep"],["What would our dream weekend look like if money didn't matter?","dream"],["What is something you want us to get better at together?","deep"],["What is your favorite look I've ever worn?","flirty"],["What is one moment between us that gave you butterflies?","flirty"],["What should our next spontaneous adventure be?","chaos"]],
+challenges:[["Give your partner a 20-second compliment without repeating a word.","soft"],["Hold hands and make eye contact for 30 seconds.","romantic"],["Do your best impression of your partner.","fun"],["Create a secret handshake in under one minute.","chaos"],["Send your partner a ridiculous selfie pose.","fun"],["Choose the next song and dance together for 30 seconds.","playful"],["Give each other a three-word pep talk.","soft"],["Recreate your first date using only things around you.","romantic"],["Whisper something sweet that would make your partner blush.","flirty"],["Loser does a 30-second silly dance.","chaos"]],
+truth:[["Truth: What was the first thing you found attractive about me?","flirty"],["Dare: Give your partner a dramatic movie-style compliment.","playful"],["Truth: What is your favorite part of our chemistry?","flirty"],["Dare: Do your funniest impression of your partner.","fun"],["Truth: What is one secret dream you have for us?","deep"],["Dare: Let your partner pick your next silly nickname.","chaos"],["Truth: When do you feel closest to me?","deep"],["Dare: Invent a ridiculous couple slogan.","fun"],["Truth: What is one thing you want more of in our relationship?","deep"],["Dare: Give your partner a 10-second runway walk.","chaos"]],
+cards:[["Two truths and a lie: make them about your relationship. Guess the lie.","mini"],["Point at the person more likely to survive a zombie apocalypse. Defend it.","vote"],["Finish: “I knew we were going to be special when…”","romantic"],["Pick a number 1–5. Your partner gives you that many compliments.","compliment"],["Choose one emoji for the relationship today and explain.","check-in"],["Make a 30-second plan for a surprise date on a tiny budget.","date"],["Who is more dramatic? Defend your answer.","chaos"],["Choose: movie night, food adventure, or late-night walk.","choice"],["Name one thing you appreciate about the other.","soft"]],
+date:[["VIBE: Cozy. Build a pillow nest, choose a playlist, then ask three questions.","date"],["VIBE: Adventure. Pick a place neither of you has tried and make a mini plan.","date"],["VIBE: At-home luxury. Dress up, make a snack, dim the lights and play five rounds.","date"],["VIBE: Memory lane. Look through old photos and each retell one story.","date"],["VIBE: Chaos night. Snacks, funny videos, silly challenges and no serious competition.","date"]]
 };
-
 const API="https://xjehryhkqvjpbduqumso.supabase.co/functions/v1/yarper-api";
-let state={xp:0,rounds:0,streak:0,lastDay:"",daily:"",dailyDone:false,streakClaimed:false,p1:"Player One",p2:"Your Person",role:"player1",code:""};
-let sessionToken=localStorage.getItem("yarperToken")||"";
-let currentMode="questions",currentIndex=0,partnerOnline=false,connected=false,currentGame=null,currentTurn="player1";
-
-async function api(action,payload={}) {
-  const headers={"Content-Type":"application/json"};
-  if(sessionToken) headers["x-yarper-token"]=sessionToken;
-  const res=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...payload})});
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok || data.error) throw new Error(data.error||"Request failed");
-  return data;
-}
-function applySnapshot(data){
-  if(!data) return;
-  const s=data.state||{};
-  state.xp=s.xp||0; state.rounds=s.rounds||0; state.streak=s.streak||0;
-  state.daily=s.daily||""; state.dailyDone=!!s.daily_done; state.streakClaimed=!!s.streak_claimed;
-  state.role=data.me?.role||state.role; currentTurn=s.current_turn||currentTurn; currentGame=data.game||null; state.p1=data.me?.role==="player1"?(data.me?.display_name||"Player One"):(data.partner?.display_name||"Player One");
-  state.p2=data.me?.role==="player2"?(data.me?.display_name||"Player Two"):(data.partner?.display_name||"Your Person");
-  state.code=data.code||state.code||"";
-  partnerOnline=!!data.partner?.online; connected=!!data.me;
-  if(data.me?.role==="player1") state.p1=data.me.display_name; if(data.me?.role==="player2") state.p2=data.me.display_name;
-  render();
-  updateConnectionStatus(data);
-  if(document.getElementById("gameModal")?.classList.contains("show")) renderGameStage();
-}
-function updateConnectionStatus(data){
-  const p=data?.partner;
-  const text=p ? (p.online ? p.display_name+" is online" : p.display_name+" is offline") : "Waiting for your partner to join…";
-  const dot=document.getElementById("partnerDot"); if(dot) dot.classList.toggle("off",!p?.online);
-  const pd=document.getElementById("partnerStatus"); if(pd) pd.textContent=text;
-  const sd=document.getElementById("settingsPartnerDot"); if(sd) sd.classList.toggle("off",!p?.online);
-  const sp=document.getElementById("settingsPartner"); if(sp) sp.textContent=p ? (p.display_name+" · "+(p.online?"Online":"Offline")) : "Partner not connected";
-  const sc=document.getElementById("settingsCode"); if(sc) sc.textContent=state.code||"------";
-}
-function save(){ localStorage.setItem("yarperToken",sessionToken); render(); }
-let realtimeClient = null;
-let realtimeChannel = null;
-
-async function initRealtime(coupleId){
-  if(!coupleId || realtimeChannel) return;
-  try{
-    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-    realtimeClient = createClient(
-      "https://xjehryhkqvjpbduqumso.supabase.co",
-      "sb_publishable_B3lU9kcDWaZYRrSgewQGiw_3p___zFl"
-    );
-    realtimeChannel = realtimeClient
-      .channel("yarper:"+coupleId)
-      .on("broadcast",{event:"refresh"},async()=>{
-        try{
-          const d=await api("me");
-          applySnapshot(d);
-        }catch(e){}
-      })
-      .subscribe();
-  }catch(e){}
-}
-
-function level(){return Math.floor(state.xp/100)+1}
-function render(){
-  const l=level(),within=state.xp%100;
-  document.getElementById("level").textContent="Level "+l;
-  document.getElementById("xpbar").style.width=within+"%";
-  document.getElementById("xptext").textContent=within+" / 100 XP";
-  document.getElementById("scoreText").textContent=state.xp+" points";
-  document.getElementById("roundStat").textContent=state.rounds;
-  document.getElementById("streakStat").textContent=state.streak;
-  document.getElementById("badgeStat").textContent=badges().filter(x=>x.earned).length;
-  document.getElementById("dailyText").textContent=state.daily||"Complete a couple quest together.";
-  document.getElementById("rewardXp").textContent=state.xp;
-  document.getElementById("rewardLevel").textContent=l;
-  document.getElementById("pRounds").textContent=state.rounds;
-  document.getElementById("pPoints").textContent=state.xp;
-  document.getElementById("pStreak").textContent=state.streak;
-  document.getElementById("name1").textContent=state.p1;
-  document.getElementById("name2").textContent=state.p2;
-  document.getElementById("a1").textContent=(state.p1[0]||"P").toUpperCase();
-  document.getElementById("a2").textContent=(state.p2[0]||"P").toUpperCase();
-  document.getElementById("coupleTitle").textContent=state.p1+" + "+state.p2;
-  renderBadges();
-}
-function showView(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));window.scrollTo(0,0)}
-function startGame(mode){
-  currentMode=mode;
-  document.getElementById("gameModal").classList.add("show");
-  renderGameStage();
-}
-function renderGameStage(){
-  const stage=document.getElementById("gameStage");
-  const modeTitle=currentMode==="truth"?"Truth or Dare":currentMode==="date"?"Date Night":currentMode.charAt(0).toUpperCase()+currentMode.slice(1);
-  document.getElementById("gameMode").textContent=currentMode.toUpperCase();
-  if(currentGame){
-    const selectedName=currentGame.selected_by===state.role?(state.role==="player1"?state.p1:state.p2):(state.role==="player1"?state.p2:state.p1);
-    if(currentGame.status==="waiting"){
-      if(currentGame.selected_by===state.role){
-        stage.innerHTML='<div class="promptcard"><div class="cat">YOUR QUESTION</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>Waiting for '+escapeHtml(selectedName)+' to answer…</p></div><button class="ghost" style="width:100%;margin-top:10px" onclick="closeModal()">Keep playing in background</button>';
-      }else{
-        stage.innerHTML='<div class="promptcard"><div class="cat">'+escapeHtml(selectedName.toUpperCase())+' PICKED THIS</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>'+escapeHtml(selectedName)+' chose this question for you.</p></div><div class="field"><label>Your answer</label><textarea id="answerInput" maxlength="1000" placeholder="Type your answer here…" style="width:100%;min-height:120px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#0d0913;color:white;outline:none;resize:vertical;font:inherit"></textarea></div><button class="primary" onclick="submitGameAnswer()">Send answer · +10 XP</button>';
-      }
-    }else{
-      stage.innerHTML='<div class="promptcard"><div class="cat">ANSWERED</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>'+escapeHtml(selectedName)+' answered:</p><div style="margin-top:14px;padding:15px;border-radius:16px;background:#ffffff08;border:1px solid var(--line);color:#fff;line-height:1.5;text-align:left">'+escapeHtml(currentGame.answer||"")+'</div></div><button class="primary" onclick="closeModal()">Done · Choose another game</button>';
-    }
-    return;
-  }
-  const canChoose=currentTurn===state.role;
-  document.getElementById("gameTitle").textContent=canChoose?"Choose a question":"Waiting for your partner";
-  if(!canChoose){
-    stage.innerHTML='<div class="promptcard"><div class="cat">PARTNER TURN</div><h2>'+escapeHtml(state.role==="player1"?state.p2:state.p1)+' is choosing</h2><p>When they pick a question, it will appear here for you to answer.</p></div><button class="ghost" style="width:100%;margin-top:10px" onclick="closeModal()">Close</button>';
-    return;
-  }
-  const picks=BANK[currentMode].slice(0,6);
-  stage.innerHTML='<p style="color:var(--muted);font-size:12px;margin:16px 0 10px">Pick one. Your partner will see the exact question on their side and answer it.</p><div class="featurelist">'+picks.map((x,i)=>'<button class="feature questionpick" data-q="'+i+'" style="text-align:left;color:white;cursor:pointer"><span>♡</span><div><strong>'+escapeHtml(x[0])+'</strong><span>'+escapeHtml(x[1].toUpperCase())+'</span></div></button>').join('')+'</div>';
-  stage.querySelectorAll(".questionpick").forEach(btn=>btn.addEventListener("click",()=>chooseQuestion(Number(btn.dataset.q))));
-}
-async function chooseQuestion(i){
-  const item=BANK[currentMode][i];
-  try{const d=await api("start_game",{mode:currentMode,question:item[0]});applySnapshot(d);renderGameStage();toast("Question sent to your partner");}
-  catch(e){toast(e.message)}
-}
-async function submitGameAnswer(){
-  const input=document.getElementById("answerInput"),answer=(input?.value||"").trim();
-  if(!answer){toast("Write an answer first");return}
-  try{const d=await api("answer_game",{game_id:currentGame.id,answer});applySnapshot(d);renderGameStage();toast("Answer sent · +10 XP")}
-  catch(e){toast(e.message)}
-}
-function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-function skipPrompt(){startGame(currentMode)}
-async function completeRound(){toast("Pick a question and send it to your partner to complete the round.")}
-async function completeDaily(){try{const d=await api("complete_daily");applySnapshot(d);toast("+25 XP — daily quest complete")}catch(e){toast(e.message)}}
-async function claimStreak(){try{const d=await api("claim_streak");applySnapshot(d);toast("+15 XP — streak protected")}catch(e){toast(e.message)}}
-function randomGame(){let k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
-function quickPrompt(kind){currentMode="questions";document.getElementById("gameModal").classList.add("show");renderGameStage();}
-function badges(){return[{name:"First Spark",icon:"✨",desc:"Complete your first round",earned:state.rounds>=1},{name:"Ten Down",icon:"🔥",desc:"Complete 10 rounds",earned:state.rounds>=10},{name:"Century",icon:"💯",desc:"Earn 100 XP",earned:state.xp>=100},{name:"On Fire",icon:"⚡",desc:"Reach a 3-day streak",earned:state.streak>=3},{name:"Power Couple",icon:"💗",desc:"Reach Level 5",earned:level()>=5},{name:"Yarper Regular",icon:"🎮",desc:"Complete 25 rounds",earned:state.rounds>=25}]}
-function renderBadges(){document.getElementById("badges").innerHTML=badges().map(b=>'<div class="badge '+(b.earned?'':'locked')+'"><div style="font-size:24px">'+b.icon+'</div><b>'+b.name+'</b><span>'+b.desc+(b.earned?' · Unlocked':' · Locked')+'</span></div>').join("")}
-function openSettings(){document.getElementById("set1").value=state.role==="player1"?state.p1:state.p2;updateConnectionStatus({partner:{display_name:state.role==="player1"?state.p2:state.p1,online:partnerOnline}});document.getElementById("settingsModal").classList.add("show")}
-function closeSettings(){document.getElementById("settingsModal").classList.remove("show")}
-async function saveSettings(){const name=document.getElementById("set1").value.trim()||"Player";try{const d=await api("rename",{name});applySnapshot(d);closeSettings();toast("Your name is saved")}catch(e){toast(e.message)}}
-function editNames(){openSettings()}
-function closeModal(){document.getElementById("gameModal").classList.remove("show")}
-function toast(msg){let t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.remove("show"),1800)}
-
-function showConnectHome(){document.getElementById("connectHome").style.display="grid";document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="none";document.getElementById("connectError").textContent=""}
-function showConnectMode(mode){document.getElementById("connectHome").style.display="none";document.getElementById("connectForm").style.display="block";document.getElementById("connectSuccess").style.display="none";document.getElementById("codeField").style.display=mode==="join"?"block":"none";document.getElementById("connectSubmit").dataset.mode=mode;document.getElementById("connectName").value="";document.getElementById("connectError").textContent="";document.getElementById("connectName").focus()}
-async function submitConnect(){
-  const mode=document.getElementById("connectSubmit").dataset.mode;
-  const name=document.getElementById("connectName").value.trim();
-  const code=(document.getElementById("connectCode").value||"").trim().toUpperCase();
-  const err=document.getElementById("connectError");err.textContent="";
-  try{
-    const data=await api(mode,{name,code});
-    sessionToken=data.token; localStorage.setItem("yarperToken",sessionToken); localStorage.setItem("yarperCode",data.code);
-    applySnapshot(data);
-    initRealtime(data.couple_id);
-    document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";document.getElementById("myCode").textContent=data.code;
-    updateConnectionStatus(data);
-  }catch(e){err.textContent=e.message}
-}
-function enterYarper(){document.getElementById("connectionGate").classList.remove("show");showView("home");}
-async function boot(){
-  if(!sessionToken){document.getElementById("connectionGate").classList.add("show");return}
-  try{
-    const data=await api("me"); state.code=localStorage.getItem("yarperCode")||""; applySnapshot(data); initRealtime(data.couple_id);
-    document.getElementById("connectionGate").classList.add("show");document.getElementById("myCode").textContent=state.code||"------";document.getElementById("connectHome").style.display="none";document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";updateConnectionStatus(data);
-    setTimeout(enterYarper,900);
-  }catch(e){localStorage.removeItem("yarperToken");sessionToken="";document.getElementById("connectionGate").classList.add("show");}
-}
-setInterval(async()=>{if(!sessionToken)return;try{const d=await api("heartbeat");state.code=localStorage.getItem("yarperCode")||state.code;applySnapshot(d)}catch(e){}},5000);
-boot();
-
+let state={xp:0,rounds:0,streak:0,daily:"",dailyDone:false,streakClaimed:false,p1:"Player One",p2:"Your Person",role:"player1",code:""};
+let token=localStorage.getItem("yarperToken")||"",currentMode="questions",currentGame=null,currentTurn="player1",partner=null,realtimeChannel=null,realtimeClient=null;
+const $=id=>document.getElementById(id);
+async function api(action,payload={}){const h={"Content-Type":"application/json"};if(token)h["x-yarper-token"]=token;const r=await fetch(API,{method:"POST",headers:h,body:JSON.stringify({action,...payload})});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||"Request failed");return d}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"}[c]))}
+function apply(d){if(!d)return;const s=d.state||{};state.xp=s.xp||0;state.rounds=s.rounds||0;state.streak=s.streak||0;state.daily=s.daily||"";state.dailyDone=!!s.daily_done;state.streakClaimed=!!s.streak_claimed;state.role=d.me?.role||state.role;currentTurn=s.current_turn||currentTurn;currentGame=d.game||null;partner=d.partner||null;state.code=state.code||localStorage.getItem("yarperCode")||"";if(d.me?.role==="player1"){state.p1=d.me.display_name||"Player One";state.p2=partner?.display_name||"Your Person"}else{state.p2=d.me?.display_name||"Player Two";state.p1=partner?.display_name||"Player One"}render();updateStatus();if($("gameModal").classList.contains("show"))renderGame()}
+function render(){const lv=Math.floor(state.xp/100)+1,w=state.xp%100;$("level").textContent="Level "+lv;$("xpbar").style.width=w+"%";$("xptext").textContent=w+" / 100 XP";$("scoretext").textContent=state.xp+" points";$("rounds").textContent=state.rounds;$("streak").textContent=state.streak;$("partnerMini").textContent=partner?.online?"Online":"Offline";$("daily").textContent=state.daily||"Complete a couple quest together.";$("dailyBtn").textContent=state.dailyDone?"Quest complete ✓":"+25 XP · Complete today's quest";$("dailyBtn").disabled=state.dailyDone;$("rewardXp").textContent=state.xp;$("rewardLevel").textContent=lv;$("pRounds").textContent=state.rounds;$("pPoints").textContent=state.xp;$("pStreak").textContent=state.streak;$("name1").textContent=state.p1;$("name2").textContent=state.p2;$("a1").textContent=(state.p1[0]||"P").toUpperCase();$("a2").textContent=(state.p2[0]||"P").toUpperCase();$("coupleTitle").textContent=state.p1+" + "+state.p2;$("myCode").textContent=state.code||"------";$("setCode").textContent=state.code||"------";$("role2").textContent=state.role==="player1"?"Partner":"You";renderBadges()}
+function updateStatus(){const on=!!partner?.online;$("onlineDot").classList.toggle("off",!on);$("onlineText").textContent=partner?(partner.display_name+(on?" is online":" is offline")):"Waiting for your partner";$("status1").textContent=state.role==="player1"?"●":"○";$("status2").textContent=state.role==="player2"?"●":(on?"●":"○");$("setPartner").textContent=partner?(partner.display_name+" · "+(on?"Online":"Offline")):"Partner not connected";$("successStatus").textContent=partner?(partner.display_name+" · "+(on?"Online":"Waiting")):"Waiting for your partner…"}
+function showView(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));$(v).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.v===v));scrollTo(0,0)}
+function startGame(m){currentMode=m;$("gameModal").classList.add("show");renderGame()}
+function renderGame(){const title=currentMode==="truth"?"Truth or Dare":currentMode==="date"?"Date Night":currentMode[0].toUpperCase()+currentMode.slice(1);$("gameMode").textContent=currentMode.toUpperCase();const stage=$("gameStage");if(currentGame){const chooser=currentGame.selected_by===state.role?(state.role==="player1"?state.p1:state.p2):(state.role==="player1"?state.p2:state.p1);$("gameTitle").textContent=currentGame.status==="waiting"?"Your partner has a prompt":"Round complete";if(currentGame.status==="waiting"&&currentGame.selected_by!==state.role){stage.innerHTML='<div class="prompt"><div class="cat">'+esc(chooser.toUpperCase())+' PICKED THIS</div><h2>'+esc(currentGame.question)+'</h2><p>Your turn. Send your response and earn 10 XP.</p></div><div class="field"><label>Your response</label><textarea id="answer" placeholder="Say what you really think…"></textarea></div><button class="primary" onclick="answerGame()">Send response · +10 XP</button>'}else if(currentGame.status==="waiting"){stage.innerHTML='<div class="prompt"><div class="cat">SENT TO YOUR PARTNER</div><h2>'+esc(currentGame.question)+'</h2><p>Waiting for '+esc(chooser)+' to respond. You can close this and keep exploring.</p></div><button class="ghost" style="width:100%;margin-top:10px" onclick="closeGame()">Keep playing</button>'}else{stage.innerHTML='<div class="prompt"><div class="cat">ROUND COMPLETE</div><h2>'+esc(currentGame.question)+'</h2><p>'+esc(chooser)+' responded:</p><div style="padding:14px;border-radius:16px;background:#ffffff08;border:1px solid var(--line);text-align:left;line-height:1.5">'+esc(currentGame.answer)+'</div></div><div class="reactionbar"><button class="react" onclick="reactLocal('❤️')">❤️</button><button class="react" onclick="reactLocal('😂')">😂</button><button class="react" onclick="reactLocal('🔥')">🔥</button><button class="react" onclick="reactLocal('🥰')">🥰</button><button class="react" onclick="reactLocal('😏')">😏</button><button class="react" onclick="reactLocal('👀')">👀</button></div><button class="primary" onclick="closeGame()">Done · Play another</button>}return}
+const can=currentTurn===state.role;$("gameTitle").textContent=can?"Choose a prompt":"Waiting for your partner";if(!can){stage.innerHTML='<div class="prompt"><div class="cat">PARTNER TURN</div><h2>'+esc(state.role==="player1"?state.p2:state.p1)+' is choosing</h2><p>The next prompt will appear here automatically.</p></div>';return}
+const picks=BANK[currentMode].slice(0,7);stage.innerHTML='<p style="color:var(--muted);font-size:11px;margin:15px 0 8px">Choose one. Your partner will see the exact prompt instantly.</p><div class="pickgrid">'+picks.map((x,i)=>'<button class="pick" onclick="choose('+i+')"><span style="font-size:20px">♡</span><div><strong>'+esc(x[0])+'</strong><span>'+esc(x[1].toUpperCase())+'</span></div></button>').join("")+'</div>'}
+async function choose(i){try{const d=await api("start_game",{mode:currentMode,question:BANK[currentMode][i][0]});apply(d);toast("Prompt sent to your partner")}catch(e){toast(e.message)}}
+async function answerGame(){const a=($("answer")?.value||"").trim();if(!a)return toast("Write a response first");try{const d=await api("answer_game",{game_id:currentGame.id,answer:a});apply(d);toast("Response sent · +10 XP")}catch(e){toast(e.message)}}
+function reactLocal(x){const key="yarperReactions";const arr=JSON.parse(localStorage.getItem(key)||"[]");arr.push({game:currentGame?.id,emoji:x,at:Date.now()});localStorage.setItem(key,JSON.stringify(arr.slice(-50)));toast(x+" reaction saved")}
+function closeGame(){$("gameModal").classList.remove("show")}
+function badges(){const l=Math.floor(state.xp/100)+1;return[["✨","First Spark","Complete your first round",state.rounds>=1],["🔥","Ten Down","Complete 10 rounds",state.rounds>=10],["💯","Century","Earn 100 XP",state.xp>=100],["⚡","On Fire","Reach a 3-day streak",state.streak>=3],["💗","Power Couple","Reach Level 5",l>=5],["🎮","Yarper Regular","Complete 25 rounds",state.rounds>=25]]}
+function renderBadges(){$("badges").innerHTML=badges().map(b=>'<div class="badge '+(b[3]?"":"lock")+'"><div>'+b[0]+'</div><b>'+b[1]+'</b><span>'+b[2]+' · '+(b[3]?"Unlocked":"Keep playing")+'</span></div>').join("")}
+async function completeDaily(){if(state.dailyDone)return;try{const d=await api("complete_daily");apply(d);toast("+25 XP · Quest complete")}catch(e){toast(e.message)}}
+async function claimStreak(){if(state.streakClaimed)return;try{const d=await api("claim_streak");apply(d);toast("+15 XP · Streak bonus claimed")}catch(e){toast(e.message)}}
+function randomGame(){const k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
+function openSettings(){$("setName").value=state.role==="player1"?state.p1:state.p2;$("settingsModal").classList.add("show");updateStatus()}
+function closeSettings(){$("settingsModal").classList.remove("show")}
+async function saveSettings(){try{const d=await api("rename",{name:$("setName").value.trim()});apply(d);closeSettings();toast("Profile saved")}catch(e){toast(e.message)}}
+function toast(m){$("toast").textContent=m;$("toast").classList.add("show");clearTimeout(window.t);window.t=setTimeout(()=>$("toast").classList.remove("show"),1800)}
+function connectMode(m){$("gateHome").classList.add("hidden");$("gateForm").classList.remove("hidden");$("codeWrap").classList.toggle("hidden",m!=="join");$("connectBtn").dataset.mode=m;$("connectName").focus();$("gateErr").textContent=""}
+function resetGate(){$("gateHome").classList.remove("hidden");$("gateForm").classList.add("hidden")}
+async function submitConnect(){const mode=$("connectBtn").dataset.mode,name=$("connectName").value.trim(),code=($("connectCode").value||"").trim().toUpperCase();$("gateErr").textContent="";try{const d=await api(mode,{name,code});token=d.token;localStorage.setItem("yarperToken",token);localStorage.setItem("yarperCode",d.code);state.code=d.code;apply(d);$("gateForm").classList.add("hidden");$("gateSuccess").classList.remove("hidden");$("successCode").textContent=d.code;initRealtime(d.couple_id)}catch(e){$("gateErr").textContent=e.message}}
+function enterApp(){$("gate").classList.remove("show");showView("home")}
+async function initRealtime(id){if(!id||realtimeChannel)return;try{const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");realtimeClient=createClient("https://xjehryhkqvjpbduqumso.supabase.co","sb_publishable_B3lU9kcDWaZYRrSgewQGiw_3p___zFl");realtimeChannel=realtimeClient.channel("yarper:"+id).on("broadcast",{event:"refresh"},async()=>{try{apply(await api("me"))}catch{}}).subscribe()}catch{}}
+async function boot(){if(!token){$("gate").classList.add("show");return}try{const d=await api("me");state.code=localStorage.getItem("yarperCode")||"";apply(d);initRealtime(d.couple_id);$("gate").classList.remove("show")}catch{$("gate").classList.add("show");localStorage.removeItem("yarperToken");token=""}}
+setInterval(async()=>{if(!token)return;try{apply(await api("heartbeat"))}catch{}},5000);boot();
 </script>
-</body>
-</html>
+</body></html>
