@@ -1,0 +1,17 @@
+{
+  "name": "Yarper — Just You Two",
+  "short_name": "Yarper",
+  "description": "A private couples game space for two.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#071012",
+  "background_color": "#071012",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
