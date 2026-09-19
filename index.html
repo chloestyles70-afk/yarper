@@ -76,7 +76,7 @@ async function answerGame(){const a=($("answer")?.value||"").trim();if(!a)return
 function reactLocal(x){const key="yarperReactions";const arr=JSON.parse(localStorage.getItem(key)||"[]");arr.push({game:currentGame?.id,emoji:x,at:Date.now()});localStorage.setItem(key,JSON.stringify(arr.slice(-50)));toast(x+" reaction saved")}
 function closeGame(){$("gameModal").classList.remove("show")}
 function badges(){const l=Math.floor(state.xp/100)+1;return[["✨","First Spark","Complete your first round",state.rounds>=1],["🔥","Ten Down","Complete 10 rounds",state.rounds>=10],["💯","Century","Earn 100 XP",state.xp>=100],["⚡","On Fire","Reach a 3-day streak",state.streak>=3],["💗","Power Couple","Reach Level 5",l>=5],["🎮","Yarper Regular","Complete 25 rounds",state.rounds>=25]]}
-function renderBadges(){$("badges").innerHTML=badges().map(b=>'<div class="badge '+(b[3]?"":"lock")+'"><div>'+b[0]+'</div><b>'+b[1]+'</b><span>'+b[2]+' · '+(b[3]?"Unlocked":"Keep playing")+'</span></div>').join("")}
+function renderBadges(){ $("badges").innerHTML=badges().map(b=>\`<div class="badge \${b[3]?"":"lock"}"><div>\${b[0]}</div><b>\${b[1]}</b><span>\${b[2]} · \${b[3]?"Unlocked":"Keep playing"}</span></div>\`).join("");}
 async function completeDaily(){if(state.dailyDone)return;try{const d=await api("complete_daily");apply(d);toast("+25 XP · Quest complete")}catch(e){toast(e.message)}}
 async function claimStreak(){if(state.streakClaimed)return;try{const d=await api("claim_streak");apply(d);toast("+15 XP · Streak bonus claimed")}catch(e){toast(e.message)}}
 function randomGame(){const k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
