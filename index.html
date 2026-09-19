@@ -164,6 +164,7 @@ function applySnapshot(data){
   if(data.me?.role==="player1") state.p1=data.me.display_name; if(data.me?.role==="player2") state.p2=data.me.display_name;
   render();
   updateConnectionStatus(data);
+  if(document.getElementById("gameModal")?.classList.contains("show")) renderGameStage();
 }
 function updateConnectionStatus(data){
   const p=data?.partner;
