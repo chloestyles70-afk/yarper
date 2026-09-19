@@ -46,6 +46,14 @@ body{background:radial-gradient(800px 500px at 50% -15%,#123b3a 0,#071012 62%);l
 .nav{background:#0b0711f5;border-top-color:#ffffff0b;box-shadow:0 -15px 40px #0008}
 .nav button{font-size:9px}.nav i{font-size:19px}
 @media(max-width:440px){.hero h1{font-size:43px}.modes{grid-template-columns:1fr 1fr}.mode{min-height:145px}.wide{grid-column:1/-1}}
+
+/* Added: Couple Toolkit — additive only */
+.toolkit-fab{position:fixed;right:calc(50% - 201px);bottom:78px;z-index:35;border:1px solid #28d7c244;background:linear-gradient(135deg,#123b3a,#12214a);color:#f3fffd;border-radius:18px;padding:11px 13px;font-weight:900;font-size:11px;box-shadow:0 12px 35px #0008;backdrop-filter:blur(14px)}
+.toolkit-fab span{font-size:15px;margin-right:5px}
+.toolkit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.toolkit-card{border:1px solid var(--line);background:linear-gradient(145deg,#102225,#0b1719);border-radius:20px;padding:16px;text-align:left;min-height:120px}
+.toolkit-card b{display:block;font-size:13px;margin-top:8px}.toolkit-card small{display:block;color:var(--muted);font-size:10px;line-height:1.4;margin-top:4px}.toolkit-icon{font-size:25px}.toolkit-result{margin-top:13px;padding:16px;border:1px solid #28d7c233;border-radius:19px;background:#28d7c20b;line-height:1.5;font-size:13px;text-align:center}.timer-ring{text-align:center;font-size:42px;font-weight:950;letter-spacing:-2px;padding:16px}.toolkit-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+@media(max-width:440px){.toolkit-fab{right:12px}.toolkit-grid{grid-template-columns:1fr 1fr}}
 </style></style>
 </head>
 <body>
@@ -109,6 +117,19 @@ body{background:radial-gradient(800px 500px at 50% -15%,#123b3a 0,#071012 62%);l
 <section id="profile" class="view"><div class="hero"><span class="eyebrow">My profile</span><h1 id="coupleTitle">My Profile</h1><p>Your personal Yarper profile, progress and game history.</p></div><div class="coupleHero"><div class="pair"><div class="avatar" id="a1">A</div></div><div class="liveLine"><b id="name1">Player One</b><br><span id="role2">Player</span></div></div><div class="section"><div class="head"><h2>My stats</h2></div><div class="stats"><div class="stat"><b id="pRounds">0</b><small>Rounds played</small></div><div class="stat"><b id="pPoints">0</b><small>XP earned</small></div><div class="stat"><b id="pStreak">0</b><small>Day streak</small></div></div></div><div class="section"><div class="connectcode"><strong id="myCode">------</strong><small>Your private couple code</small></div></div><div class="section"><div class="head"><h2>My game history</h2></div><div id="profileHistory" class="historygrid"></div></div><div class="section"><button class="primary" onclick="openSettings()">Edit profile</button></div></section>
 </div>
 
+
+<!-- Added: Couple Toolkit. Existing Yarper screens/features remain unchanged. -->
+<button class="toolkit-fab" onclick="openToolkit()"><span>✨</span>More</button>
+<div class="modal" id="toolkitModal" onclick="if(event.target===this)closeToolkit()"><div class="sheet"><div class="sheettop"><div><span class="eyebrow">COUPLE TOOLKIT</span><h2 style="margin:5px 0 0;font-size:22px">More ways to play</h2></div><button class="close" onclick="closeToolkit()">×</button></div>
+<p style="color:var(--muted);font-size:11px;line-height:1.5;margin:10px 0 0">Extra mini-games and tools. Nothing here replaces your existing Yarper games.</p>
+<div class="toolkit-grid">
+<button class="toolkit-card" onclick="toolkitPick('rather')"><div class="toolkit-icon">⚖️</div><b>Would You Rather</b><small>Pick between two couple choices.</small></button>
+<button class="toolkit-card" onclick="toolkitPick('compliment')"><div class="toolkit-icon">💌</div><b>Compliment Me</b><small>Get a sweet line to send your person.</small></button>
+<button class="toolkit-card" onclick="toolkitPick('date')"><div class="toolkit-icon">🌙</div><b>Date Generator</b><small>Instant date idea for two.</small></button>
+<button class="toolkit-card" onclick="toolkitPick('dare')"><div class="toolkit-icon">🎲</div><b>Quick Dare</b><small>A random 60-second challenge.</small></button>
+</div><div id="toolkitResult" class="toolkit-result">Choose a mini-game above.</div>
+<div id="toolkitTimer" class="hidden"><div class="timer-ring" id="toolkitTimerText">60</div><div class="toolkit-actions"><button class="ghost" onclick="startToolkitTimer()">Start 60s</button><button class="ghost" onclick="stopToolkitTimer()">Stop</button></div></div>
+</div></div>
 <nav class="nav"><button class="active" data-v="home" onclick="showView('home')"><i>⌂</i>Home</button><button data-v="games" onclick="showView('games')"><i>🎮</i>Games</button><button data-v="rewards" onclick="showView('rewards')"><i>🏆</i>Rewards</button><button data-v="profile" onclick="showView('profile')"><i>♡</i>Couple</button></nav>
 
 <div class="modal" id="gameModal" onclick="if(event.target===this)closeGame()"><div class="sheet"><div class="sheettop"><div><span class="eyebrow" id="gameMode">QUESTIONS</span><h2 id="gameTitle" style="margin:5px 0 0;font-size:22px">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div></div></div>
@@ -183,5 +204,19 @@ function enterApp(){$("gate").classList.remove("show");showView("home")}
 async function initRealtime(id){if(!id||realtimeChannel)return;try{const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");realtimeClient=createClient("https://xjehryhkqvjpbduqumso.supabase.co","sb_publishable_B3lU9kcDWaZYRrSgewQGiw_3p___zFl");realtimeChannel=realtimeClient.channel("yarper:"+id).on("broadcast",{event:"refresh"},async()=>{try{apply(await api("me"))}catch{}}).subscribe()}catch{}}
 async function boot(){if(!token){$("gate").classList.add("show");return}try{const d=await api("me");state.code=localStorage.getItem("yarperCode")||"";apply(d);initRealtime(d.couple_id);$("gate").classList.remove("show")}catch{$("gate").classList.add("show");localStorage.removeItem("yarperToken");token=""}}
 setInterval(async()=>{if(!token)return;try{apply(await api("heartbeat"))}catch{}},5000);boot();
+
+/* Added: Couple Toolkit — no existing feature changed */
+const TOOLKIT={
+ rather:["Movie night together or late-night walk together?","Cook together or order your favorite food?","Plan a surprise for each other or plan one big date together?","Stay in and cuddle or go out and explore?","Take 100 photos together or make one perfect memory?"],
+ compliment:["You make ordinary moments feel special.","I love the way you make me feel understood.","You are one of my favorite reasons to smile.","If I had to choose my person again, I'd still choose you.","You have a way of making my day better without even trying."],
+ date:["Make a two-person snack board and watch a movie neither of you has seen.","Take a sunset walk and each choose three songs for the playlist.","Dress up for an at-home dinner and pretend you're at a fancy restaurant.","Give yourselves a tiny budget and compete to plan the best mini-date.","Look through old photos, choose your favorite memory, and recreate it."],
+ dare:["Give your partner a dramatic 20-second love speech.","Do a ridiculous dance until your partner laughs.","Hold eye contact for 30 seconds without smiling.","Give three compliments in three different accents.","Create a secret couple handshake in 60 seconds."]
+};
+let toolkitTimer=null;
+function openToolkit(){$("toolkitModal").classList.add("show");$("toolkitResult").textContent="Choose a mini-game above."}
+function closeToolkit(){stopToolkitTimer();$("toolkitModal").classList.remove("show")}
+function toolkitPick(type){const a=TOOLKIT[type];const item=a[Math.floor(Math.random()*a.length)];$("toolkitResult").innerHTML=type==="rather"?"<b>WOULD YOU RATHER?</b><br>"+esc(item):"<b>YOUR PICK</b><br>"+esc(item);if(type==="dare"){$("toolkitTimer").classList.remove("hidden");startToolkitTimer();}else{$("toolkitTimer").classList.add("hidden");stopToolkitTimer()}}
+function startToolkitTimer(){stopToolkitTimer();let n=60;$("toolkitTimerText").textContent=n;toolkitTimer=setInterval(()=>{n--;$("toolkitTimerText").textContent=n;if(n<=0){stopToolkitTimer();toast("Time! ✨")}},1000)}
+function stopToolkitTimer(){if(toolkitTimer){clearInterval(toolkitTimer);toolkitTimer=null}}
 </script>
 </body></html>
