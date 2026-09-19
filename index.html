@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#160b24">
+<title>Yarper — Couple Games</title>
+<style>
+:root{--bg:#0d0712;--card:#1b1024;--text:#fff7ff;--muted:#cbbbd0;--accent:#ff4f9a;--accent2:#8d5cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#321344 0,#0d0712 55%);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}main{max-width:680px;margin:auto;padding:28px 18px 40px}.brand{text-align:center;margin-bottom:24px}.brand h1{font-size:42px;margin:0;font-weight:900}.brand p{color:var(--muted);margin:6px 0}.score{background:linear-gradient(135deg,#281535,#17101e);border:1px solid #43254f;border-radius:22px;padding:18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.score strong{font-size:30px}.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mode{border:1px solid #43254f;background:var(--card);border-radius:20px;padding:18px;text-align:left;color:var(--text);cursor:pointer;min-height:125px}.mode:active{transform:scale(.98)}.emoji{font-size:30px}.mode h2{font-size:17px;margin:8px 0 4px}.mode p{font-size:13px;color:var(--muted);margin:0}.play{width:100%;border:0;border-radius:18px;padding:17px;margin-top:18px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;font-size:17px;font-weight:800;cursor:pointer}.panel{margin-top:18px;background:var(--card);border:1px solid #43254f;border-radius:22px;padding:20px;display:none}.panel.show{display:block}.tag{display:inline-block;padding:6px 10px;border-radius:99px;background:#32203b;color:#ffb6d7;font-size:12px;font-weight:700}.prompt{font-size:24px;line-height:1.3;margin:18px 0}.actions{display:flex;gap:10px}.actions button{flex:1;border:1px solid #51325e;background:#24152d;color:white;border-radius:14px;padding:13px;font-weight:700}.small{font-size:12px;color:var(--muted);text-align:center;margin-top:20px}@media(max-width:430px){.modes{grid-template-columns:1fr}.brand h1{font-size:36px}}
+</style>
+</head>
+<body>
+<main>
+<section class="brand"><h1>Yarper</h1><p>Play. Flirt. Challenge each other.</p></section>
+<section class="score"><div><div style="color:var(--muted);font-size:13px">Couple Score</div><strong id="score">0</strong></div><div id="round">Round 1</div></section>
+<section class="modes">
+<button class="mode" data-mode="questions"><span class="emoji">💬</span><h2>Questions</h2><p>Fun, deep & flirty questions.</p></button>
+<button class="mode" data-mode="challenges"><span class="emoji">🔥</span><h2>Challenges</h2><p>Do it or take the consequence.</p></button>
+<button class="mode" data-mode="truth"><span class="emoji">🎭</span><h2>Truth or Dare</h2><p>Choose your risk.</p></button>
+<button class="mode" data-mode="cards"><span class="emoji">🃏</span><h2>Couple Cards</h2><p>Random prompts for two.</p></button>
+</section>
+<section class="panel" id="panel"><span class="tag" id="tag">QUESTIONS</span><div class="prompt" id="prompt"></div><div class="actions"><button id="skip">Skip</button><button id="complete">Complete +10</button></div></section>
+<button class="play" id="play">Pick a random game</button>
+<div class="small">Yarper • made for two</div>
+</main>
+<script>
+const data={
+questions:["What is one thing I do that instantly makes you smile?","What is a memory of us you would replay?","What is something new you want us to try together?","Describe your ideal date with me in three words."],
+challenges:["Give your partner a 20-second compliment without repeating a word.","Hold hands and stare at each other for 30 seconds.","Send your partner your cutest selfie right now.","Let your partner choose your next profile picture for 10 minutes."],
+truth:["Truth: What was your first secret crush on me?","Dare: Give your partner a dramatic movie-style compliment.","Truth: What is your favorite thing about our chemistry?","Dare: Do your best impression of your partner."],
+cards:["Plan a surprise date using only things already around you.","Both name one thing you appreciate about the other.","Take a couple selfie with your funniest pose.","Each person chooses one song that describes the relationship."]
+};
+let score=Number(localStorage.getItem("yarperScore")||0),round=Number(localStorage.getItem("yarperRound")||1),mode="questions";
+const $=id=>document.getElementById(id);
+function render(){ $("score").textContent=score; $("round").textContent="Round "+round }
+function next(){const list=data[mode];$("tag").textContent=mode.toUpperCase();$("prompt").textContent=list[Math.floor(Math.random()*list.length)];$("panel").classList.add("show")}
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;next()});
+$("play").onclick=()=>{const keys=Object.keys(data);mode=keys[Math.floor(Math.random()*keys.length)];next()};
+$("skip").onclick=next;
+$("complete").onclick=()=>{score+=10;round++;localStorage.setItem("yarperScore",score);localStorage.setItem("yarperRound",round);render();next()};
+render();
+</script>
+</body>
+</html>
