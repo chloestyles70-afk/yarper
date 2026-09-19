@@ -72,8 +72,8 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;marg
   <div class="section"><div class="sectionhead"><h3>Session stats</h3></div><div class="stats"><div class="stat"><b id="pRounds">0</b><span>Rounds</span></div><div class="stat"><b id="pPoints">0</b><span>Points</span></div><div class="stat"><b id="pStreak">0</b><span>Streak</span></div></div></div>
   <div class="section"><div class="featurelist">
     <div class="feature"><span>🔓</span><div><strong>All game modes unlocked</strong><span>No paywall or premium-only decks.</span></div></div>
-    <div class="feature"><span>💾</span><div><strong>Saved on this device</strong><span>Your score, streak and names persist locally.</span></div></div>
-    <div class="feature"><span>🫶</span><div><strong>Built for two</strong><span>Take turns, compete, cooperate and keep your own memories.</span></div></div>
+    <div class="feature"><span>💾</span><div><strong>Saved on this device</strong><span>Your couple connection and progress sync securely across both devices.</span></div></div>
+    <div class="feature"><span>🫶</span><div><strong>Built for two</strong><span>Take turns, compete, cooperate and stay connected with your partner.</span></div></div>
   </div></div>
 </section>
 </main>
@@ -177,6 +177,29 @@ function updateConnectionStatus(data){
   const sc=document.getElementById("settingsCode"); if(sc) sc.textContent=state.code||"------";
 }
 function save(){ localStorage.setItem("yarperToken",sessionToken); render(); }
+let realtimeClient = null;
+let realtimeChannel = null;
+
+async function initRealtime(coupleId){
+  if(!coupleId || realtimeChannel) return;
+  try{
+    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+    realtimeClient = createClient(
+      "https://xjehryhkqvjpbduqumso.supabase.co",
+      "sb_publishable_B3lU9kcDWaZYRrSgewQGiw_3p___zFl"
+    );
+    realtimeChannel = realtimeClient
+      .channel("yarper:"+coupleId)
+      .on("broadcast",{event:"refresh"},async()=>{
+        try{
+          const d=await api("me");
+          applySnapshot(d);
+        }catch(e){}
+      })
+      .subscribe();
+  }catch(e){}
+}
+
 function level(){return Math.floor(state.xp/100)+1}
 function render(){
   const l=level(),within=state.xp%100;
@@ -229,6 +252,7 @@ async function submitConnect(){
     const data=await api(mode,{name,code});
     sessionToken=data.token; localStorage.setItem("yarperToken",sessionToken); localStorage.setItem("yarperCode",data.code);
     applySnapshot(data);
+    initRealtime(data.couple_id);
     document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";document.getElementById("myCode").textContent=data.code;
     updateConnectionStatus(data);
   }catch(e){err.textContent=e.message}
@@ -237,7 +261,7 @@ function enterYarper(){document.getElementById("connectionGate").classList.remov
 async function boot(){
   if(!sessionToken){document.getElementById("connectionGate").classList.add("show");return}
   try{
-    const data=await api("me"); state.code=localStorage.getItem("yarperCode")||""; applySnapshot(data);
+    const data=await api("me"); state.code=localStorage.getItem("yarperCode")||""; applySnapshot(data); initRealtime(data.couple_id);
     document.getElementById("connectionGate").classList.add("show");document.getElementById("myCode").textContent=state.code||"------";document.getElementById("connectHome").style.display="none";document.getElementById("connectForm").style.display="none";document.getElementById("connectSuccess").style.display="block";updateConnectionStatus(data);
     setTimeout(enterYarper,900);
   }catch(e){localStorage.removeItem("yarperToken");sessionToken="";document.getElementById("connectionGate").classList.add("show");}
