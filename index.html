@@ -87,10 +87,8 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:720px;marg
 </nav>
 
 <div class="modal" id="gameModal" onclick="if(event.target===this)closeModal()"><div class="sheet">
-  <div class="sheethead"><div><span class="eyebrow" id="gameMode">QUESTIONS</span><h3 id="gameTitle">Your turn</h3></div><button class="close" onclick="closeModal()">×</button></div>
-  <div class="promptcard"><div class="cat" id="promptCat">QUESTION</div><h2 id="prompt">Ready?</h2><p id="turnText">Player One's turn</p></div>
-  <div class="actions"><button class="ghost" onclick="skipPrompt()">Skip</button><button class="primary" style="margin:0" onclick="completeRound()">Complete · +10 XP</button></div>
-  <button class="ghost" style="width:100%;margin-top:10px" onclick="nextPrompt()">Next prompt</button>
+  <div class="sheethead"><div><span class="eyebrow" id="gameMode">QUESTIONS</span><h3 id="gameTitle">Choose a question</h3></div><button class="close" onclick="closeModal()">×</button></div>
+  <div id="gameStage"></div>
 </div></div>
 
 <div class="modal" id="settingsModal" onclick="if(event.target===this)closeSettings()"><div class="sheet">
@@ -144,7 +142,7 @@ date:[
 const API="https://xjehryhkqvjpbduqumso.supabase.co/functions/v1/yarper-api";
 let state={xp:0,rounds:0,streak:0,lastDay:"",daily:"",dailyDone:false,streakClaimed:false,p1:"Player One",p2:"Your Person",role:"player1",code:""};
 let sessionToken=localStorage.getItem("yarperToken")||"";
-let currentMode="questions",currentIndex=0,partnerOnline=false,connected=false;
+let currentMode="questions",currentIndex=0,partnerOnline=false,connected=false,currentGame=null,currentTurn="player1";
 
 async function api(action,payload={}) {
   const headers={"Content-Type":"application/json"};
@@ -159,7 +157,7 @@ function applySnapshot(data){
   const s=data.state||{};
   state.xp=s.xp||0; state.rounds=s.rounds||0; state.streak=s.streak||0;
   state.daily=s.daily||""; state.dailyDone=!!s.daily_done; state.streakClaimed=!!s.streak_claimed;
-  state.role=data.me?.role||state.role; state.p1=data.me?.role==="player1"?(data.me?.display_name||"Player One"):(data.partner?.display_name||"Player One");
+  state.role=data.me?.role||state.role; currentTurn=s.current_turn||currentTurn; currentGame=data.game||null; state.p1=data.me?.role==="player1"?(data.me?.display_name||"Player One"):(data.partner?.display_name||"Player One");
   state.p2=data.me?.role==="player2"?(data.me?.display_name||"Player Two"):(data.partner?.display_name||"Your Person");
   state.code=data.code||state.code||"";
   partnerOnline=!!data.partner?.online; connected=!!data.me;
@@ -224,14 +222,56 @@ function render(){
   renderBadges();
 }
 function showView(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));window.scrollTo(0,0)}
-function startGame(mode){currentMode=mode;currentIndex=Math.floor(Math.random()*BANK[mode].length);document.getElementById("gameModal").classList.add("show");nextPrompt(true)}
-function nextPrompt(first=false){let list=BANK[currentMode];if(!first)currentIndex=Math.floor(Math.random()*list.length);let item=list[currentIndex];document.getElementById("gameMode").textContent=currentMode.toUpperCase();document.getElementById("gameTitle").textContent=currentMode==="truth"?"Truth or Dare":currentMode==="date"?"Date Night":"Your turn";document.getElementById("promptCat").textContent=item[1].toUpperCase();document.getElementById("prompt").textContent=item[0];let who=(state.rounds%2===0?state.p1:state.p2);document.getElementById("turnText").textContent=who+"'s turn";currentIndex=(currentIndex+1)%list.length}
-function skipPrompt(){nextPrompt()}
-async function completeRound(){try{const d=await api("complete_round");applySnapshot(d);toast("+10 XP — synced for both of you");nextPrompt()}catch(e){toast(e.message)}}
+function startGame(mode){
+  currentMode=mode;
+  document.getElementById("gameModal").classList.add("show");
+  renderGameStage();
+}
+function renderGameStage(){
+  const stage=document.getElementById("gameStage");
+  const modeTitle=currentMode==="truth"?"Truth or Dare":currentMode==="date"?"Date Night":currentMode.charAt(0).toUpperCase()+currentMode.slice(1);
+  document.getElementById("gameMode").textContent=currentMode.toUpperCase();
+  if(currentGame){
+    const selectedName=currentGame.selected_by===state.role?(state.role==="player1"?state.p1:state.p2):(state.role==="player1"?state.p2:state.p1);
+    if(currentGame.status==="waiting"){
+      if(currentGame.selected_by===state.role){
+        stage.innerHTML='<div class="promptcard"><div class="cat">YOUR QUESTION</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>Waiting for '+escapeHtml(selectedName)+' to answer…</p></div><button class="ghost" style="width:100%;margin-top:10px" onclick="closeModal()">Keep playing in background</button>';
+      }else{
+        stage.innerHTML='<div class="promptcard"><div class="cat">'+escapeHtml(selectedName.toUpperCase())+' PICKED THIS</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>'+escapeHtml(selectedName)+' chose this question for you.</p></div><div class="field"><label>Your answer</label><textarea id="answerInput" maxlength="1000" placeholder="Type your answer here…" style="width:100%;min-height:120px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#0d0913;color:white;outline:none;resize:vertical;font:inherit"></textarea></div><button class="primary" onclick="submitGameAnswer()">Send answer · +10 XP</button>';
+      }
+    }else{
+      stage.innerHTML='<div class="promptcard"><div class="cat">ANSWERED</div><h2>'+escapeHtml(currentGame.question)+'</h2><p>'+escapeHtml(selectedName)+' answered:</p><div style="margin-top:14px;padding:15px;border-radius:16px;background:#ffffff08;border:1px solid var(--line);color:#fff;line-height:1.5;text-align:left">'+escapeHtml(currentGame.answer||"")+'</div></div><button class="primary" onclick="closeModal()">Done · Choose another game</button>';
+    }
+    return;
+  }
+  const canChoose=currentTurn===state.role;
+  document.getElementById("gameTitle").textContent=canChoose?"Choose a question":"Waiting for your partner";
+  if(!canChoose){
+    stage.innerHTML='<div class="promptcard"><div class="cat">PARTNER TURN</div><h2>'+escapeHtml(state.role==="player1"?state.p2:state.p1)+' is choosing</h2><p>When they pick a question, it will appear here for you to answer.</p></div><button class="ghost" style="width:100%;margin-top:10px" onclick="closeModal()">Close</button>';
+    return;
+  }
+  const picks=BANK[currentMode].slice(0,6);
+  stage.innerHTML='<p style="color:var(--muted);font-size:12px;margin:16px 0 10px">Pick one. Your partner will see the exact question on their side and answer it.</p><div class="featurelist">'+picks.map((x,i)=>'<button class="feature questionpick" data-q="'+i+'" style="text-align:left;color:white;cursor:pointer"><span>♡</span><div><strong>'+escapeHtml(x[0])+'</strong><span>'+escapeHtml(x[1].toUpperCase())+'</span></div></button>').join('')+'</div>';
+  stage.querySelectorAll(".questionpick").forEach(btn=>btn.addEventListener("click",()=>chooseQuestion(Number(btn.dataset.q))));
+}
+async function chooseQuestion(i){
+  const item=BANK[currentMode][i];
+  try{const d=await api("start_game",{mode:currentMode,question:item[0]});applySnapshot(d);renderGameStage();toast("Question sent to your partner");}
+  catch(e){toast(e.message)}
+}
+async function submitGameAnswer(){
+  const input=document.getElementById("answerInput"),answer=(input?.value||"").trim();
+  if(!answer){toast("Write an answer first");return}
+  try{const d=await api("answer_game",{game_id:currentGame.id,answer});applySnapshot(d);renderGameStage();toast("Answer sent · +10 XP")}
+  catch(e){toast(e.message)}
+}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function skipPrompt(){startGame(currentMode)}
+async function completeRound(){toast("Pick a question and send it to your partner to complete the round.")}
 async function completeDaily(){try{const d=await api("complete_daily");applySnapshot(d);toast("+25 XP — daily quest complete")}catch(e){toast(e.message)}}
 async function claimStreak(){try{const d=await api("claim_streak");applySnapshot(d);toast("+15 XP — streak protected")}catch(e){toast(e.message)}}
 function randomGame(){let k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
-function quickPrompt(kind){let all=BANK.questions.concat(BANK.challenges,BANK.truth,BANK.cards);let f=all.filter(x=>kind==="spicy"?["flirty"].includes(x[1]):kind==="soft"?["soft","romantic","deep"].includes(x[1]):["fun","chaos","playful","mini"].includes(x[1]));let item=f[Math.floor(Math.random()*f.length)];currentMode="questions";document.getElementById("gameModal").classList.add("show");document.getElementById("gameMode").textContent=kind.toUpperCase();document.getElementById("gameTitle").textContent="Quick pick";document.getElementById("promptCat").textContent=item[1].toUpperCase();document.getElementById("prompt").textContent=item[0];document.getElementById("turnText").textContent=(state.rounds%2===0?state.p1:state.p2)+"'s turn"}
+function quickPrompt(kind){currentMode="questions";document.getElementById("gameModal").classList.add("show");renderGameStage();}
 function badges(){return[{name:"First Spark",icon:"✨",desc:"Complete your first round",earned:state.rounds>=1},{name:"Ten Down",icon:"🔥",desc:"Complete 10 rounds",earned:state.rounds>=10},{name:"Century",icon:"💯",desc:"Earn 100 XP",earned:state.xp>=100},{name:"On Fire",icon:"⚡",desc:"Reach a 3-day streak",earned:state.streak>=3},{name:"Power Couple",icon:"💗",desc:"Reach Level 5",earned:level()>=5},{name:"Yarper Regular",icon:"🎮",desc:"Complete 25 rounds",earned:state.rounds>=25}]}
 function renderBadges(){document.getElementById("badges").innerHTML=badges().map(b=>'<div class="badge '+(b.earned?'':'locked')+'"><div style="font-size:24px">'+b.icon+'</div><b>'+b.name+'</b><span>'+b.desc+(b.earned?' · Unlocked':' · Locked')+'</span></div>').join("")}
 function openSettings(){document.getElementById("set1").value=state.role==="player1"?state.p1:state.p2;updateConnectionStatus({partner:{display_name:state.role==="player1"?state.p2:state.p1,online:partnerOnline}});document.getElementById("settingsModal").classList.add("show")}
