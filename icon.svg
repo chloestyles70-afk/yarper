@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#28d7c2"/>
+    <stop offset="1" stop-color="#5b8cff"/>
+  </linearGradient>
+  <linearGradient id="heart" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff"/>
+    <stop offset="1" stop-color="#dffefa"/>
+  </linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#001a2b" flood-opacity=".35"/>
+  </filter>
+</defs>
+<rect width="512" height="512" rx="118" fill="url(#bg)"/>
+<circle cx="105" cy="105" r="58" fill="#ffffff" opacity=".08"/>
+<circle cx="420" cy="405" r="92" fill="#06151d" opacity=".10"/>
+<g filter="url(#shadow)">
+  <path d="M256 397c-17-20-126-101-126-186 0-47 34-82 80-82 27 0 50 13 66 35 16-22 39-35 66-35 46 0 80 35 80 82 0 85-109 166-126 186l-20 23-20-23z" fill="url(#heart)"/>
+  <path d="M184 202c17-26 42-39 72-39 28 0 54 13 72 39-19-11-39-17-72-17-33 0-53 6-72 17z" fill="#28d7c2" opacity=".38"/>
+</g>
+<path d="M256 115c-12-18-31-29-53-29-37 0-64 28-64 65 0 25 13 48 35 69 18-25 44-50 82-76z" fill="#fff" opacity=".12"/>
+</svg>
