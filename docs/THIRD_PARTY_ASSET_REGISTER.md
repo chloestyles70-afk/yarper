@@ -18,7 +18,7 @@ No raster image, audio, video, font, or vendored third-party asset files appeare
 | Yarper frontend and app logic | Static HTML, CSS and browser JavaScript in `index.html`; prototypes also exist under `concept/` and `studio/`. | Repository contains a proprietary notice, but that notice alone does not prove authorship or assignment. | Rights holder must confirm original authorship and identify any copied/adapted code. Review historical commits and all contributors. |
 | Node test setup | `package.json` uses Node's built-in test runner; no third-party Node package dependency is declared. | No third-party Node package identified in the manifest. | Keep this assessment current if dependencies are added. |
 | Supabase Edge Runtime | Edge Function imports `jsr:@supabase/functions-js/edge-runtime.d.ts`. | Supabase-hosted runtime/service; subject to provider terms. | Review current plan, service terms, account ownership, data processing terms and buyer migration/transfer steps. |
-| Supabase JavaScript client | Edge Function imports `https://esm.sh/@supabase/supabase-js@2`. | Third-party open-source library delivered through esm.sh; the import uses a major-version range, not an exact pin. | Confirm the exact resolved version and applicable licence; pin an exact tested version and document reproducible deployment. |
+| Supabase JavaScript client | Edge Function imports `https://esm.sh/@supabase/supabase-js@2.118.0`. | Third-party open-source library delivered through esm.sh; pinned to exact version 2.118.0. The package is MIT-licensed. | Pinning completed at 2.118.0; preserve the deployed source and verify the transitive dependency graph / SBOM before sale. |
 | Vercel | Production app is hosted at `yarper.vercel.app`. | Hosting and domain configuration are provider/account assets, not transferred by copying the repository. | Review current plan, account ownership, domain registrar, project transfer and billing handover. |
 | Supabase project | Frontend calls the project's Supabase Edge Function endpoint. | Backend project, database, storage/configuration and billing are separate provider assets. | Prepare a buyer-controlled transfer or migration plan; never include secrets in the sale package. |
 | External frontend resources | URL scan of the main app found the Supabase function endpoint; no remote font stylesheet or remote image URL was identified in the main frontend source. | No externally hosted visual resource was identified in this source scan. | Confirm deployed runtime/network requests and any dynamic content before sale. |
@@ -38,7 +38,11 @@ No raster image, audio, video, font, or vendored third-party asset files appeare
 
 `LICENSE.md` states that Yarper is proprietary software, reserves rights to the copyright owner, and says third-party materials remain subject to their own terms. This is a useful notice, but it is not proof of the identity of the rights holder, original authorship, contributor assignments, or clearance of third-party material.
 
-## Owner declaration — still required
+## Contributor statement and owner declaration — still required
+
+The owner reports that no one else contributed code, design, the icon or game content. This is owner-confirmed, not independently verified: the connected GitHub inspection could not retrieve the full historical contributor list/commit history. Review local or exported Git history and retain the owner's signed declaration before sale.
+
+
 
 The rights holder must confirm in writing and retain supporting evidence for each applicable item:
 
