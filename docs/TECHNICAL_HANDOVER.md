@@ -50,7 +50,9 @@ An authenticated member can permanently delete the entire couple space from Sett
 
 pg_cron 1.6.4 is installed. Active job yarper-rate-limit-cleanup runs daily at 03:15 and calls public.cleanup_yarper_rate_limits(), which deletes rate-limit bucket rows older than seven days. It does not delete room content. The cleanup function is executable only by service_role; cron invokes it under its scheduled database role.
 
-Authenticated me, heartbeat and snapshot requests are limited to 90 per member per five-minute window; the standard five-second polling interval remains below this limit.\n\nNo automatic retention period is implemented for abandoned couple-room content.
+Authenticated me, heartbeat and snapshot requests are limited to 90 per member per five-minute window; the standard five-second polling interval remains below this limit.
+
+No automatic retention period is implemented for abandoned couple-room content.
 
 ## Browser security and frontend observations
 
