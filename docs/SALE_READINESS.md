@@ -37,7 +37,7 @@ The Edge Function itself remained at version 18; the correction was a database f
 
 ## Findings and remaining risks
 
-- [ ] **Custom token lifecycle:** Supabase JWT verification is disabled for this Edge Function. The application validates a random device token via its SHA-256 hash, but the inspected code does not show token expiry or a server-side revoke/logout action. Clearing localStorage does not invalidate the stored server-side token hash. Add a revocation/rotation lifecycle or clearly document the residual risk, then independently test expiry, revocation, authorization and cross-room isolation.
+- [x] **Basic device-token lifecycle implemented:** Tokens expire after 30 days of inactivity; successful `me`/heartbeat calls extend the expiry. The Settings reset action revokes the server-side token before clearing localStorage. Recovery reclaims an expired/revoked slot using the same couple code and exact display name, replacing the old token hash. The Edge Function was deployed as version 19. Independent abuse testing of token replay, recovery and cross-room isolation remains outstanding.
 - [ ] **localStorage token storage:** The browser stores the device token in localStorage. Review XSS exposure and consider a stronger session design before broader commercial operation.
 - [ ] **Dependency pinning:** The Edge Function imports @supabase/supabase-js using the broad @2 version range. Pin a tested exact version and preserve reproducible dependency metadata before listing.
 - [ ] **Historical migrations:** The live database has twelve migration records, but only the latest corrective migration is currently included in this repository. Export and reconcile the complete historical migration set.
