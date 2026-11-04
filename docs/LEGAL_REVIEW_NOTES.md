@@ -18,6 +18,8 @@ Supabase's published Data Residency and Transfers FAQ says a project's primary d
 
 For Yarper, the primary database region is eu-west-1. Do not say all data remains in Ireland or the EU: provider support, account information, telemetry/logs and subprocessors may involve other locations.
 
+The Supabase organization plan was checked and is currently Free. Therefore do not assume automated daily backups are enabled for this project.
+
 Before sale or public launch:
 - Confirm the Supabase account plan and backup retention applicable to this project.
 - If the project is on a paid plan, confirm daily backup retention and any PITR setting. Supabase's published backup guide describes daily backups for Pro/Team/Enterprise plans and recommends regular off-site exports for Free projects.
