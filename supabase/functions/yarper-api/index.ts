@@ -31,7 +31,10 @@ async function allowMemberAction(memberId:string,action:string){
   rename:{limit:10,windowSeconds:3600},
   complete_daily:{limit:5,windowSeconds:600},
   claim_streak:{limit:5,windowSeconds:600},
-  delete_room:{limit:2,windowSeconds:3600}
+  delete_room:{limit:2,windowSeconds:3600},
+  me:{limit:90,windowSeconds:300},
+  heartbeat:{limit:90,windowSeconds:300},
+  snapshot:{limit:90,windowSeconds:300}
  };
  const policy=limits[action];if(!policy)return true;
  const key=await sha256(memberId+"|yarper|member|"+action);
