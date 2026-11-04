@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101525">
+<meta name="description" content="Yarper game concept document: a browser-based multiplayer couples game built around playful prompts, shared challenges and connection.">
+<meta name="robots" content="noindex,nofollow">
+<title>Yarper — Game Concept</title>
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#111a2b;--line:#26344b;--text:#f4f7ff;--muted:#a8b4c8;--mint:#65ead5;--pink:#ff9ec8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 500px at 50% -10%,#193847 0,transparent 65%),var(--bg);color:var(--text);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{width:min(920px,100% - 36px);margin:auto;padding:42px 0 64px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:46px}.brand{font-weight:900;letter-spacing:.04em;font-size:18px}.badge{border:1px solid #65ead544;border-radius:999px;padding:6px 11px;color:var(--mint);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.hero{padding:44px 0 34px}.eyebrow{color:var(--mint);font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}.hero h1{font-size:clamp(48px,9vw,82px);line-height:.98;letter-spacing:-.065em;margin:14px 0 18px}.hero h1 span{color:var(--pink)}.lead{max-width:700px;color:var(--muted);font-size:19px;line-height:1.6;margin:0}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.button{display:inline-block;padding:11px 17px;border-radius:12px;text-decoration:none;font-weight:850;font-size:13px}.primary{background:linear-gradient(100deg,var(--mint),#8295ff);color:#07121c}.secondary{border:1px solid var(--line);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0 30px}.card,section{background:linear-gradient(145deg,#131e30dd,#0d1422dd);border:1px solid var(--line);border-radius:20px;padding:22px}.card small{color:var(--mint);font-weight:850;text-transform:uppercase;letter-spacing:.12em;font-size:10px}.card strong{display:block;font-size:18px;margin-top:6px}.card p{margin:6px 0 0;color:var(--muted);font-size:13px}
+section{margin:14px 0}h2{font-size:23px;letter-spacing:-.03em;margin:0 0 12px}p{margin:8px 0;color:var(--muted)}ul{padding-left:20px;margin:8px 0;color:var(--muted)}li{padding:3px 0}strong{color:var(--text)}.note{border-left:3px solid var(--pink);padding:12px 15px;background:#ff9ec80c;border-radius:0 12px 12px 0;margin-top:15px;color:var(--muted);font-size:13px}.meta{display:grid;grid-template-columns:160px 1fr;gap:8px 18px;font-size:14px}.meta dt{color:var(--muted)}.meta dd{margin:0;color:var(--text)}footer{padding:24px 2px 0;color:#8290a8;font-size:11px}
+@media(max-width:620px){.wrap{width:min(100% - 26px,920px);padding-top:24px}.top{margin-bottom:20px}.hero{padding:32px 0 24px}.grid{grid-template-columns:1fr}.meta{grid-template-columns:1fr;gap:2px}.meta dd{margin-bottom:9px}.card,section{padding:18px}}
+@media print{body{background:#fff;color:#172033}.wrap{width:100%;padding:0}.card,section{background:#fff;border-color:#ccd3df;break-inside:avoid}.lead,p,ul,.card p,.meta dt,footer,.note{color:#43506a}.badge,.eyebrow,.card small{color:#087c70}.actions{display:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><div class="brand">YARPER</div><div class="badge">Game concept document</div></div>
+
+  <header class="hero">
+    <div class="eyebrow">Play together · Connect better</div>
+    <h1>Two players.<br><span>One shared</span> experience.</h1>
+    <p class="lead">Yarper is a browser-based multiplayer game for couples, bringing partners together through playful questions, light-hearted challenges and shared date-night activities.</p>
+    <div class="actions">
+      <a class="button primary" href="https://yarper.vercel.app/" target="_blank" rel="noopener noreferrer">Play the live demo ↗</a>
+      <a class="button secondary" href="#gameplay">Explore the concept</a>
+    </div>
+  </header>
+
+  <div class="grid" aria-label="Game summary">
+    <div class="card"><small>Genre</small><strong>Romance · Casual · Party</strong><p>A social experience designed for two people.</p></div>
+    <div class="card"><small>Lead platform</small><strong>Web browser</strong><p>Mobile-first and accessible through a browser.</p></div>
+    <div class="card"><small>Players</small><strong>Two-player online</strong><p>Partners join a shared private space.</p></div>
+    <div class="card"><small>Game status</small><strong>Live browser experience</strong><p>Available to try now; further platform adaptation is proposed.</p></div>
+  </div>
+
+  <section id="gameplay">
+    <h2>How the game works</h2>
+    <p>One partner creates a private couple space and shares a short invitation code. The other partner joins, and both can take part in activities together. Yarper is designed around simple, repeatable moments of play rather than complicated controls or long sessions.</p>
+    <ul>
+      <li><strong>Join together:</strong> create or enter a private two-person room using an invitation code.</li>
+      <li><strong>Choose an activity:</strong> explore questions, challenges, Truth or Dare, conversation cards and date-night prompts.</li>
+      <li><strong>Take part:</strong> respond to prompts, share answers and react during a synchronized session.</li>
+      <li><strong>Build progress:</strong> earn experience points, progress through levels and engage with daily quests and streak rewards.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Core features</h2>
+    <ul>
+      <li>Private two-person rooms and invitation codes.</li>
+      <li>Interactive questions and conversation prompts.</li>
+      <li>Light-hearted challenges and Truth or Dare.</li>
+      <li>Date-night ideas and themed cards.</li>
+      <li>Shared play sessions, partner responses and emoji reactions.</li>
+      <li>XP, levels, daily quests and streak-based rewards.</li>
+      <li>Responsive interface designed for phones and desktop browsers.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Audience and experience</h2>
+    <p>Yarper is intended for couples looking for an easy, playful way to spend time together, spark conversations and discover activities they can enjoy as a pair. The experience aims to be welcoming, simple to start and suitable for short sessions.</p>
+  </section>
+
+  <section>
+    <h2>Technology and platform direction</h2>
+    <dl class="meta">
+      <dt>Current format</dt><dd>Browser-based web application</dd>
+      <dt>Frontend</dt><dd>HTML, CSS and JavaScript</dd>
+      <dt>Backend services</dt><dd>Supabase</dd>
+      <dt>Current hosting</dt><dd>Vercel</dd>
+      <dt>Multiplayer</dt><dd>Online, private two-player sessions</dd>
+      <dt>AI gameplay</dt><dd>No AI-powered gameplay is currently presented as a feature.</dd>
+    </dl>
+    <div class="note">A port or adaptation to another platform would be a separate development phase. Its final scope, technical requirements, schedule and acceptance criteria would need to be agreed with the publishing or acquisition partner.</div>
+  </section>
+
+  <section>
+    <h2>Business and release position</h2>
+    <p>The current browser experience is available to play. Yarper is presented as a free-to-play concept. No verified revenue, paying-customer, retention or user-acquisition figures are claimed in this document. Any future monetisation or publishing model would be subject to partner discussions and product testing.</p>
+    <p><strong>Indicative port-readiness target:</strong> 1 December 2026. This is an estimate for discussion, not a guaranteed delivery date or a statement that a port is already complete.</p>
+  </section>
+
+  <section>
+    <h2>Partnership opportunity</h2>
+    <p>Yarper may suit a partner interested in romance-themed social games, casual multiplayer experiences or browser-game concepts with potential for further platform development. Potential collaboration could include a port, publishing arrangement, development partnership or acquisition, subject to due diligence and written agreement.</p>
+  </section>
+
+  <section>
+    <h2>Ownership and confidentiality</h2>
+    <p>This document is a high-level product summary prepared for evaluation. It intentionally excludes source code, credentials, API keys, private infrastructure details, personal data, internal database information and security-sensitive implementation details.</p>
+    <p>The Yarper project is presented as proprietary. Any transfer of software, branding, accounts or other assets must be confirmed through a separate written agreement. Third-party components and assets remain subject to their respective licences; a complete third-party rights audit has not been represented as completed.</p>
+    <div class="note">Please assess the live demo and this summary only. Do not treat this concept document as a licence to copy, distribute or commercially use the product or its materials.</div>
+  </section>
+
+  <footer>Yarper · Game concept summary · Prepared for evaluation by potential publishing and platform partners. <br>Live demo: https://yarper.vercel.app/</footer>
+</main>
+</body>
+</html>
