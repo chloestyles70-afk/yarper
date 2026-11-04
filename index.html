@@ -149,6 +149,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 </div></div>
 <div id="levelup" class="levelup" role="dialog" aria-modal="true" aria-labelledby="levelupTitle"><div id="levelupConfetti"></div><div class="levelupCard"><div class="levelupOrb" id="levelupIcon">✨</div><div class="levelupKicker">YOU TWO JUST LEVELLED UP</div><h2 id="levelupTitle">Level 2!</h2><p id="levelupMessage">Your connection is growing. Keep making memories together.</p><div class="levelupStage" id="levelupStage">New stage unlocked</div><button class="levelupClose" onclick="closeLevelUp()">Let's go ♥</button></div></div><div id="toast" class="toast"></div>
 
+<script src="/sync-scheduler.js"></script>
 <script>
 const API="https://xjehryhkqvjpbduqumso.supabase.co/functions/v1/yarper-api";
 const BANK={
@@ -208,9 +209,9 @@ async function submitConnect(){const m=$("connectBtn").dataset.mode,n=$("connect
 function enterApp(){if(!code)return toast("Your couple code is missing. Please create your space again.");unlocked=true;localStorage.setItem("yarperUnlocked","1");$("gate").classList.remove("show");showView("home")}
 function resetLocal(){localStorage.removeItem("yarperToken");localStorage.removeItem("yarperCode");localStorage.removeItem("yarperUnlocked");token="";code="";unlocked=false;location.reload()}
 async function sync(){if(!token||busy)return;busy=true;try{apply(await api("heartbeat"))}catch(e){if(/expired|session/i.test(e.message)){localStorage.removeItem("yarperToken");token="";unlocked=false;$("gate").classList.add("show")}}finally{busy=false}}
-function loop(){clearTimeout(syncId);sync();syncId=setTimeout(loop,1000)}
+function loop(){clearTimeout(syncId);const delay=YarperSyncScheduler.getSyncDelay({hidden:document.hidden,online:navigator.onLine});if(delay===null){syncId=null;return}sync();syncId=setTimeout(loop,delay)}
 async function boot(){if(!token){$("gate").classList.add("show");return}try{const d=await api("me");apply(d);if(unlocked||d.connected){$("gate").classList.remove("show")}else $("gate").classList.add("show")}catch(e){localStorage.removeItem("yarperToken");localStorage.removeItem("yarperCode");localStorage.removeItem("yarperUnlocked");token="";code="";unlocked=false;$("gate").classList.add("show")}}
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});window.addEventListener("focus",sync);window.addEventListener("pageshow",sync);
+document.addEventListener("visibilitychange",loop);window.addEventListener("focus",loop);window.addEventListener("pageshow",loop);window.addEventListener("online",loop);window.addEventListener("offline",loop);
 boot().finally(loop);
 </script>
 </body>
