@@ -13,5 +13,3 @@ coverage/
 
 # Local encrypted backups and temporary exports
 /backups/
-*.sql
-*.tar.gz
