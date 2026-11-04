@@ -1,108 +1,107 @@
 # Yarper — Privacy, Terms and User-Data Audit
 
 **Audit date:** 4 November 2026  
-**Status: AUDIT COMPLETE — PRODUCT DOCUMENTATION AND DATA-LIFECYCLE GAPS REMAIN OPEN.**  
-**Scope:** Repository source, deployed `yarper-api` source, live Supabase schema metadata, migration history and database security advisor findings. No production answer text or other user-record contents were inspected.
+**Status:** Technical data-flow audit completed; user deletion and rate-limit retention are implemented in production. Public legal documents and provider/legal review remain open.  
+**Scope:** Repository source, deployed Edge Function, live Supabase schema metadata, migration history, function ACLs and security advisors. No production answer text or other user-record contents were inspected.
 
 This is a technical data-mapping exercise, not legal advice or a certification of compliance with any country's privacy laws.
 
 ## 1. Data inventory
 
-| Data category | Fields / source | Purpose inferred from implementation | Notes |
+| Data category | Fields / source | Purpose | Notes |
 |---|---|---|---|
-| Display identity | `yarper_members.display_name` | Show each participant in the private two-person room | User-supplied name, up to 40 characters. No email, phone number or legal name field was identified. |
-| Room identifier | `yarper_couples.code` | Let a second participant join the shared room | Six-character code; should be treated as a secret access credential and not shared publicly. |
-| Device/session credential | Browser `localStorage` key `yarperToken`; database `device_token_hash` | Authenticate device requests | Raw token is held in the browser; database stores its SHA-256 hash. Tokens expire after 30 days of inactivity and can be revoked. |
-| Presence / device activity | `online`, `last_seen`, `created_at`, `token_expires_at`, `token_revoked_at` | Show partner online/offline and manage sessions | Timestamps can reveal usage patterns. |
-| User-generated content | `yarper_game_sessions.question`, `answer` | Store selected prompt and the partner's free-text response | Answers can contain intimate or otherwise sensitive relationship information. No content moderation or user-facing delete control was identified in the inspected UI/API. |
-| Reactions | `yarper_reactions.emoji`, `by_role`, timestamps | Synchronize reactions in a round | Linked to a room and game session. |
-| Gameplay / reward state | XP, rounds, streaks, daily task state, turn state | Operate shared progress and rewards | Behavioral/gameplay data. |
-| Abuse-prevention signal | Edge Function reads proxy IP headers, computes SHA-256 of `ip + "|yarper|" + action`, and stores a bucket key in `private.yarper_rate_limits` | Rate-limit create/join/game actions | Raw IP is not intentionally stored in this table by the inspected code. The hash is still a pseudonymous identifier; proxy headers and provider infrastructure may independently process IP addresses. |
-| Service / infrastructure metadata | Supabase and Vercel service telemetry | Hosting, delivery, security and operation | Provider-side logs and retention were not audited. |
+| Display identity | yarper_members.display_name | Show each participant in the private room | User-supplied name, up to 40 characters. No email, phone or legal name field identified. |
+| Room identifier | yarper_couples.code | Let a second participant join | Six-character code; treat as a secret access credential. |
+| Device/session credential | Browser localStorage yarperToken / yarperRecoveryToken; database device_token_hash | Authenticate device requests and prove recovery | Raw bearer secret is held in browser storage; database stores SHA-256 hash. Sessions expire after 30 days of inactivity and can be revoked. |
+| Presence / device activity | online, last_seen, created_at, token_expires_at, token_revoked_at | Show online/offline and manage sessions | Timestamps can reveal usage patterns. |
+| User-generated content | yarper_game_sessions.question, answer | Store selected prompt and free-text response | Answers may contain intimate relationship information. Whole-room deletion is available. |
+| Reactions | yarper_reactions.emoji, by_role, timestamps | Synchronize reactions | Linked to a room and game session. |
+| Gameplay / reward state | XP, rounds, streaks, daily task state, turn state | Operate shared progress | Behavioral/gameplay data. |
+| Abuse-prevention signal | SHA-256 of proxy IP header + action | Rate-limit create/join/game actions | Raw IP is not intentionally stored in the rate-limit table. The hash is still pseudonymous; hosting providers may separately process IP/request metadata. |
+| Service / infrastructure metadata | Supabase and Vercel telemetry | Hosting, delivery, security and operation | Provider-side logs and retention were not audited. |
 
-No email address, phone number, precise GPS/location, date of birth, payment details, advertising ID, or third-party analytics SDK was identified in the inspected application schema and source. This is a source/schema observation, not proof that hosting providers or browser/device services never process such information.
+No email address, phone number, precise GPS/location, date of birth, payment details, advertising ID or third-party analytics SDK was identified in the inspected application schema/source. This is not proof that hosting providers or browser/device services never process such information.
 
 ## 2. Data flow
 
 1. A user creates a room and enters a display name.
-2. The API creates a six-character room code and a random device token. The browser saves the token in localStorage; the database stores a hash.
+2. The API creates a six-character room code and random device token. The browser saves the token; the database stores a hash.
 3. A second user joins with the room code and a display name.
-4. Authenticated device requests send the token in the `x-yarper-token` header.
-5. The API reads/writes the room's member, state, game-session and reaction records in Supabase.
-6. The app refreshes presence and session expiry through `me` / heartbeat requests.
-7. Reset attempts server-side token revocation before clearing local browser storage.
-8. Abuse-prevention code reads a client IP from proxy headers and stores a hash-based rate-limit bucket in a private schema.
+4. Authenticated requests send the device token in x-yarper-token.
+5. The API reads/writes member, state, game-session and reaction records in Supabase.
+6. me / heartbeat requests refresh presence and session expiry.
+7. Reset revokes the server-side token and preserves the old token as a recovery credential in that browser.
+8. Abuse-prevention code hashes an IP-derived signal into a private rate-limit bucket.
+9. Authenticated players can delete the entire room after entering its six-character code.
 
-The public application tables have RLS enabled and currently have no client policies; the inspected architecture relies on the server-side Edge Function and service-role database access. The private rate-limit table has a service-role-only policy. These are technical access controls, not a substitute for a privacy notice, lawful basis, retention schedule or user rights process.
+The public application tables have RLS enabled and no client policies; the server-side Edge Function and service-role database access are the intended data path. The private rate-limit table has a service-role-only policy. These controls do not replace a privacy notice, lawful basis, retention schedule or user-rights process.
 
-## 3. Retention and deletion findings
+## 3. Retention and deletion
 
-| Data | Current behavior evidenced | Gap / recommended policy decision |
+| Data | Current behavior | Remaining gap |
 |---|---|---|
-| Device sessions | Expire after 30 days of inactivity; reset revokes token | Expiry/revocation does not delete the member or linked room data. |
-| Display name and room membership | Remain in database until separately deleted | Define when inactive rooms and their member records are deleted or anonymized. |
-| Questions and answers | Stored in game-session rows; no delete action identified | Define user deletion request handling and a retention period for free-text content. |
-| Reactions | Stored in reaction rows; no delete action identified | Delete with associated room/game data. |
-| Gameplay state | Stored in shared state row; no delete action identified | Delete or anonymize with the room. |
-| Rate-limit buckets | Upserted by hashed IP/action/window; no cleanup job/function identified | Add a scheduled expiry/cleanup policy for old buckets and document its period. |
-| Provider logs/backups | Not inspected | Review Supabase/Vercel log, backup and deletion retention settings and describe limits accurately. |
+| Device sessions | Expire after 30 days of inactivity; reset revokes token | Expiry/revocation alone does not delete room data. |
+| Display names and membership | Deleted when the whole room is deleted | No separate one-member deletion. |
+| Questions and answers | Deleted when the whole room is deleted | No separate answer-level delete/export. |
+| Reactions | Deleted with the room/game session by cascade | Provider backups/logs may persist under provider policies. |
+| Gameplay state | Deleted with the room by cascade | No separate progress export. |
+| Rate-limit buckets | Active daily pg_cron job deletes records older than 7 days | Job verified active; monitor its execution history. |
+| Abandoned room content | Remains until a player deletes the room | No automatic inactive-room retention period is implemented. |
+| Provider logs/backups | Not inspected | Confirm provider-specific retention and deletion limits. |
 
-**Important:** The current API does not expose a user-facing account/room deletion or data-export action. Do not promise immediate or complete deletion until database cascades, backups, provider logs and an operational request process are verified.
+**Whole-room deletion is now available:** An authenticated player can open Settings, select “Delete our couple space and all shared data,” and enter the six-character room code. The API checks the authenticated member and matching room code, then deletes the couple row. Foreign-key cascades remove both member records, state, game sessions, answers and reactions. The UI warns that this also removes the partner's access and shared history. Disposable-data SQL smoke tests verified the cascade behavior.
+
+This is not an export tool or per-user deletion workflow. Provider backups and security logs may persist for a limited period under provider retention policies.
 
 ## 4. Privacy and legal-document status
 
-The inspected repository tree does not contain a completed privacy policy, terms of service, cookie notice, data deletion procedure, or support/contact page. No user-facing links to these documents were identified in the main app screen/settings source.
+The repository now contains:
+- docs/PRIVACY_POLICY_DRAFT.md
+- docs/TERMS_OF_SERVICE_DRAFT.md
 
-Before publishing legal documents, the owner must decide and verify:
+Both are explicitly marked DRAFT — DO NOT PUBLISH. They are not linked in the live app. They contain placeholders that must be completed by the actual operator and reviewed for the intended jurisdictions.
 
-- Legal operator / seller identity and a working privacy contact address.
-- Countries where the app will be offered and which privacy laws apply.
-- Minimum user age and whether underage users are allowed.
-- Whether relationship answers may include sensitive personal information and whether the app should warn users not to enter highly sensitive details.
+Known infrastructure facts:
+- Supabase database region: eu-west-1.
+- Vercel production deployment region reported for the deployment: iad1.
+- These facts do not establish the location of every provider log, backup, support system or subprocessor.
+
+Before publication, the owner/operator must verify:
+- Legal operator / seller identity and a working privacy/support contact.
+- Countries where Yarper will be offered and applicable privacy/consumer laws.
+- Minimum user age.
 - Purposes and lawful basis for each data category.
-- Supabase and Vercel as service providers, their current terms, data-processing terms, hosting regions and subprocessors.
-- Any analytics, crash reporting, advertising, email or other integrations added outside the inspected repository.
-- Retention periods, deletion request workflow, backup/log exceptions and breach response contact.
-- Whether users can request access, correction, export, deletion, or close a room, and how requests are authenticated.
-- Whether the service is intended for consumers in Ghana, the EEA/UK, the US or other regions, which affects the appropriate legal review.
+- Supabase and Vercel agreements, data-processing terms, subprocessors, data regions, backups and provider log retention.
+- Whether any analytics, crash reporting, advertising, email or other integrations exist outside the inspected source.
+- Final retention period for abandoned room content.
+- Request verification, response timelines, breach response and regulator contact process.
+- Applicable international-transfer safeguards.
 
-Do not publish placeholder names, made-up contact details, or unsupported compliance claims. Have the final policy and terms reviewed for the actual operating jurisdictions.
+Do not publish placeholders, invented contact details or unsupported compliance claims. Have final documents reviewed for actual operating jurisdictions.
 
-## 5. Required product changes before a sale listing
+## 5. Current status
 
-- [ ] Add an accessible privacy notice link on the join/create screen and in Settings.
-- [ ] Add terms of service link and record acceptance in an appropriate, minimal way if required.
-- [ ] Decide and implement room/member deletion and user-data request workflow.
-- [ ] Implement a documented retention and cleanup policy for abandoned room data and rate-limit buckets.
-- [ ] Confirm foreign-provider processing, regions, subprocessors, logs and backup retention.
-- [ ] Add a short warning not to enter highly sensitive personal information into free-text answers.
-- [ ] Add an operational privacy contact and a process for verified requests.
-- [ ] Review localStorage token exposure and client-side script/XSS risks before broad commercial operation.
-- [ ] Test deletion across all linked tables and confirm what remains in backups/provider logs.
+- [x] Technical data inventory and flow review.
+- [x] Session expiry/revocation review.
+- [x] Secure recovery proof-of-possession fix deployed.
+- [x] Authenticated whole-room deletion endpoint and Settings control deployed.
+- [x] Deletion cascade verified with disposable records.
+- [x] Rate-limit cleanup function and daily scheduled job deployed; old bucket cleanup smoke test passed.
+- [x] Sensitive-information warning added beside free-text answer input.
+- [ ] Publish reviewed privacy notice and terms with accurate operator/contact details.
+- [ ] Confirm provider processing, data regions, subprocessors, logs and backup retention.
+- [ ] Set and publish an inactivity-retention period for abandoned room content.
+- [ ] Add privacy/support contact and verified request-handling process.
+- [ ] Review localStorage bearer-token exposure and browser XSS risk.
 - [ ] Obtain jurisdiction-specific legal review before claiming privacy-law compliance.
 
-## 6. Owner decisions still required
+## 6. Owner decisions / external facts still required
 
-The following are not safely inferable from source code and need the owner's confirmation:
+These cannot be safely inferred from code or account metadata:
+1. Which countries will Yarper actively serve?
+2. What minimum age will apply?
+3. What legal name or business entity operates Yarper, and what working privacy contact email should be published?
+4. What final retention period should apply to abandoned rooms and game answers?
+5. Which governing law and dispute forum should the Terms use?
 
-1. Which countries will Yarper actively serve at launch?
-2. What minimum age should apply? The product should not silently assume that children are permitted.
-3. What legal name or business entity will operate Yarper, and what privacy contact email should users use?
-4. Should a user be able to delete the whole couple room and both members' linked content, subject to a verified ownership process?
-5. What retention period should apply to inactive rooms and game answers?
-
-**Audit conclusion:** Yarper currently stores display names, room identifiers, device-session metadata, presence timestamps, game prompts/answers, reactions, gameplay state and hashed rate-limit identifiers. Session expiry/revocation is implemented, but data deletion, retention schedules, public privacy/terms documents and provider-log review are not evidenced. Keep privacy/legal readiness marked pending until product decisions, implementation and jurisdictional review are complete.
-
-
-## 7. Security and privacy hardening added in the security-hardening PR
-
-The following changes are present in the review branch and are not production-effective until the PR is merged and the database migration and Edge Function deployment are verified:
-
-- Expired/revoked member-slot recovery now requires proof of possession of the previous device token hash, in addition to the room code and display name. A room code plus display name alone no longer authorizes slot takeover.
-- The browser preserves the previous device token as a recovery credential when a session expires or the user resets the device. The recovery credential remains in browser localStorage; this improves takeover resistance but does not eliminate XSS risk or browser-storage theft.
-- Authenticated users can permanently delete their whole room by confirming the six-character room code. Database foreign-key cascades remove both member records, room state, game sessions, answers and reactions. The UI warns that this also removes the partner's access and shared history.
-- A scheduled cleanup job is added for rate-limit bucket metadata older than seven days. It does not delete user-generated room content.
-- Vercel response headers include a Content Security Policy, frame protections, MIME sniffing protection, referrer policy, HSTS and a restrictive Permissions Policy.
-- The Supabase JavaScript SDK import is pinned to stable version 2.118.0 (MIT licence).
-
-The PR includes regression checks for recovery proof, deletion authorization, headers, dependency pinning and rate-limit cleanup. Production deployment, actual cron scheduling, live deletion verification using disposable test data, and independent penetration testing remain separate verification items.
+**Audit conclusion:** Yarper stores display names, room identifiers, device/session metadata, presence timestamps, prompts/answers, reactions, gameplay state and hashed IP-derived rate-limit identifiers. Secure session recovery, whole-room deletion and rate-limit metadata cleanup are deployed. Public privacy/terms documents, abandoned-room retention, provider-log/backup review and jurisdictional legal review remain open.
