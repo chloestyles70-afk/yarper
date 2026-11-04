@@ -77,3 +77,16 @@ The deployed Edge Function source was also reviewed for room scoping:
 Five Node regression tests now guard these source-level authorization invariants. They supplement, but do not replace, browser/device testing or an independent penetration test.
 
 **Verification boundary:** This is a targeted database isolation smoke test and static source regression coverage. It is not a full cross-room penetration test of every API action or a browser-level test.
+
+
+## 6. Recovery-token database verification (4 November 2026)
+
+A second production-database smoke test used a temporary expired/revoked member slot:
+- A recovery attempt with an unrelated token hash was rejected as a full couple; no slot takeover occurred.
+- A recovery attempt with the exact prior device-token hash succeeded.
+- The recovered record retained the original member ID.
+- The stored token hash rotated to the new token hash.
+- The recovered session became active again with revocation cleared and a future expiry.
+- The synthetic couple and member were deleted after the test.
+
+This verifies the database recovery gate and token rotation. It does not prove the frontend on two physical devices preserves and submits the old recovery token correctly. That end-to-end two-device check remains open.
