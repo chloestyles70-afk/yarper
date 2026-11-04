@@ -40,7 +40,7 @@ Yarper is a mobile-first two-player couples engagement web app. It lets two peop
 - Verified active-user analytics or retention cohorts: not supplied.
 - Customer acquisition cost: not supplied.
 - Independent valuation: not available.
-- Asking price: [SELLER TO CONFIRM BEFORE PUBLISHING]. A proposed asking price is a negotiation position, not an appraisal.
+- Asking price: USD $10,000 (seller's proposed asking anchor; confirm before publishing). This is a negotiation position, not an appraisal.
 
 ## What a buyer should know
 
