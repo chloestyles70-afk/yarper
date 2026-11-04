@@ -22,7 +22,7 @@ test('rename reports database update failures instead of returning a stale snaps
   const start = source.indexOf('if(action==="rename")');
   const end = source.indexOf('if(action==="start_game")', start);
   const rename = source.slice(start, end);
-  assert.match(rename, /const updated=await db\.from\("yarper_members"\)\.update/);
+  assert.match(rename, /updated=await db\.from\("yarper_members"\)\.update/);
   assert.match(rename, /if\(updated\.error\)/);
   assert.match(rename, /throw new Error/);
 });
