@@ -75,7 +75,7 @@ No automatic retention period is implemented for abandoned couple-room content.
 - Supabase performance advisor reports three informational unused-index findings. No indexes were removed.
 - No formal penetration test, privacy compliance audit or third-party asset-rights audit has been completed.
 
-## Deployment and credentials
+## Backup and restore\n\nThe Supabase organization is on the Free plan. Do not assume automated daily backups are enabled. The repository includes scripts/backup-supabase.sh and docs/BACKUP_RESTORE_RUNBOOK.md for an encrypted CLI export of roles, schema and data. The script's shell syntax passed, but it has not been run because a private database connection string and encryption recipient are required. No production backup or restore drill has been completed. Keep backups encrypted and off-site; never commit SQL dumps.\n\n## Deployment and credentials
 
 The production Vercel deployment for the merged hardening change is READY and aliases include yarper.vercel.app. Supabase Edge Function yarper-api is ACTIVE at version 22.
 
