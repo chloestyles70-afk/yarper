@@ -6,15 +6,15 @@
 
 | Check | Result | Scope |
 |---|---|---|
-| Node 22 automated suite | PASS — 13 passed, 0 failed | Run in an isolated Vercel Node 22 sandbox using the current repository test files. Covers frontend inline-script syntax, session policy, scheduler behavior, secure recovery guards, transient boot failure handling, room deletion checks, security-header configuration, dependency pinning and rate-limit cleanup policy. |
+| Node 22 automated suite | PASS — 14 passed, 0 failed | Run in an isolated Vercel Node 22 sandbox using the current repository test files. Covers frontend inline-script syntax, session policy, scheduler behavior, secure recovery guards, transient boot failure handling, room deletion checks, security-header configuration, dependency pinning and rate-limit cleanup policy. |
 | Production recovery SQL smoke test | PASS | Missing and wrong previous-device proof rejected; correct previous token hash accepted; member ID preserved; new token hash installed; revocation cleared; old hash absent. Disposable test couple deleted. |
 | Normal second-player join SQL smoke test | PASS | New member can join a one-member room without a recovery credential. Disposable test couple deleted. |
 | Whole-room deletion cascade SQL smoke test | PASS | Disposable couple deletion cascaded through members, state, game sessions and reactions; no related rows remained. |
 | Rate-limit cleanup SQL smoke test | PASS | Eight-day-old test bucket was removed by cleanup function. |
-| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. |
+| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. |\n| Authenticated sync rate limits | PASS | me, heartbeat and snapshot are limited to 90 requests per member per five-minute window; SQL smoke test confirmed first requests pass and heartbeat request 91 is rejected. Temporary test rows deleted. |
 | Function privileges | PASS | join_yarper_couple, cleanup_yarper_rate_limits and consume_yarper_rate_limit: anon=false, authenticated=false, service_role=true. |
 | Table grants and RLS | PASS for intended server-mediated model | RLS enabled on all five public application tables; no direct anon/authenticated table grants found. |
-| Supabase Edge Function deployment | PASS — version 21 ACTIVE | Custom device-token authentication and secure recovery header deployed. verify_jwt=false is intentional for this custom auth model. |
+| Supabase Edge Function deployment | PASS — version 22 ACTIVE | Custom device-token authentication and secure recovery header deployed. verify_jwt=false is intentional for this custom auth model. |
 | Vercel production deployment | PASS — READY | Merged main-branch deployment is READY; alias yarper.vercel.app verified. |
 | Vercel runtime errors | PASS for selected recent window | Vercel returned no runtime errors in the selected one-hour window. |
 | Prior owner-confirmed functional checks | PASS, user-confirmed | Earlier two-device gameplay regression and reset/session recovery were confirmed by the owner. Not independently witnessed in this run. |
@@ -30,7 +30,7 @@
 - The recovery RPC rotates the stored token hash; the old token no longer matches.
 - If the user clears browser site data and loses the recovery credential, automatic recovery is not available.
 
-## Advisor findings
+## Live migration history\n\nSupabase reports 15 applied migrations. The two latest security migrations are 20261104155915 (secure member recovery and rate-limit cleanup) and 20261104160725 (authenticated sync endpoint rate limits). Both filenames are aligned in the repository to the live migration versions.\n\n## Advisor findings
 
 - Five informational RLS-enabled-without-policy notices on the five public application tables. This is consistent with the server-mediated access model only while direct client grants remain absent and the Edge Function correctly authorizes every action.
 - Three informational unused-index notices. No indexes were dropped.
