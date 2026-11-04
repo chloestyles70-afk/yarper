@@ -92,3 +92,17 @@ The following are not safely inferable from source code and need the owner's con
 5. What retention period should apply to inactive rooms and game answers?
 
 **Audit conclusion:** Yarper currently stores display names, room identifiers, device-session metadata, presence timestamps, game prompts/answers, reactions, gameplay state and hashed rate-limit identifiers. Session expiry/revocation is implemented, but data deletion, retention schedules, public privacy/terms documents and provider-log review are not evidenced. Keep privacy/legal readiness marked pending until product decisions, implementation and jurisdictional review are complete.
+
+
+## 7. Security and privacy hardening added in the security-hardening PR
+
+The following changes are present in the review branch and are not production-effective until the PR is merged and the database migration and Edge Function deployment are verified:
+
+- Expired/revoked member-slot recovery now requires proof of possession of the previous device token hash, in addition to the room code and display name. A room code plus display name alone no longer authorizes slot takeover.
+- The browser preserves the previous device token as a recovery credential when a session expires or the user resets the device. The recovery credential remains in browser localStorage; this improves takeover resistance but does not eliminate XSS risk or browser-storage theft.
+- Authenticated users can permanently delete their whole room by confirming the six-character room code. Database foreign-key cascades remove both member records, room state, game sessions, answers and reactions. The UI warns that this also removes the partner's access and shared history.
+- A scheduled cleanup job is added for rate-limit bucket metadata older than seven days. It does not delete user-generated room content.
+- Vercel response headers include a Content Security Policy, frame protections, MIME sniffing protection, referrer policy, HSTS and a restrictive Permissions Policy.
+- The Supabase JavaScript SDK import is pinned to stable version 2.118.0 (MIT licence).
+
+The PR includes regression checks for recovery proof, deletion authorization, headers, dependency pinning and rate-limit cleanup. Production deployment, actual cron scheduling, live deletion verification using disposable test data, and independent penetration testing remain separate verification items.
