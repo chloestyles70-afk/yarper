@@ -19,3 +19,21 @@ test('frontend preserves the recovery secret across session reset and sends it o
   assert.match(html, /localStorage\.setItem\(["']yarperRecoveryToken["']/);
   assert.match(html, /localStorage\.setItem\(["']yarperDisplayName["']/);
 });
+
+test('room deletion requires an authenticated member and a matching room code', () => {
+  const api = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'functions', 'yarper-api', 'index.ts'), 'utf8');
+  assert.match(api, /if\(action==="delete_room"\)[\s\S]*?member\.couple_id[\s\S]*?room\.data\.code!==confirmation[\s\S]*?from\("yarper_couples"\)\.delete\(\)/);
+  assert.match(api, /delete_room:\{limit:2,windowSeconds:3600\}/);
+});
+
+test('the frontend applies a restrictive security-header configuration and the backend SDK is pinned', () => {
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8'));
+  const headers = config.headers[0].headers;
+  const csp = headers.find(h => h.key === 'Content-Security-Policy')?.value || '';
+  assert.match(csp, /default-src 'self'/);
+  assert.match(csp, /object-src 'none'/);
+  assert.match(csp, /frame-ancestors 'none'/);
+  const api = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'functions', 'yarper-api', 'index.ts'), 'utf8');
+  assert.match(api, /@supabase\/supabase-js@2\.118\.0/);
+  assert.doesNotMatch(api, /@supabase\/supabase-js@2["']/);
+});
