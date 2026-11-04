@@ -47,7 +47,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 ## Required before publishing the Flippa listing
 
 - [ ] Complete rights-holder declaration and third-party asset register; verify contributor/history evidence.
-- [ ] Reconcile/export the complete migration history and demonstrate a clean-room database setup.
+- [ ] Demonstrate a clean-room database setup from the now-complete 15-file migration history.
 - [ ] Verify a clean Edge Function deploy from repository source.
 - [ ] Run and retain dated two-device functional test evidence on the latest production build.
 - [ ] Complete independent security testing, especially custom token authentication, recovery abuse and cross-room access.
