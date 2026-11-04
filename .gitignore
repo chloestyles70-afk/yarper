@@ -10,3 +10,8 @@ yarn-debug.log*
 pnpm-debug.log*
 coverage/
 .nyc_output/
+
+# Local encrypted backups and temporary exports
+/backups/
+*.sql
+*.tar.gz
