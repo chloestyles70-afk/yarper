@@ -7,23 +7,25 @@
 | Web client | Static single-page app: index.html |
 | Sync scheduler | sync-scheduler.js |
 | Automated unit tests | tests/sync-scheduler.test.cjs |
+| Backend source | supabase/functions/yarper-api/index.ts |
+| Supabase CLI configuration | supabase/config.toml |
 | Hosting | Vercel project yarper |
 | Data/API | Supabase project Yarper |
 | Backend function | yarper-api, Deno Edge Function |
-| Database | PostgreSQL |
+| Database | PostgreSQL 17 |
 
 ## Repository boundary
 
-The GitHub repository contains the static frontend, scheduler, one scheduler unit-test file, app manifest, SVG icon and documentation. The production Supabase Edge Function implementation and database migration source are maintained separately and are not checked into this repository. A buyer's technical review is incomplete until the seller provides the backend source, migration history and a safe staging environment.
+The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, one scheduler unit-test file, app manifest, SVG icon and documentation. The live database migration history contains 12 entries after the rate-limit fix, but only the latest corrective migration is currently represented in the repository. Export and reconcile the complete historical migration set before claiming the repository can recreate the production database from scratch.
 
 The frontend currently concentrates its HTML, CSS and application JavaScript in index.html. This is deployable as a static site, but its monolithic structure and limited automated test coverage increase the effort required for future maintenance.
 
 ## Database model
 
-Previously recorded infrastructure observations identified these public application tables:
+The current project inspection identified these public application tables:
 
 - yarper_couples: invite-code-based couple spaces.
-- yarper_members: two device/member identities per couple; documented as storing a token hash, not the raw device token.
+- yarper_members: two device/member identities per couple; stores a device token hash, not the raw device token.
 - yarper_state: XP, rounds, streak, turn state and daily quest state.
 - yarper_game_sessions: prompt rounds and answers.
 - yarper_reactions: emoji reactions linked to a round.
@@ -31,31 +33,40 @@ Previously recorded infrastructure observations identified these public applicat
 Private schema:
 - private.yarper_rate_limits: request-rate-limit buckets.
 
-These are prior audit notes and must be rechecked against the current production schema before transfer.
+The live database also contains unique constraints, foreign keys and check constraints. Obtain a complete schema export and reconcile it with migration files before handover.
 
-## Backend actions and security design
+## Backend authentication and security design
 
-The prior handover notes describe create/join, member session lookup, heartbeat/snapshot, rename, start/advance/answer game, reactions, daily quest completion and streak claims. They also describe a custom device-token header and service-role database operations.
+The deployed Edge Function has Supabase JWT verification disabled and uses a custom device-token header. The function hashes the submitted token with SHA-256 and looks up the matching member record. The raw device token is generated with cryptographic randomness and returned only during create/join. This is a custom authentication system, so its token validation, expiry, revocation and authorization deserve focused independent review.
 
-The Edge Function's JWT verification setting was previously reported disabled because the application uses custom device-token authentication. This is not, by itself, proof of either safety or vulnerability. Review the actual Edge Function code and test the token validation, expiry, revocation, authorization, rate limits, input validation and cross-room isolation before making security claims. The service-role key must remain only in server-side secrets.
+The Edge Function reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
+
+The database functions that use SECURITY DEFINER have an explicit search_path and, in the inspected ACLs, EXECUTE was granted to service_role rather than PUBLIC, anon or authenticated. The live grant check confirmed that anon and authenticated cannot execute the rate-limit function, while service_role can. Recheck grants after future migrations.
+
+## Rate limiting correction — 4 November 2026
+
+A source-to-database mismatch was found: the Edge Function applied a rate limit to advance_game, but the SQL allow-list in consume_yarper_rate_limit omitted that action. As a result, the rate-limit RPC rejected advance_game requests. A corrective migration named allow_advance_game_rate_limit was applied to the live project, and a smoke test confirmed the action is accepted. The migration is recorded in supabase/migrations/20261104152425_allow_advance_game_rate_limit.sql. The smoke-test row was deleted after verification.
 
 ## Frontend observations
 
 - The browser sends requests to a Supabase Edge Function endpoint.
 - A per-device session token is stored in localStorage and sent in a custom request header.
 - Dynamic user-controlled strings inspected in the current frontend rendering paths are escaped before insertion into HTML.
-- The frontend uses a single inline application script and inline style block. Review the deployed response headers and establish a compatible Content Security Policy; do not apply a restrictive policy without testing the inline assets.
+- The frontend uses a single inline application script and inline style block. Review deployed response headers and establish a compatible Content Security Policy; do not apply a restrictive policy without testing the inline assets.
 - localStorage is accessible to scripts running on the origin. A complete XSS and token-handling review is still required.
 
-## Previously recorded access and security observations
+## Database access and advisor observations
 
-An earlier infrastructure review recorded RLS enabled on five public application tables, no direct anon/authenticated table grants in the inspected grant listing, and application RPC execution limited to service_role. It also recorded informational RLS-without-policy and unused-index advisor findings. These are dated observations, not a substitute for a fresh production configuration review.
-
-No formal penetration test, privacy compliance audit or third-party dependency/licence audit has been completed.
+- RLS is enabled on all five public application tables.
+- The inspected table grant listing showed service_role privileges; no direct anon/authenticated table grants were present for the Yarper tables.
+- Supabase security advisor reported five informational rls_enabled_no_policy findings.
+- Supabase performance advisor reported four informational unused_index findings.
+- No indexes were removed: the small observed dataset is insufficient evidence that these indexes are unnecessary.
+- No formal penetration test, privacy compliance audit or third-party dependency/licence audit has been completed.
 
 ## Deployment and credentials
 
-Earlier deployment notes recorded a Vercel project connected to the GitHub repository and a Supabase project with an active Edge Function. Recheck current deployment status and ownership before transfer.
+The Supabase project was ACTIVE_HEALTHY and the Edge Function was ACTIVE at version 18 during the 4 November 2026 inspection. Recheck current deployment status and ownership before transfer.
 
 Before transfer:
 1. Confirm buyer-controlled Vercel and Supabase organizations/accounts.
@@ -68,7 +79,7 @@ Before transfer:
 
 ## Data handling
 
-Previous infrastructure notes recorded sample row counts in application tables, but those counts do not establish real users or active usage. The contents and ownership of the records must be classified as test/demo or real user data. Do not publish raw database exports in the sales listing. Before transfer, document lawful retention, deletion, consent and transfer arrangements.
+The live database inspection observed 9 couple rows, 18 member rows, 9 state rows, 11 game-session rows and 13 reaction rows. These counts do not establish real users or active usage. The contents and ownership of the records must be classified as test/demo or real user data. Do not publish raw database exports in the sales listing. Before transfer, document lawful retention, deletion, consent and transfer arrangements.
 
 ## Frontend synchronization
 
