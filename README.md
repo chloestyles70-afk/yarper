@@ -43,7 +43,7 @@ The production function uses a custom device-token authentication flow and has J
 
 - Do not commit Supabase service-role keys, Vercel tokens, database passwords or other secrets.
 - The service-role key is read from the Supabase server-side environment and must never be placed in browser code.
-- The browser stores its device token in localStorage; review XSS exposure and token lifecycle before a wider release.
+- The browser stores its device token in localStorage. Sessions expire after 30 days without a successful heartbeat; successful `me` and heartbeat requests extend the idle expiry. The Settings “Reset this device” action first revokes the token server-side, then clears local storage. If the revocation request fails, the UI keeps the local token and asks the user to retry. An expired or revoked member can reclaim their slot using the same couple code and exact display name; the join RPC replaces the old token hash.
 - Review SECURITY.md, docs/TECHNICAL_HANDOVER.md, docs/TEST_PLAN.md, docs/THIRD_PARTY_ASSET_REGISTER.md and docs/SALE_READINESS.md before any ownership transfer.
 
 ## Ownership and licensing
