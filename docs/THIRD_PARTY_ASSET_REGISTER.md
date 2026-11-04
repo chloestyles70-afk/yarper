@@ -1,38 +1,64 @@
 # Third-Party Asset and Licence Register
 
-**Status: NOT YET COMPLETE — owner verification required before sale.**
+**Audit date:** 4 November 2026  
+**Status: PARTIALLY REVIEWED — rights-holder confirmation and supporting evidence are still required before sale.**
 
-This register is intentionally a checklist, not a claim that every asset has already been cleared.
+This register records a repository-level inspection of the private `chloestyles70-afk/yarper` repository on its `main` branch. It is not a legal opinion, a complete historical-source audit, or proof that all intellectual-property rights belong to the seller.
 
-## Code and runtime dependencies
+## Repository inventory reviewed
 
-| Item | Current evidence | Required action |
-|---|---|---|
-| Frontend framework | The checked-in application is a static HTML/CSS/JavaScript page; no framework package manifest or dependency lockfile was present at audit time. | Confirm whether any code was copied or adapted from external examples or repositories. Record sources and applicable licences. |
-| Node.js test runner | Built-in Node.js test runner is used by the existing scheduler test. | No third-party runtime package identified in the checked-in test setup. |
-| Supabase | External backend service and API endpoint. | Review current Supabase plan and terms, service ownership, data processing terms and transfer procedure. |
-| Vercel | External hosting provider. | Review current plan, terms, project transfer and domain configuration. |
+The recursive repository tree was inspected. It contains the main static app (`index.html`), two additional HTML pages (`concept/index.html` and `studio/index.html`), `icon.svg`, a web-app manifest, a small Node test setup, Supabase Edge Function source, two SQL migrations, and project documentation.
+
+No raster image, audio, video, font, or vendored third-party asset files appeared in the inspected repository tree. This does not rule out assets loaded dynamically from services or assets stored outside Git.
+
+## Code, libraries and hosted services
+
+| Item | Evidence found | Rights / transfer position | Required action |
+|---|---|---|---|
+| Yarper frontend and app logic | Static HTML, CSS and browser JavaScript in `index.html`; prototypes also exist under `concept/` and `studio/`. | Repository contains a proprietary notice, but that notice alone does not prove authorship or assignment. | Rights holder must confirm original authorship and identify any copied/adapted code. Review historical commits and all contributors. |
+| Node test setup | `package.json` uses Node's built-in test runner; no third-party Node package dependency is declared. | No third-party Node package identified in the manifest. | Keep this assessment current if dependencies are added. |
+| Supabase Edge Runtime | Edge Function imports `jsr:@supabase/functions-js/edge-runtime.d.ts`. | Supabase-hosted runtime/service; subject to provider terms. | Review current plan, service terms, account ownership, data processing terms and buyer migration/transfer steps. |
+| Supabase JavaScript client | Edge Function imports `https://esm.sh/@supabase/supabase-js@2`. | Third-party open-source library delivered through esm.sh; the import uses a major-version range, not an exact pin. | Confirm the exact resolved version and applicable licence; pin an exact tested version and document reproducible deployment. |
+| Vercel | Production app is hosted at `yarper.vercel.app`. | Hosting and domain configuration are provider/account assets, not transferred by copying the repository. | Review current plan, account ownership, domain registrar, project transfer and billing handover. |
+| Supabase project | Frontend calls the project's Supabase Edge Function endpoint. | Backend project, database, storage/configuration and billing are separate provider assets. | Prepare a buyer-controlled transfer or migration plan; never include secrets in the sale package. |
+| External frontend resources | URL scan of the main app found the Supabase function endpoint; no remote font stylesheet or remote image URL was identified in the main frontend source. | No externally hosted visual resource was identified in this source scan. | Confirm deployed runtime/network requests and any dynamic content before sale. |
 
 ## Visual and content assets
 
-| Asset category | Evidence | Required action |
-|---|---|---|
-| Application icon | icon.svg is checked into this repository. | Confirm it was created by the owner or obtain source/assignment evidence. |
-| Fonts | CSS uses system font fallbacks and names Inter. No font file was found in the repository tree. | Confirm no externally hosted font file or paid font licence is used at runtime. |
-| Images and illustrations | No raster image files were present in the inspected repository tree. | Check the live app and all remote content for externally sourced images. |
-| Game prompts and copy | Prompt banks are embedded in index.html. | Confirm authorship or document any copied/adapted text. |
-| Emoji | Standard Unicode emoji are used in the interface. | Check any platform-specific rendering or third-party emoji assets, if added later. |
+| Asset | Evidence found | Rights position | Required action |
+|---|---|---|---|
+| App icon | `icon.svg` is committed and referenced by the app and manifest. | Creator/source and assignment are not established by the file's presence. | Owner to confirm original creation or provide source and commercial-use/transfer licence. |
+| Fonts | Main CSS names Inter, followed by system font fallbacks; no font file or remote font stylesheet was found in the repository scan. | No separately hosted font asset identified in source. | Confirm no external font service or paid font asset is injected at runtime. |
+| Images / illustrations | No raster image files or remote image URLs were found in the inspected app source. | No image licence identified from repository evidence. | Check live app network requests and any separately stored or dynamically supplied media. |
+| Sound / music | No audio file was found in the repository tree or main app source scan. | No audio asset identified. | Confirm none is loaded from an external service or stored outside Git. |
+| Game prompts and copy | Prompt banks and interface text are embedded in `index.html` and the Edge Function source. | Authorship and source history are not proven by the current inspection. | Owner to confirm the text is original or document any copied/adapted text and permissions. |
+| Emoji | Standard Unicode emoji appear in the interface. | No separate emoji image pack was identified. | Recheck if a third-party emoji library is introduced later. |
 
-## Owner declaration to complete
+## Proprietary notice
 
-Before listing, the rights holder should confirm in writing:
+`LICENSE.md` states that Yarper is proprietary software, reserves rights to the copyright owner, and says third-party materials remain subject to their own terms. This is a useful notice, but it is not proof of the identity of the rights holder, original authorship, contributor assignments, or clearance of third-party material.
 
-- [ ] All original code was written by the owner or validly assigned to the owner.
-- [ ] Every contributor, contractor or collaborator has signed an appropriate IP assignment.
-- [ ] Every third-party code component has a recorded source, version and licence.
-- [ ] Every image, icon, font, sound and other media asset has documented rights for commercial use and transfer where applicable.
-- [ ] Prompt text and other content is original or appropriately licensed.
-- [ ] No purchased template, marketplace script or prohibited reskin forms the basis of the product.
-- [ ] No third-party trademarks are presented as Yarper-owned assets.
+## Owner declaration — still required
 
-Do not mark this register complete based only on the absence of dependency files or image files from this repository. The live deployment, backend project, historical commits and any separately stored assets must also be checked.
+The rights holder must confirm in writing and retain supporting evidence for each applicable item:
+
+- [ ] Identify the legal/person name that owns the Yarper intellectual property and confirm authority to sell it.
+- [ ] Confirm all original code was written by the owner or validly assigned to the owner.
+- [ ] Review Git history and identify every contributor, contractor or collaborator; obtain signed IP assignments or licences where required.
+- [ ] Identify any code copied or adapted from external examples, repositories, templates or AI-generated sources, and record the applicable rights/terms.
+- [ ] Confirm the icon was created by the owner or provide its source and assignment/licence.
+- [ ] Confirm all fonts, images, illustrations, sounds and other media have documented commercial-use and transfer rights, or confirm none are used.
+- [ ] Confirm prompt text and other content is original or appropriately licensed.
+- [ ] Confirm no purchased template, marketplace script or prohibited reskin forms the basis of the product.
+- [ ] Confirm third-party trademarks are not represented as Yarper-owned assets.
+- [ ] Confirm which Vercel, Supabase, domain, analytics, email and other service accounts can be transferred, and which require buyer-owned replacement accounts.
+
+## Sale handover requirements
+
+- [ ] Prepare a signed asset schedule listing each owned asset and each excluded/non-transferable third-party service.
+- [ ] Provide copies of third-party licences and contributor IP assignments to the buyer where permitted.
+- [ ] Prepare a clean deployment guide and buyer-controlled staging deployment.
+- [ ] Transfer or rotate all credentials securely at closing; do not put secrets in the repository or listing.
+- [ ] Document provider account transfer restrictions, recurring fees, renewals and required buyer subscriptions.
+
+**Do not mark this register complete based only on the absence of dependency files or media files from the repository.** The live deployment, backend project, historical commits, contributor arrangements, and separately stored assets must also be checked. Repository inspection cannot independently establish ownership or legal transferability.
