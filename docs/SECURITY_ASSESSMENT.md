@@ -53,7 +53,7 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
 
 ## 3. Production changes and verification
 
-- Migration 20261104155915 is recorded in Supabase migration history and the repository filename is aligned to that exact version.
+- All 15 migrations are present in the repository and each SQL file was compared with its stored live migration statement; contents match. Latest migrations: 20261104155915 and 20261104160725.
 - pg_cron 1.6.4 is installed.
 - Active job yarper-rate-limit-cleanup runs daily at 03:15 and calls cleanup_yarper_rate_limits().
 - Disposable-data SQL smoke tests passed:
