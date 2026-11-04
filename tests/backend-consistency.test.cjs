@@ -31,8 +31,8 @@ test('daily state initialization and rollover propagate database errors', () => 
   const start = source.indexOf('async function ensureState(');
   const end = source.indexOf('async function snapshot(', start);
   const ensureState = source.slice(start, end);
-  assert.match(ensureState, /if\(r\.error\)/);
-  assert.match(ensureState, /if\(updated\.error\)/);
+  assert.match(ensureState, /if\(current\.error\)/);
+  assert.match(ensureState, /if\(rollover\.error\)/);
   assert.match(ensureState, /if\(refreshed\.error\)/);
   assert.match(ensureState, /if\(created\.error\)/);
 });
