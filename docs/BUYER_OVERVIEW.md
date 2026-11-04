@@ -31,7 +31,7 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 - Device tokens expire after 30 days of inactivity; successful heartbeats extend expiry. Recovery of an expired/revoked slot now requires proof of possession of the previous device token, not just a room code and display name.
 - Daily pg_cron job yarper-rate-limit-cleanup is active at 03:15.
 - Vercel production deployment is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox tests: 12 passed, 0 failed at the time of the recorded run. The suite does not constitute comprehensive browser or security testing.
+- Node 22 isolated sandbox tests: 13 passed, 0 failed at the time of the recorded run. The suite does not constitute comprehensive browser or security testing.
 - The owner previously confirmed two-device gameplay and session recovery tests. Those checks are user-confirmed, not independently witnessed by the reviewer.
 
 ## Privacy and security status
