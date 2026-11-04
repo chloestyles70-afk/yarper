@@ -14,7 +14,7 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 - Mini-game utilities and a timed challenge.
 - Responsive single-page web interface.
 - Supabase Edge Function source and PostgreSQL-backed data layer.
-- Vercel deployment connected to the source repository.
+- Vercel deployment connected to the source repository.\n- Encrypted backup script and restore runbook prepared; no production backup/restore drill yet. The Supabase organization is currently on the Free plan, so automatic daily backups should not be assumed.
 - 30-day idle session expiry, server-side revocation and proof-of-possession recovery.
 - Authenticated whole-room deletion from Settings, with a warning that both members' shared data and access are removed.
 - Daily cleanup of rate-limit bucket metadata older than seven days.\n- Per-member limits on me, heartbeat and snapshot requests: 90 per five-minute window.
