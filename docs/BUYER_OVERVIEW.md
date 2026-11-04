@@ -1,70 +1,51 @@
 # Yarper — Buyer Overview
 
-## Product
+**Transaction:** Outright acquisition
+**Seller asking price:** USD 3,000
+**Live product:** https://yarper.vercel.app/
 
-Yarper is a mobile-first couples engagement app designed for two people to share prompts, playful challenges, answers and progress in a private digital space. Live demo: https://yarper.vercel.app/
+Yarper is a mobile-first, two-person couples game and connection web app. One partner creates a private space and the other joins with a six-character code. The pair can play prompt-led activities, submit answers and reactions, and build shared progress.
 
-## What is included
+## Product capabilities
+- Private two-person spaces and partner join flow.
+- Question, challenge, truth-or-dare, conversation-card and date-night prompts.
+- Synchronized answers, reactions and recent round history.
+- XP, levels, daily quests and streak rewards.
+- Quick-choice prompts and a timed challenge.
+- Responsive, mobile-first web interface.
 
-- Private two-person spaces created with a six-character invite code.
-- Player 1 / Player 2 identity and shared couple state.
-- Five prompt categories: questions, challenges, truth-or-dare, cards and date-night ideas.
-- Synchronized rounds, partner answers and emoji reactions.
-- XP, levels, daily quest and streak reward mechanics.
-- Mini-game utilities and a timed challenge.
-- Responsive single-page web interface.
-- Supabase Edge Function source and PostgreSQL-backed data layer.
-- Vercel deployment connected to the source repository.
-- Encrypted backup script and restore runbook prepared; no production backup/restore drill yet. The Supabase organization is currently on the Free plan, so automatic daily backups should not be assumed.
-- 30-day idle session expiry, server-side revocation and proof-of-possession recovery.
-- Authenticated whole-room deletion from Settings, with a warning that both members' shared data and access are removed.
-- Daily cleanup of rate-limit bucket metadata older than seven days.
-- Per-member limits on me, heartbeat and snapshot requests: 90 per five-minute window.
+## Technology snapshot
+- Frontend: static single-page HTML, CSS and browser JavaScript.
+- Hosting: Vercel.
+- Backend: Supabase Edge Function (`yarper-api`, version 23 reported ACTIVE on 4 November 2026).
+- Database: Supabase PostgreSQL 17.
+- Schema history: 16 applied migration files are present in the repository and SQL was reconciled against live migration statements.
+- Automated checks: 28 Node regression tests reported passing on the latest recorded main build.
 
-## Current technical snapshot — 4 November 2026
+## Security and operations — evidence and limits
+Implemented controls include server-mediated database access, RLS on the five public application tables, hashed device-token storage, session expiry/revocation, proof-of-possession recovery, request rate limits, selected atomic database operations and configured web security headers.
 
-- GitHub repository: chloestyles70-afk/yarper (private).
-- Frontend: static HTML, CSS and browser JavaScript in index.html.
-- Backend: Supabase Edge Function yarper-api, version 22 ACTIVE; source is in supabase/functions/yarper-api/index.ts.
-- Supabase project: Yarper, status ACTIVE_HEALTHY; PostgreSQL 17; database region eu-west-1.
-- Database: five public application tables and one private rate-limit table; 15 live migration records.
-- RLS is enabled on all five public application tables. The inspected table grants showed no direct anon/authenticated table grants.
-- Reviewed SECURITY DEFINER RPCs use fixed search paths and are executable by service_role, not anon/authenticated.
-- Device tokens expire after 30 days of inactivity; successful heartbeats extend expiry. Recovery of an expired/revoked slot now requires proof of possession of the previous device token, not just a room code and display name.
-- Daily pg_cron job yarper-rate-limit-cleanup is active at 03:15.
-- Vercel production deployment is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox tests: 14 passed, 0 failed at the time of the recorded run. The suite does not constitute comprehensive browser or security testing.
-- The owner previously confirmed two-device gameplay and session recovery tests. Those checks are user-confirmed, not independently witnessed by the reviewer.
+These controls are not an independent security certification. No independent penetration test, complete two-physical-device acceptance report, production backup/restore drill or clean-room rebuild has been completed. Active and recovery tokens are stored in browser localStorage and remain a known XSS exposure.
 
-## Privacy and security status
+## Commercial position
+Yarper is pre-revenue. No verified revenue, paying-customer count, retention cohort, customer acquisition cost or independently measured active-user analytics has been supplied. Raw database row counts must not be presented as traction. USD 3,000 is the seller's asking price only, not an appraisal or guarantee of value.
 
-A technical data inventory and security review are documented. A user can delete the entire couple room, which cascades to both members' records, answers, reactions and progress. Rate-limit metadata is cleaned after seven days.
+## Proposed transaction
+The seller is seeking an outright acquisition. The exact assets and exclusions must be listed in a signed agreement. The buyer should complete technical, security, privacy, IP and commercial diligence and arrange buyer-controlled accounts.
 
-Privacy Notice and Terms drafts exist in docs/ but are not published or linked in the app. They require the operator's legal identity/contact, launch jurisdictions, minimum age, abandoned-room retention policy, provider-processing details and legal review. Device/recovery tokens remain in browser localStorage, and independent penetration testing is not complete.
+**No ownership, source-code control, provider credential or account handover will occur until the written acquisition agreement is signed and payment has cleared.** Credentials will not be sent by ordinary email. Provider-supported transfer or buyer-account migration and secret rotation will be used at closing.
 
-## Commercial status
+## Open diligence items
+1. Production backup, off-site storage and buyer-controlled restore test.
+2. Independent security review and dated two-device browser acceptance.
+3. Production response-header verification and XSS testing.
+4. Complete transitive SBOM and licence review.
+5. Rights-holder declaration, contributor/IP assignments and asset-rights evidence.
+6. Privacy/Terms completion and legal review for intended jurisdictions.
+7. Data classification, retention and lawful transfer/deletion plan.
+8. Clean-room database rebuild and buyer-controlled deployment.
+9. Provider/domain transfer plan and operating-cost schedule.
 
-Yarper is pre-revenue. No verified revenue, paying-customer count, retention cohort, customer acquisition cost or active-user analytics has been supplied. The seller's asking price is a negotiation position, not an appraisal or evidence of market value.
+See `docs/SALE_READINESS.md`, `docs/TECHNICAL_HANDOVER.md`, `docs/DEPENDENCY_INVENTORY.md`, `docs/THIRD_PARTY_ASSET_REGISTER.md` and `docs/BUYER_HANDOVER_CHECKLIST.md` for detailed diligence records.
 
-## Code and originality status
-
-The checked-in frontend and backend source are available for review. Repository inspection alone cannot prove that all code, prompts, icons or other materials are original or properly assigned. The rights-holder declaration and third-party asset register must be completed before making a clean-IP representation.
-
-## Sale scope to agree in writing
-
-An acquisition agreement should enumerate the assets actually being transferred, including source code and repository ownership, product branding and original assets, applicable domain(s), Vercel project, Supabase project and database, deployment configuration, documentation, and any transferable third-party rights. Platform terms may restrict account or subscription transfers; verify each provider's current process before promising transfer.
-
-The buyer should receive a clean handover, not the seller's personal passwords. Use provider-supported ownership/team transfer or rotate credentials and issue buyer-controlled credentials after closing. Do not share service-role keys in the repository or in the listing.
-
-## Outstanding diligence
-
-- Demonstrate a clean-room database setup from the 15 migration files, whose SQL now matches the live migration history.
-- Verify a clean Edge Function deploy from repository source.
-- Verify actual production security headers and complete browser-based XSS/cross-room tests.
-- Obtain independent penetration testing.
-- Verify ownership and transferability of artwork, fonts, icons, prompts and any other non-original assets.
-- Confirm provider account/domain transfer requirements and ongoing hosting costs.
-- Review and publish final privacy notice and terms.
-- Classify existing database rows as test/demo or real user data; arrange lawful retention, deletion or transfer.
-- Complete buyer-controlled staging, backup/restore and acceptance testing.
-- Agree a bounded post-sale support period, response times, exclusions and handover deliverables in writing.
+*Private and confidential. Prepared 4 November 2026. Informational only; not an offer, warranty, legal opinion or independent valuation.*
