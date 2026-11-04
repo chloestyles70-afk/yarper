@@ -43,7 +43,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Provider privacy review:** Confirm Supabase/Vercel processing terms, subprocessors, regions, provider logs and backup retention.
 - [ ] **Ownership declaration / IP evidence:** User reports no other contributors; independent contributor history and original asset provenance remain to be evidenced.
 - [ ] **Hosting and domain transfer:** Verify buyer-controlled Vercel/Supabase transfer and billing arrangements.
-- [ ] **Backup/restore and buyer clean-room deployment:** Not yet independently tested.
+- [x] Encrypted Supabase backup script and restore runbook prepared; shell syntax checked.\n- [ ] **Backup/restore and buyer clean-room deployment:** No production backup has been executed or restored. Supabase organization is on the Free plan, so do not assume automatic daily backups.
 
 ## Required before publishing the Flippa listing
 
@@ -58,7 +58,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] Review provider data processing, hosting regions and subprocessors.
 - [ ] Identify and lawfully remove, anonymize or transfer existing personal data.
 - [ ] Verify production hosting, domain and billing transfer procedures.
-- [ ] Prepare buyer-controlled staging deployment, backup/restore and acceptance test.
+- [ ] Execute encrypted production backup, store it off-site and complete a buyer-controlled restore/acceptance test.
 - [ ] Document operating costs, subscriptions, renewals and post-sale support scope.
 - [ ] Prepare signed asset schedule and acquisition agreement.
 
