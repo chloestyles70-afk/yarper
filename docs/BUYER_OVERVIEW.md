@@ -20,11 +20,12 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 
 - GitHub repository: chloestyles70-afk/yarper (private).
 - Frontend: static HTML, CSS and browser JavaScript in index.html.
-- Backend: deployed Supabase Edge Function yarper-api, version 18 at the time of inspection; its source is now included in supabase/functions/yarper-api/index.ts.
+- Backend: deployed Supabase Edge Function yarper-api, version 19 after the session-lifecycle update; its source is now included in supabase/functions/yarper-api/index.ts.
 - Supabase project: Yarper, status ACTIVE_HEALTHY at the time of inspection.
-- Database: five public application tables and one private rate-limit table; 12 migration records after the rate-limit fix.
+- Database: five public application tables and one private rate-limit table; 13 migration records after the session-lifecycle update.
 - RLS is enabled on all five public application tables. The inspected table grants showed access for service_role and no direct anon/authenticated table grants.
 - The five public tables returned informational RLS-enabled-without-policy advisor notices. This matches the current server-mediated access pattern only if the Edge Function remains the sole data path; it does not replace a review of function authorization.
+- Device tokens now have a 30-day idle expiry, successful heartbeats extend the expiry, and the Settings reset action revokes the server-side token before clearing local storage. Recovery replaces the old token hash when the user joins with the same couple code and exact display name.
 - User-confirmed runtime checks from the owner include simultaneous game-answer handling, duplicate daily/streak reward prevention, join protection, XP duplicate prevention, duplicate game-session prevention and API error handling. These are not an independent penetration test or formal certification.
 
 ## Commercial status
@@ -43,7 +44,6 @@ The buyer should receive a clean handover, not the seller's personal passwords. 
 
 ## Outstanding diligence
 
-- Add and test server-side device-token expiry/revocation; clearing localStorage currently does not invalidate the server-side token hash.
 - Reconcile the checked-in migration with the live migration history and export the complete historical schema/migration set.
 - Pin the Edge Function dependency version and preserve a lockfile or equivalent reproducible dependency record.
 - Verify ownership and transferability of all artwork, fonts, icons, prompts and any other non-original assets.
