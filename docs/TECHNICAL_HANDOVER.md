@@ -16,7 +16,7 @@
 
 ## Repository boundary
 
-The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, one scheduler unit-test file, app manifest, SVG icon and documentation. The live database migration history contains 12 entries after the rate-limit fix, but only the latest corrective migration is currently represented in the repository. Export and reconcile the complete historical migration set before claiming the repository can recreate the production database from scratch.
+The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, one scheduler unit-test file, app manifest, SVG icon and documentation. The live database migration history contains 13 entries after the session-expiry and revocation migration, but only the latest corrective migration is currently represented in the repository. Export and reconcile the complete historical migration set before claiming the repository can recreate the production database from scratch.
 
 The frontend currently concentrates its HTML, CSS and application JavaScript in index.html. This is deployable as a static site, but its monolithic structure and limited automated test coverage increase the effort required for future maintenance.
 
@@ -37,7 +37,7 @@ The live database also contains unique constraints, foreign keys and check const
 
 ## Backend authentication and security design
 
-The deployed Edge Function has Supabase JWT verification disabled and uses a custom device-token header. The function hashes the submitted token with SHA-256 and looks up the matching member record. The raw device token is generated with cryptographic randomness and returned only during create/join. The SHA-256 hash is stored in the member row. Each member row has `token_expires_at` and `token_revoked_at`. Tokens expire after 30 days without a successful `me`/heartbeat request; those requests extend the idle expiry. The Settings reset action calls `revoke_session`, which marks the server-side token revoked before clearing browser storage. If revocation fails, the browser retains the token and asks the user to retry. Expired/revoked slots can be reclaimed by joining with the couple code and the exact existing display name; the RPC replaces the old token hash. The Edge Function deployment was updated to version 19. This is a custom authentication system and still requires independent review.
+The deployed Edge Function has Supabase JWT verification disabled and uses a custom device-token header. The function hashes the submitted token with SHA-256 and looks up the matching member record. The raw device token is generated with cryptographic randomness and returned only during create/join. The SHA-256 hash is stored in the member row. Each member row has `token_expires_at` and `token_revoked_at`. Tokens expire after 30 days without a successful `me`/heartbeat request; those requests extend the idle expiry. The Settings reset action calls `revoke_session`, which marks the server-side token revoked before clearing browser storage. If revocation fails, the browser retains the token and asks the user to retry. Expired/revoked slots can be reclaimed by joining with the couple code and the exact existing display name; the RPC replaces the old token hash. The Edge Function deployment was updated to version 20. This is a custom authentication system and still requires independent review.
 
 The Edge Function reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
 
@@ -66,7 +66,7 @@ A source-to-database mismatch was found: the Edge Function applied a rate limit 
 
 ## Deployment and credentials
 
-The Supabase project was ACTIVE_HEALTHY and the Edge Function was ACTIVE at version 18 during the 4 November 2026 inspection. Recheck current deployment status and ownership before transfer.
+The Supabase project was ACTIVE_HEALTHY and the Edge Function was ACTIVE at version 20 after the session-lifecycle update on 4 November 2026. Recheck current deployment status and ownership before transfer.
 
 Before transfer:
 1. Confirm buyer-controlled Vercel and Supabase organizations/accounts.
