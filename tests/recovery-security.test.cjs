@@ -56,3 +56,15 @@ test('free-text answers include a warning against submitting sensitive personal 
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.match(html, /Avoid sharing passwords, financial details or highly sensitive personal information/);
 });
+
+test('authenticated sync and snapshot actions are rate-limited without breaking normal polling', () => {
+  const api = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'functions', 'yarper-api', 'index.ts'), 'utf8');
+  assert.match(api, /me:\{limit:90,windowSeconds:300\}/);
+  assert.match(api, /heartbeat:\{limit:90,windowSeconds:300\}/);
+  assert.match(api, /snapshot:\{limit:90,windowSeconds:300\}/);
+  assert.match(api, /p_action NOT IN/);
+  const migrationsDir = path.join(__dirname, '..', 'supabase', 'migrations');
+  const migrations = fs.readdirSync(migrationsDir).filter(name => name.endsWith('.sql')).sort()
+    .map(name => fs.readFileSync(path.join(migrationsDir, name), 'utf8')).join('\n');
+  assert.match(migrations, /'me','heartbeat','snapshot'/);
+});
