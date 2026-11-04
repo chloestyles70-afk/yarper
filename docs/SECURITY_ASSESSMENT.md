@@ -66,7 +66,7 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
   - Eight-day-old rate-limit bucket deleted by cleanup function.
 - Supabase Edge Function yarper-api version 21 is ACTIVE with verify_jwt=false and custom device-token authentication.
 - Vercel production deployment for the merged hardening change is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox test run: 12 passed, 0 failed (before the latest extra sensitive-answer warning test; rerun required for final count).
+- Node 22 isolated sandbox test run: 13 passed, 0 failed (before the latest extra sensitive-answer warning test; rerun required for final count).
 - GitHub Actions runs for the recent branch/main commits were queued and did not return a final conclusion during this review. The isolated Node test run is the available green test evidence.
 - Vercel runtime-error query for the selected recent window returned no runtime errors.
 
