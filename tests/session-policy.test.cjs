@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 test('new sessions receive a 30-day idle expiry', async () => {
-  const { SESSION_TTL_MS, getSessionExpiry } = await import('../session-policy.mjs');
+  const { SESSION_TTL_MS, getSessionExpiry } = await import('../supabase/functions/yarper-api/session-policy.mjs');
   const now = Date.parse('2026-11-04T12:00:00.000Z');
   assert.equal(SESSION_TTL_MS, 30 * 24 * 60 * 60 * 1000);
   assert.equal(getSessionExpiry(now), '2026-12-04T12:00:00.000Z');
