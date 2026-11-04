@@ -23,7 +23,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] Supabase JS SDK pinned to 2.118.0 (MIT).
 - [x] Privacy notice and Terms drafts prepared; not published because operator/jurisdiction details remain unresolved.
 - [x] Security assessment and user-data audit documented.
-- [x] Node 22 isolated sandbox test suite: 12 passed, 0 failed. This is not an independent penetration test.
+- [x] Node 22 isolated sandbox test suite: 13 passed, 0 failed. This is not an independent penetration test.
 - [x] Latest Vercel production deployment READY; aliases include yarper.vercel.app.
 - [x] Vercel runtime-error query for the selected recent window returned no runtime errors.
 
@@ -35,7 +35,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Dependency inventory:** SDK version is pinned, but a full resolved transitive dependency graph / SBOM is not yet recorded.
 - [ ] **Historical migration reconciliation:** Fourteen live migration records were observed. The repository now contains the secure-recovery migration under its exact applied version; continue reconciling all historical migrations and verify a clean-room rebuild.
 - [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
-- [ ] **Automated test scope:** 12 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
+- [ ] **Automated test scope:** 13 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
 - [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
 - [ ] **Privacy notice and terms:** Drafts exist but must not be published until operator identity/contact, launch countries, minimum age, provider processing, retention and governing law are completed and legally reviewed.
 - [ ] **Abandoned-room retention:** No automatic retention period for old room content is implemented.
