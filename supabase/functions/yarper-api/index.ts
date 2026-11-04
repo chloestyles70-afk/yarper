@@ -30,7 +30,8 @@ async function allowMemberAction(memberId:string,action:string){
   react:{limit:60,windowSeconds:600},
   rename:{limit:10,windowSeconds:3600},
   complete_daily:{limit:5,windowSeconds:600},
-  claim_streak:{limit:5,windowSeconds:600}
+  claim_streak:{limit:5,windowSeconds:600},
+  delete_room:{limit:2,windowSeconds:3600}
  };
  const policy=limits[action];if(!policy)return true;
  const key=await sha256(memberId+"|yarper|member|"+action);
@@ -82,4 +83,5 @@ if(action==="answer_game"){const gameId=String(body.game_id||""),answer=String(b
 if(action==="react"){const gameId=String(body.game_id||""),emoji=String(body.emoji||"");if(!["❤️","😂","🔥","🥰","😏","👀","👏","💚"].includes(emoji))throw Error("Reaction not available.");if(!(await db.from("yarper_game_sessions").select("id").eq("id",gameId).eq("couple_id",member.couple_id).maybeSingle()).data)throw Error("Round not found.");const saved=await db.from("yarper_reactions").insert({couple_id:member.couple_id,game_id:gameId,by_role:member.role,emoji});if(saved.error)throw new Error("Could not save your reaction. Please try again.");return json(await snapshot(member))}
 if(action==="complete_daily"){const result=await db.rpc("yarper_complete_daily",{p_couple_id:member.couple_id});if(result.error)throw new Error("Could not complete the daily reward securely. Please try again.");return json(await snapshot(member))}
 if(action==="claim_streak"){const result=await db.rpc("yarper_claim_streak",{p_couple_id:member.couple_id});if(result.error)throw new Error("Could not claim the streak reward securely. Please try again.");return json(await snapshot(member))}
+if(action==="delete_room"){const confirmation=cleanCode(body.confirm_code);const room=await db.from("yarper_couples").select("code").eq("id",member.couple_id).maybeSingle();if(room.error||!room.data)throw new Error("Could not verify the couple space.");if(room.data.code!==confirmation)return json({error:"The couple code does not match."},403);const removed=await db.from("yarper_couples").delete().eq("id",member.couple_id);if(removed.error)throw new Error("Could not delete the couple space. Please try again.");return json({deleted:true})}
 if(action==="snapshot")return json(await snapshot(member));return json({error:"Unknown action."},400)}catch(e){return json({error:e instanceof Error?e.message:"Something went wrong."},500)}});
