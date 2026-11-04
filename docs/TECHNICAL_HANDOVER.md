@@ -66,7 +66,7 @@ Authenticated me, heartbeat and snapshot requests are limited to 90 per member p
 
 - Supabase project status: ACTIVE_HEALTHY.
 - Database region: eu-west-1.
-- 14 migration records reported by Supabase on 4 November 2026.
+- 15 migration records reported by Supabase on 4 November 2026.
 - RLS enabled on all five public application tables.
 - No direct anon/authenticated table grants found for the application tables.
 - Supabase security advisor reports five informational RLS-enabled-without-policy findings consistent with the server-mediated access model.
@@ -75,7 +75,7 @@ Authenticated me, heartbeat and snapshot requests are limited to 90 per member p
 
 ## Deployment and credentials
 
-The production Vercel deployment for the merged hardening change is READY and aliases include yarper.vercel.app. Supabase Edge Function yarper-api is ACTIVE at version 21.
+The production Vercel deployment for the merged hardening change is READY and aliases include yarper.vercel.app. Supabase Edge Function yarper-api is ACTIVE at version 22.
 
 Before transfer:
 1. Confirm buyer-controlled Vercel and Supabase organizations/accounts.
