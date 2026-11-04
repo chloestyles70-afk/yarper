@@ -14,16 +14,16 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] Session expiry and revocation deployed; user-confirmed two-device gameplay and recovery tests remain recorded as owner-confirmed.
 - [x] Insecure room-code + display-name-only recovery replaced with previous-device-token proof-of-possession.
 - [x] Production migration 20261104155915 applied and repository filename aligned to the exact live migration version.
-- [x] Supabase Edge Function yarper-api version 21 ACTIVE.
+- [x] Supabase Edge Function yarper-api version 22 ACTIVE.
 - [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15.
 - [x] SQL smoke tests passed for missing/wrong recovery proof rejection, valid recovery and token rotation, normal second-player join, whole-room deletion cascades, and stale rate-limit bucket cleanup.
-- [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
+- [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.\n- [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
 - [x] Sensitive-information warning added beside free-text answers.
 - [x] Vercel security-header configuration deployed with CSP, HSTS, frame protection, MIME-sniffing protection, referrer policy and Permissions Policy.
 - [x] Supabase JS SDK pinned to 2.118.0 (MIT).
 - [x] Privacy notice and Terms drafts prepared; not published because operator/jurisdiction details remain unresolved.
 - [x] Security assessment and user-data audit documented.
-- [x] Node 22 isolated sandbox test suite: 13 passed, 0 failed. This is not an independent penetration test.
+- [x] Node 22 isolated sandbox test suite: 14 passed, 0 failed. This is not an independent penetration test.
 - [x] Latest Vercel production deployment READY; aliases include yarper.vercel.app.
 - [x] Vercel runtime-error query for the selected recent window returned no runtime errors.
 
@@ -33,9 +33,9 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Production response-header verification:** Vercel configuration is deployed; verify actual production HTTP response headers directly.
 - [ ] **Independent security assessment:** Cross-room authorization, token replay, invite-code abuse and XSS require controlled browser-based tests and independent penetration testing.
 - [ ] **Dependency inventory:** SDK version is pinned, but a full resolved transitive dependency graph / SBOM is not yet recorded.
-- [ ] **Historical migration reconciliation:** Fourteen live migration records were observed. The repository now contains the secure-recovery migration under its exact applied version; continue reconciling all historical migrations and verify a clean-room rebuild.
+- [ ] **Historical migration reconciliation:** Fifteen live migration records were observed. The repository now contains the secure-recovery migration under its exact applied version; continue reconciling all historical migrations and verify a clean-room rebuild.
 - [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
-- [ ] **Automated test scope:** 13 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
+- [ ] **Automated test scope:** 14 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
 - [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
 - [ ] **Privacy notice and terms:** Drafts exist but must not be published until operator identity/contact, launch countries, minimum age, provider processing, retention and governing law are completed and legally reviewed.
 - [ ] **Abandoned-room retention:** No automatic retention period for old room content is implemented.
