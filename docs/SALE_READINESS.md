@@ -33,7 +33,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Production response-header verification:** Vercel configuration is deployed; verify actual production HTTP response headers directly.
 - [ ] **Independent security assessment:** Cross-room authorization, token replay, invite-code abuse and XSS require controlled browser-based tests and independent penetration testing.
 - [ ] **Dependency inventory:** SDK version is pinned, but a full resolved transitive dependency graph / SBOM is not yet recorded.
-- [ ] **Historical migration reconciliation:** Fifteen live migration records were observed. The repository now contains the secure-recovery migration under its exact applied version; continue reconciling all historical migrations and verify a clean-room rebuild.
+- [x] **Historical migration reconciliation:** All 15 applied migration files are present in the repository and their SQL was compared with the live Supabase statements; contents match. A clean-room rebuild remains pending.
 - [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
 - [ ] **Automated test scope:** 14 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
 - [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
