@@ -1,52 +1,60 @@
 # Yarper — Sale Readiness Checklist
 
-Audit date: 4 November 2026. This checklist combines previously recorded infrastructure observations with a fresh static inspection of the GitHub repository on the sale-readiness branch. Items are marked verified only where evidence was available.
+Audit date: 4 November 2026. This review includes the private GitHub repository, deployed Supabase Edge Function source, live database metadata, current database function definitions/grants, and Supabase security/performance advisors.
 
-## Confirmed from repository inspection
+## Verified
 
-- [x] GitHub repository identified: chloestyles70-afk/yarper; it is private.
-- [x] A proprietary software notice exists in LICENSE.md.
-- [x] The repository contains a live-app frontend, a sync scheduler, one scheduler test, a manifest, an SVG icon and buyer-facing documentation.
-- [x] The frontend is a static single-page HTML/CSS/JavaScript application; most application logic is inline in index.html.
-- [x] The frontend calls a Supabase Edge Function endpoint and stores a per-device session token in browser localStorage.
-- [x] User-controlled strings rendered into HTML are escaped in the inspected dynamic rendering paths.
-- [x] The repository now has a minimal npm test script and a GitHub Actions workflow for the existing Node.js unit tests on pushes to the readiness branch and pull requests to main.
-- [x] Functional test plan, security policy and third-party asset/licence register have been added.
+- [x] GitHub repository identified: chloestyles70-afk/yarper; private.
+- [x] Proprietary software notice exists in LICENSE.md.
+- [x] Static frontend, scheduler, manifest and SVG icon inspected.
+- [x] Deployed Edge Function yarper-api retrieved; ACTIVE at version 18 during inspection.
+- [x] Edge Function source copied into the sale-readiness branch at supabase/functions/yarper-api/index.ts.
+- [x] Supabase function configuration recorded in supabase/config.toml, including verify_jwt = false.
+- [x] Live project status observed ACTIVE_HEALTHY.
+- [x] Five public application tables and one private rate-limit table inspected.
+- [x] RLS enabled on all five public tables.
+- [x] Table grant query showed service_role access and no direct anon/authenticated table grants for the Yarper tables.
+- [x] SECURITY DEFINER function definitions inspected; explicit search_path settings were present.
+- [x] Function ACL check confirmed anon and authenticated cannot execute consume_yarper_rate_limit, while service_role can.
+- [x] Eleven existing migrations were identified; the corrective migration below brings the live migration count to twelve.
+- [x] Supabase security and performance advisors inspected.
+- [x] Corrected a production mismatch that caused advance_game rate-limit checks to be rejected; see below.
+- [x] Corrective migration copied into the sale-readiness branch.
+- [x] Added npm test command, GitHub Actions workflow, security policy, test plan, third-party asset register and updated buyer/technical documentation.
 
-## Previously recorded infrastructure observations — recheck before listing
+## Production correction applied
 
-The following were recorded in an earlier infrastructure review dated 4 November 2026; they were not independently re-queried during this static repository review:
+The Edge Function already rate-limited the advance_game action, but the SQL allow-list in public.consume_yarper_rate_limit omitted that action. This caused the rate-limit RPC to reject the next-turn action.
 
-- Vercel production project was observed in READY state.
-- Supabase project was observed ACTIVE_HEALTHY; Edge Function yarper-api was reported at version 18.
-- Five public application tables and a private rate-limit table were reported.
-- RLS was reported enabled on the five public tables, with no direct anon/authenticated table grants in the inspected grant listing.
-- Application RPC execution was reported restricted to service_role.
-- Database indexes, constraints and migration history were previously inspected.
+A corrective migration named allow_advance_game_rate_limit was applied to the live Supabase project on 4 November 2026. A database smoke test confirmed the action is accepted. The temporary test bucket was deleted. A follow-up privilege check confirmed anon=false, authenticated=false and service_role=true for function execution.
 
-Treat those observations as dated snapshots, not permanent guarantees. Recheck current deployment health, access grants, function version, migrations, billing and ownership before closing a sale.
+The Edge Function itself remained at version 18; the correction was a database function change.
 
-## Findings and risks from current repository review
+## Current Supabase advisor findings
 
-- [ ] **Backend source is not included in this repository.** The Edge Function implementation, migrations and server-side validation cannot be audited from the checked-in source. Export/review the backend source and migrations before making a complete code-quality or security claim.
-- [ ] **Single-file frontend structure.** Application HTML, CSS and substantial JavaScript are concentrated in index.html. This is deployable but makes maintenance, review and regression testing harder. A refactor is optional; do not introduce release risk merely for appearance.
-- [ ] **Session token storage.** The browser stores the device token in localStorage. Review XSS exposure, token expiry/revocation and server-side authorization. Consider a safer session architecture before a broader commercial release.
-- [ ] **Content Security Policy.** No Content-Security-Policy meta/header was visible in the inspected repository files. Check Vercel response headers and introduce a compatible policy after testing inline script/style requirements.
-- [ ] **Automated test coverage is narrow.** The only checked-in test covers the sync scheduler. Core multiplayer and reward behavior require repeatable end-to-end and backend tests.
-- [ ] **No dependency lockfile or full dependency inventory.** No npm runtime dependencies were declared before this branch. Confirm whether any code or assets came from external sources or were added outside this repository.
-- [ ] **No privacy policy or terms document was found in the repository tree.** Confirm whether these exist elsewhere and make them accessible before public listing/operation.
-- [ ] **No completed third-party rights inventory.** Owner confirmation and evidence are still required.
-- [ ] **No independent penetration test or complete functional regression is evidenced.**
-- [ ] **Data classification is incomplete.** Existing database rows must be classified as test/demo or genuine user data before any buyer access or transfer.
+- Five INFO-level rls_enabled_no_policy findings: RLS is enabled on the five public tables but no client policies exist. This is consistent with the current server-mediated model only while public table grants remain absent and the Edge Function correctly authorizes every action. Do not add broad public policies merely to silence these notices.
+- Four INFO-level unused_index findings: these are not proof that indexes should be dropped. No indexes were removed.
+
+## Findings and remaining risks
+
+- [ ] **Custom token authentication:** Supabase JWT verification is disabled for this Edge Function. The application instead validates a random device token via its SHA-256 hash. This is a custom auth design and needs independent review for token expiry, revocation, authorization and cross-room isolation.
+- [ ] **localStorage token storage:** The browser stores the device token in localStorage. Review XSS exposure and consider a stronger session design before broader commercial operation.
+- [ ] **Dependency pinning:** The Edge Function imports @supabase/supabase-js using the broad @2 version range. Pin a tested exact version and preserve reproducible dependency metadata before listing.
+- [ ] **Historical migrations:** The live database has twelve migration records, but only the latest corrective migration is currently included in this repository. Export and reconcile the complete historical migration set.
+- [ ] **Frontend structure:** Most UI and application logic is concentrated in one static index.html file. It is deployable but harder to maintain and comprehensively test.
+- [ ] **Automated test coverage:** The checked-in unit suite covers only scheduler timing. Core multiplayer, reward and security behavior needs broader repeatable tests.
+- [ ] **Content Security Policy:** No CSP was visible in repository files. Check deployed response headers and add a compatible policy after testing inline scripts/styles.
+- [ ] **Third-party asset rights:** The register is a checklist; the rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
+- [ ] **Privacy and user data:** No completed privacy notice, terms, retention/deletion review or data classification is evidenced here.
+- [ ] **No independent penetration test or full functional regression is evidenced.**
 
 ## Required before publishing the Flippa listing
 
-- [ ] Run npm test locally and confirm the GitHub Actions workflow passes.
-- [ ] Complete the full two-device functional test plan and retain dated evidence.
-- [ ] Review the full backend function source, migrations, database grants and provider configuration.
-- [ ] Complete third-party code, font, image, icon, prompt and media licence inventory.
-- [ ] Obtain written IP assignment evidence for all contributors, if any.
-- [ ] Confirm product is not a purchased template, marketplace script or minimally modified reskin.
+- [ ] Complete the rights-holder declaration and third-party asset register.
+- [ ] Export and reconcile all historical database migrations with the live schema.
+- [ ] Pin Edge Function dependencies and verify a clean deploy from the repository.
+- [ ] Run the full two-device functional test plan and retain dated pass/fail evidence.
+- [ ] Conduct independent security testing, especially custom token authentication and cross-room access.
 - [ ] Add/review privacy policy, terms, data retention and deletion process.
 - [ ] Identify and lawfully remove, anonymize or transfer existing personal data.
 - [ ] Verify production hosting, domain, database and billing transfer procedures.
@@ -56,8 +64,8 @@ Treat those observations as dated snapshots, not permanent guarantees. Recheck c
 
 ## Commercial facts
 
-Yarper is pre-revenue. No verified revenue, paying-customer count, active-user analytics, retention cohort or independent valuation has been supplied. Asking prices are seller-set negotiation positions, not appraisals. Do not describe the product as revenue-generating, established, bug-free, independently security-certified or proven to retain users without evidence.
+Yarper is pre-revenue. No verified revenue, paying-customer count, active-user analytics, retention cohort or independent valuation has been supplied. Asking prices are seller-set negotiation positions, not appraisals. Do not describe the product as revenue-generating, bug-free, independently security-certified or proven to retain users without evidence.
 
 ## Scope limitation
 
-This is a repository and documentation readiness review, not a legal opinion, full code audit, penetration test, privacy compliance audit or independent valuation. The backend source and production data contents were not available in the current review.
+This is a technical readiness review, not a legal opinion, formal penetration test, privacy compliance audit or independent valuation. Live project metadata and configuration were inspected, but production user record contents were not reviewed. Third-party ownership and contributor IP assignments remain subject to owner verification.
