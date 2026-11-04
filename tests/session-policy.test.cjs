@@ -9,7 +9,7 @@ test('new sessions receive a 30-day idle expiry', async () => {
 });
 
 test('a session is active only before expiry and while not revoked', async () => {
-  const { isSessionActive } = await import('../session-policy.mjs');
+  const { isSessionActive } = await import('../supabase/functions/yarper-api/session-policy.mjs');
   const now = Date.parse('2026-11-04T12:00:00.000Z');
   assert.equal(isSessionActive('2026-11-05T12:00:00.000Z', null, now), true);
   assert.equal(isSessionActive('2026-11-04T12:00:00.000Z', null, now), false);
