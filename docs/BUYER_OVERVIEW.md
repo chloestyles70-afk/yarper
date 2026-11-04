@@ -43,6 +43,7 @@ The buyer should receive a clean handover, not the seller's personal passwords. 
 
 ## Outstanding diligence
 
+- Add and test server-side device-token expiry/revocation; clearing localStorage currently does not invalidate the server-side token hash.
 - Reconcile the checked-in migration with the live migration history and export the complete historical schema/migration set.
 - Pin the Edge Function dependency version and preserve a lockfile or equivalent reproducible dependency record.
 - Verify ownership and transferability of all artwork, fonts, icons, prompts and any other non-original assets.
