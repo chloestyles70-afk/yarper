@@ -51,3 +51,8 @@ test('transient boot failures preserve a valid session instead of forcing recove
   assert.match(html, /catch\(e\)\{if\(\/expired\|revoked\|session\/i\.test\(e\.message\)\)/);
   assert.match(html, /Could not reconnect\. Check your connection and reload\./);
 });
+
+test('free-text answers include a warning against submitting sensitive personal information', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /Avoid sharing passwords, financial details or highly sensitive personal information/);
+});
