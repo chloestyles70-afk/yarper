@@ -12,7 +12,7 @@ The original join RPC allowed an expired/revoked slot to be reclaimed using only
 
 **Remediation:** Recovery now also requires the SHA-256 hash of the previous device token. The database compares it with the old member token hash before rotating the credential. The browser preserves the previous token as a recovery credential across expiry and device reset. A user who clears all browser site data and loses that credential cannot use automated recovery.
 
-**Production status:** Migration 20261104155915 is applied. Edge Function yarper-api version 21 is ACTIVE. Production database smoke tests confirmed that missing and incorrect recovery proof are rejected, correct proof reclaims the same member slot, the new token hash is stored, and the previous hash is no longer present. Normal second-player joining also passed.
+**Production status:** Migrations 20261104155915 and 20261104160725 are applied. Edge Function yarper-api version 22 is ACTIVE. Production database smoke tests confirmed that missing and incorrect recovery proof are rejected, correct proof reclaims the same member slot, the new token hash is stored, and the previous hash is no longer present. Normal second-player joining also passed.
 
 ### Medium — Browser bearer token in localStorage — OPEN RISK
 
@@ -66,9 +66,13 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
   - Eight-day-old rate-limit bucket deleted by cleanup function.
 - Supabase Edge Function yarper-api version 21 is ACTIVE with verify_jwt=false and custom device-token authentication.
 - Vercel production deployment for the merged hardening change is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox test run: 13 passed, 0 failed (before the latest extra sensitive-answer warning test; rerun required for final count).
+- Node 22 isolated sandbox test run: 14 passed, 0 failed (before the latest extra sensitive-answer warning test; rerun required for final count).
 - GitHub Actions runs for the recent branch/main commits were queued and did not return a final conclusion during this review. The isolated Node test run is the available green test evidence.
 - Vercel runtime-error query for the selected recent window returned no runtime errors.
+
+### Additional hardening — authenticated sync rate limits — FIX DEPLOYED
+
+The me, heartbeat and snapshot actions now have per-member limits of 90 requests per five-minute window. The normal UI polls every five seconds, so this leaves reasonable headroom. The SQL allow-list and Edge Function are deployed; SQL smoke tests confirmed requests pass below the limit and heartbeat request 91 is rejected. Temporary test rows were deleted.
 
 ## 4. Remaining verification before a full security pass
 
