@@ -11,7 +11,8 @@
 | Normal second-player join SQL smoke test | PASS | New member can join a one-member room without a recovery credential. Disposable test couple deleted. |
 | Whole-room deletion cascade SQL smoke test | PASS | Disposable couple deletion cascaded through members, state, game sessions and reactions; no related rows remained. |
 | Rate-limit cleanup SQL smoke test | PASS | Eight-day-old test bucket was removed by cleanup function. |
-| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. |\n| Authenticated sync rate limits | PASS | me, heartbeat and snapshot are limited to 90 requests per member per five-minute window; SQL smoke test confirmed first requests pass and heartbeat request 91 is rejected. Temporary test rows deleted. |
+| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. |
+| Authenticated sync rate limits | PASS | me, heartbeat and snapshot are limited to 90 requests per member per five-minute window; SQL smoke test confirmed first requests pass and heartbeat request 91 is rejected. Temporary test rows deleted. |
 | Function privileges | PASS | join_yarper_couple, cleanup_yarper_rate_limits and consume_yarper_rate_limit: anon=false, authenticated=false, service_role=true. |
 | Table grants and RLS | PASS for intended server-mediated model | RLS enabled on all five public application tables; no direct anon/authenticated table grants found. |
 | Supabase Edge Function deployment | PASS — version 22 ACTIVE | Custom device-token authentication and secure recovery header deployed. verify_jwt=false is intentional for this custom auth model. |
@@ -30,7 +31,11 @@
 - The recovery RPC rotates the stored token hash; the old token no longer matches.
 - If the user clears browser site data and loses the recovery credential, automatic recovery is not available.
 
-## Live migration history\n\nSupabase reports 15 applied migrations. All 15 corresponding migration files are now in the repository and their SQL was compared with the live stored statements; contents match. The two latest security migrations are 20261104155915 (secure member recovery and rate-limit cleanup) and 20261104160725 (authenticated sync endpoint rate limits). A clean-room rebuild is still pending.\n\n## Advisor findings
+## Live migration history
+
+Supabase reports 15 applied migrations. All 15 corresponding migration files are now in the repository and their SQL was compared with the live stored statements; contents match. The two latest security migrations are 20261104155915 (secure member recovery and rate-limit cleanup) and 20261104160725 (authenticated sync endpoint rate limits). A clean-room rebuild is still pending.
+
+## Advisor findings
 
 - Five informational RLS-enabled-without-policy notices on the five public application tables. This is consistent with the server-mediated access model only while direct client grants remain absent and the Edge Function correctly authorizes every action.
 - Three informational unused-index notices. No indexes were dropped.
