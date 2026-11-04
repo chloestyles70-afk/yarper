@@ -1,72 +1,60 @@
 # Yarper — Sale Readiness Checklist
 
-Audit date: 4 November 2026. Production deployment, Supabase migration/function state, live schema/ACLs, advisors, source repository, test suite and Vercel deployment status were checked.
+Audit date: 4 November 2026. This record reflects the repository and production checks completed on this date. It is a diligence record, not a certification or legal opinion.
 
 ## Verified and completed
 
-- [x] GitHub repository identified: chloestyles70-afk/yarper; private.
-- [x] Proprietary software notice exists in LICENSE.md.
-- [x] Static frontend, scheduler, manifest and SVG icon inspected.
-- [x] Supabase project ACTIVE_HEALTHY; database region eu-west-1.
+- [x] GitHub repository identified: `chloestyles70-afk/yarper`; private; seller has admin access.
+- [x] Proprietary software notice exists in `LICENSE.md`.
+- [x] Static frontend, scheduler, manifest, SVG icon and Edge Function source inspected.
+- [x] Supabase project reported ACTIVE_HEALTHY; database region eu-west-1.
 - [x] Five public application tables and one private rate-limit table inspected.
 - [x] RLS enabled on all five public tables; no direct anon/authenticated table grants observed.
-- [x] SECURITY DEFINER functions inspected; fixed search_path and service-role-only execute grants confirmed for join, cleanup and rate-limit functions.
-- [x] Session expiry and revocation deployed; user-confirmed two-device gameplay and recovery tests remain recorded as owner-confirmed.
-- [x] Insecure room-code + display-name-only recovery replaced with previous-device-token proof-of-possession.
-- [x] Production migration 20261104214835 applied and repository filename aligned to the exact live migration version.
-- [x] Supabase Edge Function yarper-api version 23 ACTIVE.
-- [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15; a temporary scheduled smoke job executed successfully and was removed.
-- [x] SQL smoke tests passed for missing/wrong recovery proof rejection, valid recovery and token rotation, normal second-player join, whole-room deletion cascades, and stale rate-limit bucket cleanup.
-- [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.
-- [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
-- [x] Sensitive-information warning added beside free-text answers.
-- [x] Vercel security-header configuration deployed with CSP, HSTS, frame protection, MIME-sniffing protection, referrer policy and Permissions Policy.
+- [x] Reviewed SECURITY DEFINER functions use fixed search_path and service-role-only execute grants for join, cleanup and rate-limit functions.
+- [x] Session expiry/revocation deployed; selected two-device gameplay and recovery tests are owner-confirmed, not independently witnessed.
+- [x] Recovery requires proof of possession of the previous device token; room code and display name alone are insufficient.
+- [x] All 16 applied migration files are present in the repository and their SQL was compared with live Supabase migration statements; contents match.
+- [x] Supabase Edge Function `yarper-api` version 23 reported ACTIVE.
+- [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15.
+- [x] SQL smoke tests passed for recovery proof rejection/acceptance and token rotation, second-player join, room deletion cascades and stale rate-limit cleanup.
+- [x] Authenticated sync and snapshot actions rate-limited to 90 requests per member per five-minute window; SQL smoke test confirmed enforcement.
+- [x] Authenticated whole-room deletion deployed in Settings with explicit code confirmation and warning that both players lose access.
+- [x] Vercel security-header configuration deployed; actual production response-header verification remains open.
 - [x] Supabase JS SDK pinned to 2.118.0 (MIT).
 - [x] Privacy notice and Terms drafts prepared; not published because operator/jurisdiction details remain unresolved.
-- [x] Security assessment and user-data audit documented.
-- [x] Node regression suite: 28 passed, 0 failed on the latest verified main build. This is not an independent penetration test.
-- [x] Latest Vercel production deployment READY; aliases include yarper.vercel.app.
+- [x] Hardened backup script and restore runbook committed; shell syntax and mocked export/encryption/checksum flow passed. No production database was accessed by the mock test.
+- [x] Buyer-controlled handover checklist and direct dependency inventory documented.
+- [x] Node regression suite: 28 passed, 0 failed on the latest recorded main build. This is not a full browser, end-to-end or security test.
+- [x] Latest recorded Vercel production deployment READY; alias includes yarper.vercel.app.
 - [x] Vercel runtime-error query for the selected recent window returned no runtime errors.
 
-## Findings and remaining risks
+## Open diligence items
 
-- [ ] **localStorage bearer credentials:** Active and recovery tokens remain in browser localStorage. Consider an HttpOnly, Secure, SameSite session design and perform browser XSS testing.
-- [ ] **Production response-header verification:** Vercel configuration is deployed; verify actual production HTTP response headers directly.
-- [ ] **Independent security assessment:** Cross-room authorization, token replay, invite-code abuse and XSS require controlled browser-based tests and independent penetration testing.
-- [ ] **Direct dependency inventory:** documented in docs/DEPENDENCY_INVENTORY.md. A full resolved transitive SBOM and license review remain outstanding.
-- [x] **Historical migration reconciliation:** All 16 applied migration files are present in the repository and their SQL was compared with the live Supabase statements; contents match. A clean-room rebuild remains pending.
-- [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
-- [ ] **Automated test scope:** 28 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
-- [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
-- [ ] **Privacy notice and terms:** Drafts exist but must not be published until operator identity/contact, launch countries, minimum age, provider processing, retention and governing law are completed and legally reviewed.
-- [ ] **Abandoned-room retention:** No automatic retention period for old room content is implemented.
-- [ ] **Provider privacy review:** Confirm Supabase/Vercel processing terms, subprocessors, regions, provider logs and backup retention.
-- [ ] **Ownership declaration / IP evidence:** User reports no other contributors; independent contributor history and original asset provenance remain to be evidenced.
-- [ ] **Hosting and domain transfer:** Verify buyer-controlled Vercel/Supabase transfer and billing arrangements.
-- [x] Encrypted Supabase backup script and restore runbook hardened; shell syntax and mocked export/encryption/checksum flow passed. No real backup has been created.
-- [ ] **Backup/restore and buyer clean-room deployment:** No production backup has been executed or restored. Supabase organization is on the Free plan, so do not assume automatic daily backups.
-
-## Buyer handover materials\n\n- [x] Buyer-controlled handover checklist prepared in docs/BUYER_HANDOVER_CHECKLIST.md.\n- [x] Direct dependency inventory and SBOM limitations documented in docs/DEPENDENCY_INVENTORY.md.\n\n## Required before publishing the Flippa listing
-
-- [ ] Complete rights-holder declaration and third-party asset register; verify contributor/history evidence.
-- [ ] Demonstrate a clean-room database setup from the now-complete 16-file migration history.
-- [ ] Verify a clean Edge Function deploy from repository source.
-- [ ] Run and retain dated two-device functional test evidence on the latest production build.
-- [ ] Complete independent security testing, especially custom token authentication, recovery abuse and cross-room access.
-- [ ] Verify production response headers and browser XSS behavior.
-- [ ] Publish reviewed privacy notice and Terms with accurate operator/contact details.
-- [ ] Set and disclose abandoned-room retention; review provider backup/log deletion limits.
-- [ ] Review provider data processing, hosting regions and subprocessors.
-- [ ] Identify and lawfully remove, anonymize or transfer existing personal data.
-- [ ] Verify production hosting, domain and billing transfer procedures.
-- [ ] Execute encrypted production backup, store it off-site and complete a buyer-controlled restore/acceptance test.
-- [ ] Document operating costs, subscriptions, renewals and post-sale support scope.
-- [ ] Prepare signed asset schedule and acquisition agreement.
+- [ ] **Production backup and restore:** No production backup, off-site copy or buyer-controlled restore drill has been completed.
+- [ ] **Independent security assessment:** No independent penetration test. Browser tests should cover token replay, XSS, cross-room authorization, invite-code abuse, recovery abuse and session lifecycle.
+- [ ] **Browser/device acceptance:** Complete and retain dated two-physical-device acceptance evidence on the current production build.
+- [ ] **Production response headers:** Verify actual live HTTP response headers rather than relying only on deployed configuration.
+- [ ] **Dependency/SBOM:** Direct dependencies are inventoried; a complete resolved transitive SBOM and license review remain outstanding.
+- [ ] **Clean-room rebuild:** A clean-room database rebuild and clean Edge Function deployment from repository source have not been demonstrated.
+- [ ] **Frontend maintainability:** Most UI and application logic remains concentrated in one static `index.html`.
+- [ ] **Test scope:** 28 Node tests do not cover all multiplayer, reward, security and browser flows.
+- [ ] **IP and asset rights:** Rights-holder must confirm authorship, contributor assignments and commercial transfer rights for code, icon, prompts, fonts and other assets. Repository history is not conclusive proof of ownership.
+- [ ] **Legal/privacy:** Privacy notice and Terms remain drafts. Operator identity/contact, launch countries, minimum age, provider processing, retention and governing law need completion and qualified review.
+- [ ] **Data retention:** No automatic retention period for abandoned-room content is implemented.
+- [ ] **Provider privacy:** Confirm Vercel/Supabase processing terms, subprocessors, regions, logs and backup retention.
+- [ ] **Existing user data:** Classify records as test/demo or real user data and document lawful deletion, anonymization or transfer.
+- [ ] **Transferability:** Verify buyer-controlled GitHub, Vercel, Supabase and domain transfer arrangements.
+- [ ] **Operating costs:** Document plans, subscriptions, renewals and expected post-sale operating costs.
+- [ ] **Transaction documents:** Complete an asset schedule and signed acquisition agreement before transfer.
 
 ## Commercial facts
 
-Yarper is pre-revenue. No verified revenue, paying-customer count, active-user analytics, retention cohort or independent valuation has been supplied. Asking prices are seller-set negotiation positions, not appraisals. Do not describe the product as revenue-generating, bug-free, independently security-certified or proven to retain users without evidence.
+- Seller's current asking price: **USD 3,000** for an outright acquisition, subject to a written agreement and diligence.
+- This is a seller-set asking price, not an independent valuation, appraisal or guarantee of market value.
+- Yarper is pre-revenue. No verified revenue, paying-customer count, active-user analytics, retention cohort or customer acquisition cost has been supplied.
+- Database row counts are not proof of active users, customers or traction. Existing records must be classified before any traction claim is made.
+- No ownership, source-code access transfer, provider credential handover or control transfer is to occur until the acquisition agreement is signed and payment has cleared.
 
 ## Scope limitation
 
-This is a technical readiness review, not a legal opinion, formal penetration test, privacy compliance audit or independent valuation. Production user record contents were not reviewed. Third-party ownership and contributor IP assignments remain subject to owner verification.
+This is a technical readiness record based on specified repository and production observations. It is not a legal opinion, formal penetration test, privacy compliance audit, independent valuation or proof of ownership. Production user record contents were not reviewed. Third-party ownership and contributor IP assignments remain subject to rights-holder verification.
