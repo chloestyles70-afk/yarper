@@ -37,7 +37,7 @@ The live database also contains unique constraints, foreign keys and check const
 
 ## Backend authentication and security design
 
-The deployed Edge Function has Supabase JWT verification disabled and uses a custom device-token header. The function hashes the submitted token with SHA-256 and looks up the matching member record. The raw device token is generated with cryptographic randomness and returned only during create/join. This is a custom authentication system, so its token validation, expiry, revocation and authorization deserve focused independent review.
+The deployed Edge Function has Supabase JWT verification disabled and uses a custom device-token header. The function hashes the submitted token with SHA-256 and looks up the matching member record. The raw device token is generated with cryptographic randomness and returned only during create/join. This is a custom authentication system. The inspected implementation does not show a token expiry check or a server-side revoke/logout action; resetLocal in the frontend only clears browser storage and does not revoke the server-side token hash. Add and test a token rotation/revocation lifecycle before a broader commercial release.
 
 The Edge Function reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
 
