@@ -24,4 +24,4 @@ Do not access, modify, retain, or disclose another person's data while testing.
 
 ## Current assurance
 
-The deployed Edge Function source is checked into supabase/functions/yarper-api/index.ts, with function configuration in supabase/config.toml. The live database schema and full historical migration source still require review against the hosted Supabase project. This policy is not a penetration-test report or a security certification. No independent penetration test has been completed.
+The deployed Edge Function source is checked into supabase/functions/yarper-api/index.ts, with its session policy module and function configuration in the repository. Device tokens expire after 30 days of inactivity and are refreshed by successful `me`/heartbeat requests. The Reset this device action revokes the server-side token hash before clearing local storage. Recovery requires the couple code and the same display name, which replaces the previous token hash. This policy is not a penetration-test report or a security certification. No independent penetration test has been completed.
