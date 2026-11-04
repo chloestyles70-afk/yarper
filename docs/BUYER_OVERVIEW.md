@@ -56,7 +56,7 @@ The buyer should receive a clean handover, not the seller's personal passwords. 
 
 ## Outstanding diligence
 
-- Reconcile the full migration history and demonstrate a clean-room database setup.
+- Demonstrate a clean-room database setup from the 15 migration files, whose SQL now matches the live migration history.
 - Verify a clean Edge Function deploy from repository source.
 - Verify actual production security headers and complete browser-based XSS/cross-room tests.
 - Obtain independent penetration testing.
