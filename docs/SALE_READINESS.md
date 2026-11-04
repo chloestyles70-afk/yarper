@@ -15,7 +15,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] Insecure room-code + display-name-only recovery replaced with previous-device-token proof-of-possession.
 - [x] Production migration 20261104155915 applied and repository filename aligned to the exact live migration version.
 - [x] Supabase Edge Function yarper-api version 22 ACTIVE.
-- [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15.
+- [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15; a temporary scheduled smoke job executed successfully and was removed.
 - [x] SQL smoke tests passed for missing/wrong recovery proof rejection, valid recovery and token rotation, normal second-player join, whole-room deletion cascades, and stale rate-limit bucket cleanup.
 - [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.
 - [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
