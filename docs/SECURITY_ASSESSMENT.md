@@ -64,9 +64,9 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
   - Normal second-player join to a one-member room passed.
   - Whole-room deletion cascaded through members, state, game sessions and reactions.
   - Eight-day-old rate-limit bucket deleted by cleanup function.
-- Supabase Edge Function yarper-api version 21 is ACTIVE with verify_jwt=false and custom device-token authentication.
+- Supabase Edge Function yarper-api version 22 is ACTIVE with verify_jwt=false and custom device-token authentication.
 - Vercel production deployment for the merged hardening change is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox test run: 14 passed, 0 failed (before the latest extra sensitive-answer warning test; rerun required for final count).
+- Node 22 isolated sandbox test run: 14 passed, 0 failed after the sync-rate-limit regression test.
 - GitHub Actions runs for the recent branch/main commits were queued and did not return a final conclusion during this review. The isolated Node test run is the available green test evidence.
 - Vercel runtime-error query for the selected recent window returned no runtime errors.
 
@@ -74,9 +74,9 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
 
 The me, heartbeat and snapshot actions now have per-member limits of 90 requests per five-minute window. The normal UI polls every five seconds, so this leaves reasonable headroom. The SQL allow-list and Edge Function are deployed; SQL smoke tests confirmed requests pass below the limit and heartbeat request 91 is rejected. Temporary test rows were deleted.
 
-## 4. Remaining verification before a full security pass
+- Live Supabase migration history reports 15 records after the sync-rate-limit migration.\n\n## 4. Remaining verification before a full security pass
 
-- [ ] Re-run the complete Node test suite after the latest warning and migration-filename changes.
+- [x] Re-run the complete Node test suite after the latest warning and migration-filename changes — 14 passed, 0 failed.
 - [ ] Verify actual production response headers with a direct HTTP request.
 - [ ] Run browser-based XSS payload checks against display names, prompts, answers and reactions.
 - [ ] Run cross-room authorization, token replay and invite-code guessing tests against a controlled staging environment.
