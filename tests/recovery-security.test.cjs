@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 test('expired or revoked member recovery requires possession of the previous device secret', () => {
-  const migrationPath = path.join(__dirname, '..', 'supabase', 'migrations', '20261104160000_secure_member_recovery.sql');
+  const migrationPath = path.join(__dirname, '..', 'supabase', 'migrations', '20261104155915_secure_member_recovery_and_retention.sql');
   const migration = fs.readFileSync(migrationPath, 'utf8');
   assert.match(migration, /p_recovery_token_hash\s+text/i);
   assert.match(migration, /v_member\.device_token_hash\s*<>\s*p_recovery_token_hash/i);
@@ -39,7 +39,7 @@ test('the frontend applies a restrictive security-header configuration and the b
 });
 
 test('rate-limit bucket retention cleanup is scheduled and limited to abuse metadata', () => {
-  const migration = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'migrations', '20261104160000_secure_member_recovery.sql'), 'utf8');
+  const migration = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'migrations', '20261104155915_secure_member_recovery_and_retention.sql'), 'utf8');
   assert.ok(migration.includes('DELETE FROM private.yarper_rate_limits'));
   assert.ok(migration.includes("window_start < now() - interval '7 days'"));
   assert.ok(migration.includes("'15 3 * * *'"));
