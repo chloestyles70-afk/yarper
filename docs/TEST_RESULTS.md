@@ -11,7 +11,7 @@
 | Normal second-player join SQL smoke test | PASS | New member can join a one-member room without a recovery credential. Disposable test couple deleted. |
 | Whole-room deletion cascade SQL smoke test | PASS | Disposable couple deletion cascaded through members, state, game sessions and reactions; no related rows remained. |
 | Rate-limit cleanup SQL smoke test | PASS | Eight-day-old test bucket was removed by cleanup function. |
-| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. |
+| Scheduled cleanup configuration | PASS | pg_cron 1.6.4 installed; active job yarper-rate-limit-cleanup scheduled daily at 03:15. A temporary every-minute smoke job executed successfully (status succeeded, 1 row); the temporary job was removed. |
 | Authenticated sync rate limits | PASS | me, heartbeat and snapshot are limited to 90 requests per member per five-minute window; SQL smoke test confirmed first requests pass and heartbeat request 91 is rejected. Temporary test rows deleted. |
 | Function privileges | PASS | join_yarper_couple, cleanup_yarper_rate_limits and consume_yarper_rate_limit: anon=false, authenticated=false, service_role=true. |
 | Table grants and RLS | PASS for intended server-mediated model | RLS enabled on all five public application tables; no direct anon/authenticated table grants found. |
