@@ -55,3 +55,25 @@ Escaping is appropriate for the current HTML-text/template contexts inspected, b
 - [ ] Commission an independent penetration test before marketing Yarper as independently security-tested.
 
 **Conclusion:** The repository history and tracked-file inventory are more thoroughly documented, and source-level XSS regression checks are now added. Ownership is still not proven and browser-level testing remains open.
+
+
+## 5. Cross-room isolation verification (4 November 2026)
+
+A production-database smoke test was run using two temporary synthetic rooms and a game session in the second room. The test attempted to submit that second room's game ID while supplying the first room's ID to `yarper_answer_game`.
+
+Observed result:
+- The cross-room attempt was rejected with `ROUND_NOT_WAITING`.
+- The foreign game remained in `waiting` state.
+- The first room's XP remained unchanged.
+- A valid answer submitted against the correct room succeeded and awarded the expected 10 XP exactly once.
+- Temporary test rooms, members, states and game data were deleted; a follow-up query found no leftover test game.
+
+The deployed Edge Function source was also reviewed for room scoping:
+- Snapshot member, game, history and reaction queries filter on the authenticated member's `couple_id`.
+- Answer RPC receives `member.couple_id` from the validated device-token session, not from the request body.
+- Reaction lookup requires both game ID and authenticated room ID.
+- Whole-room deletion is scoped to the authenticated member's room ID.
+
+Five Node regression tests now guard these source-level authorization invariants. They supplement, but do not replace, browser/device testing or an independent penetration test.
+
+**Verification boundary:** This is a targeted database isolation smoke test and static source regression coverage. It is not a full cross-room penetration test of every API action or a browser-level test.
