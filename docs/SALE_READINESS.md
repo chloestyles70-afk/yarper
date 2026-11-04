@@ -33,10 +33,10 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **localStorage bearer credentials:** Active and recovery tokens remain in browser localStorage. Consider an HttpOnly, Secure, SameSite session design and perform browser XSS testing.
 - [ ] **Production response-header verification:** Vercel configuration is deployed; verify actual production HTTP response headers directly.
 - [ ] **Independent security assessment:** Cross-room authorization, token replay, invite-code abuse and XSS require controlled browser-based tests and independent penetration testing.
-- [ ] **Dependency inventory:** SDK version is pinned, but a full resolved transitive dependency graph / SBOM is not yet recorded.
+- [ ] **Direct dependency inventory:** documented in docs/DEPENDENCY_INVENTORY.md. A full resolved transitive SBOM and license review remain outstanding.
 - [x] **Historical migration reconciliation:** All 16 applied migration files are present in the repository and their SQL was compared with the live Supabase statements; contents match. A clean-room rebuild remains pending.
 - [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
-- [ ] **Automated test scope:** 14 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
+- [ ] **Automated test scope:** 28 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
 - [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
 - [ ] **Privacy notice and terms:** Drafts exist but must not be published until operator identity/contact, launch countries, minimum age, provider processing, retention and governing law are completed and legally reviewed.
 - [ ] **Abandoned-room retention:** No automatic retention period for old room content is implemented.
