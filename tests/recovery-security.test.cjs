@@ -37,3 +37,11 @@ test('the frontend applies a restrictive security-header configuration and the b
   assert.match(api, /@supabase\/supabase-js@2\.118\.0/);
   assert.doesNotMatch(api, /@supabase\/supabase-js@2["']/);
 });
+
+test('rate-limit bucket retention cleanup is scheduled and limited to abuse metadata', () => {
+  const migration = fs.readFileSync(path.join(__dirname, '..', 'supabase', 'migrations', '20261104160000_secure_member_recovery.sql'), 'utf8');
+  assert.ok(migration.includes('DELETE FROM private.yarper_rate_limits'));
+  assert.ok(migration.includes("window_start < now() - interval '7 days'"));
+  assert.ok(migration.includes("'15 3 * * *'"));
+  assert.ok(!/DELETE FROM public\.yarper_(couples|members|game_sessions|reactions|state)/i.test(migration));
+});
