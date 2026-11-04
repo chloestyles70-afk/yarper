@@ -16,8 +16,8 @@
 | Join RPC privileges | PASS | anon and authenticated cannot execute; service_role can execute. |
 | Table grants review | PASS for intended server-mediated pattern | The inspected Yarper tables showed service_role grants and no direct anon/authenticated table grants. |
 | RLS status | PASS for enabled status | RLS enabled on all five public application tables. This does not replace review of server-side authorization. |
-| Supabase Edge Function deployment | PASS — version 19 ACTIVE | Deployed with session expiry checks, token refresh and server-side revocation action. |
-| GitHub Actions | PASS on several earlier commits; latest post-fix run pending | Workflow includes scheduler tests, session-policy tests and frontend script syntax validation. |
+| Supabase Edge Function deployment | PASS — version 20 ACTIVE | Deployed with session expiry checks, token refresh and server-side revocation action. |
+| GitHub Actions | PASS — latest post-fix branch checks completed successfully | Workflow includes scheduler tests, session-policy tests and frontend script syntax validation. |
 
 ## Session lifecycle implementation
 
