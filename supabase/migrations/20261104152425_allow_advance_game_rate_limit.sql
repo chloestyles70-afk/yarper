@@ -1,7 +1,3 @@
--- Permit the Edge Function's configured advance_game action in the shared rate limiter.
--- The action was already rate-limited in the Edge Function, but omitted from this SQL allow-list,
--- causing the rate-limit RPC to reject every advance_game request.
-
 CREATE OR REPLACE FUNCTION public.consume_yarper_rate_limit(
   p_key text,
   p_action text,
