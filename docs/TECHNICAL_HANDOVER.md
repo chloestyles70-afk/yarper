@@ -16,7 +16,7 @@
 
 ## Repository and live migration boundary
 
-The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests, documentation and all 15 migration files recorded in live Supabase migration history. Each repository migration was compared with its stored live SQL statement; the SQL contents match. The most recent migrations are 20261104155915_secure_member_recovery_and_retention.sql and 20261104160725_rate_limit_sync_endpoints.sql. A clean-room database rebuild from the repository has not yet been proven.
+The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests, documentation and all 16 migration files recorded in live Supabase migration history. Each repository migration was compared with its stored live SQL statement; the SQL contents match. The most recent migrations are 20261104155915_secure_member_recovery_and_retention.sql and 20261104160725_rate_limit_sync_endpoints.sql. A clean-room database rebuild from the repository has not yet been proven.
 
 The frontend concentrates HTML, CSS and application JavaScript in index.html. This is deployable as a static site, but its monolithic structure increases maintenance and testing effort.
 
@@ -40,7 +40,7 @@ The deployed Edge Function has Supabase JWT verification disabled and uses a cus
 
 Each member row has token_expires_at and token_revoked_at. Tokens expire after 30 days without a successful me/heartbeat request; those requests extend idle expiry. The Settings reset action calls revoke_session before clearing the active token. The previous device token is preserved in localStorage as a recovery credential. Reclaiming an expired/revoked slot requires the room code, matching display name and proof of possession of the previous device token. A new token hash replaces the old one. Clearing browser site data removes the recovery credential and prevents automatic recovery.
 
-The production Edge Function yarper-api is ACTIVE at version 22. It reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
+The production Edge Function yarper-api is ACTIVE at version 23. It reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
 
 The SECURITY DEFINER RPCs use explicit search_path settings. Live ACL checks confirmed anon=false, authenticated=false and service_role=true for join, cleanup and rate-limit RPCs. The public application tables have RLS enabled and no direct anon/authenticated table grants were observed. Recheck after future migrations.
 
@@ -68,7 +68,7 @@ No automatic retention period is implemented for abandoned couple-room content.
 
 - Supabase project status: ACTIVE_HEALTHY.
 - Database region: eu-west-1.
-- 15 migration records reported by Supabase on 4 November 2026.
+- 16 migration records reported by Supabase on 4 November 2026.
 - RLS enabled on all five public application tables.
 - No direct anon/authenticated table grants found for the application tables.
 - Supabase security advisor reports five informational RLS-enabled-without-policy findings consistent with the server-mediated access model.
@@ -77,11 +77,11 @@ No automatic retention period is implemented for abandoned couple-room content.
 
 ## Backup and restore
 
-The Supabase organization is on the Free plan. Do not assume automated daily backups are enabled. The repository includes scripts/backup-supabase.sh and docs/BACKUP_RESTORE_RUNBOOK.md for an encrypted CLI export of roles, schema and data. The script's shell syntax passed, but it has not been run because a private database connection string and encryption recipient are required. No production backup or restore drill has been completed. Keep backups encrypted and off-site; never commit SQL dumps.
+The Supabase organization is on the Free plan. Do not assume automated daily backups are enabled. The repository includes scripts/backup-supabase.sh and docs/BACKUP_RESTORE_RUNBOOK.md for an encrypted CLI export of roles, schema and data. The hardened script's shell syntax and mocked export/encryption/checksum flow passed. It has not been run against production because a private database connection string and encryption recipient are required. No production backup or restore drill has been completed. Keep backups encrypted and off-site; never commit SQL dumps.
 
-## Deployment and credentials
+## Dependency inventory\n\nSee docs/DEPENDENCY_INVENTORY.md for the direct-source inventory and limitations. A complete resolved transitive SBOM and license review are still outstanding.\n\n## Buyer handover\n\nSee docs/BUYER_HANDOVER_CHECKLIST.md for the controlled account, database, deployment and acceptance sequence.\n\n## Deployment and credentials
 
-The production Vercel deployment for the merged hardening change is READY and aliases include yarper.vercel.app. Supabase Edge Function yarper-api is ACTIVE at version 22.
+The production Vercel deployment for the merged hardening change is READY and aliases include yarper.vercel.app. Supabase Edge Function yarper-api is ACTIVE at version 23.
 
 Before transfer:
 1. Confirm buyer-controlled Vercel and Supabase organizations/accounts.
