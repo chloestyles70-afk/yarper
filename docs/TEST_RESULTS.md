@@ -40,7 +40,9 @@ Supabase reports 15 applied migrations. All 15 corresponding migration files are
 - Five informational RLS-enabled-without-policy notices on the five public application tables. This is consistent with the server-mediated access model only while direct client grants remain absent and the Edge Function correctly authorizes every action.
 - Three informational unused-index notices. No indexes were dropped.
 
-- Backup script shell syntax: PASS — bash -n scripts/backup-supabase.sh. The script was not run against production because the private database URL and encryption recipient are not available in this environment.\n\n## Still not independently tested
+- Backup script shell syntax: PASS — bash -n scripts/backup-supabase.sh. The script was not run against production because the private database URL and encryption recipient are not available in this environment.
+
+## Still not independently tested
 
 - Direct production HTTP verification of response security headers.
 - Browser-based XSS payload checks against display names, prompts, answers and reactions.
