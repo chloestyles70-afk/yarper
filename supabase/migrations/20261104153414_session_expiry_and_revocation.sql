@@ -1,13 +1,9 @@
--- Add a rolling 30-day idle expiry and explicit server-side revocation state.
 ALTER TABLE public.yarper_members
   ADD COLUMN IF NOT EXISTS token_expires_at timestamptz NOT NULL DEFAULT (now() + interval '30 days');
 
 ALTER TABLE public.yarper_members
   ADD COLUMN IF NOT EXISTS token_revoked_at timestamptz;
 
--- Allow a member to reclaim their expired/revoked slot by presenting the room
--- code and the same display name. The old token hash is replaced, so the old
--- device credential cannot be used again.
 CREATE OR REPLACE FUNCTION public.join_yarper_couple(
   p_code text,
   p_display_name text,
@@ -35,9 +31,7 @@ BEGIN
     RAISE EXCEPTION 'INVALID_DEVICE_TOKEN_HASH' USING errcode = '22023';
   END IF;
 
-  -- Serialize join/recovery attempts for this couple.
-  SELECT c.id, c.code
-    INTO v_couple_id, v_code
+  SELECT c.id, c.code INTO v_couple_id, v_code
   FROM public.yarper_couples AS c
   WHERE c.code = p_code
   FOR UPDATE;
@@ -46,9 +40,7 @@ BEGIN
     RAISE EXCEPTION 'COUPLE_NOT_FOUND' USING errcode = 'P0002';
   END IF;
 
-  -- Reclaim only an expired/revoked slot with the same display name.
-  SELECT m.*
-    INTO v_member
+  SELECT m.* INTO v_member
   FROM public.yarper_members AS m
   WHERE m.couple_id = v_couple_id
     AND m.display_name = btrim(p_display_name)
@@ -68,18 +60,13 @@ BEGIN
     RETURNING * INTO v_member;
 
     RETURN jsonb_build_object(
-      'id', v_member.id,
-      'couple_id', v_member.couple_id,
-      'display_name', v_member.display_name,
-      'role', v_member.role,
-      'online', v_member.online,
-      'last_seen', v_member.last_seen,
-      'code', v_code
+      'id', v_member.id, 'couple_id', v_member.couple_id,
+      'display_name', v_member.display_name, 'role', v_member.role,
+      'online', v_member.online, 'last_seen', v_member.last_seen, 'code', v_code
     );
   END IF;
 
-  SELECT count(*)::integer
-    INTO v_count
+  SELECT count(*)::integer INTO v_count
   FROM public.yarper_members AS m
   WHERE m.couple_id = v_couple_id;
 
@@ -98,13 +85,9 @@ BEGIN
   RETURNING * INTO v_member;
 
   RETURN jsonb_build_object(
-    'id', v_member.id,
-    'couple_id', v_member.couple_id,
-    'display_name', v_member.display_name,
-    'role', v_member.role,
-    'online', v_member.online,
-    'last_seen', v_member.last_seen,
-    'code', v_code
+    'id', v_member.id, 'couple_id', v_member.couple_id,
+    'display_name', v_member.display_name, 'role', v_member.role,
+    'online', v_member.online, 'last_seen', v_member.last_seen, 'code', v_code
   );
 END;
 $function$;
