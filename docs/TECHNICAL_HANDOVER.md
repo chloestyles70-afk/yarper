@@ -16,7 +16,7 @@
 
 ## Repository and live migration boundary
 
-The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests and documentation. The live Supabase project reports 14 migration records. The most recent hardening migration is 20261104155915_secure_member_recovery_and_retention.sql, matching the exact version recorded in live migration history. Continue reconciling the complete historical migration set; a clean-room database rebuild from the repository has not yet been proven.
+The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests and documentation. The live Supabase project reports 15 migration records. The most recent hardening migration is 20261104155915_secure_member_recovery_and_retention.sql, matching the exact version recorded in live migration history. Continue reconciling the complete historical migration set; a clean-room database rebuild from the repository has not yet been proven.
 
 The frontend concentrates HTML, CSS and application JavaScript in index.html. This is deployable as a static site, but its monolithic structure increases maintenance and testing effort.
 
@@ -40,7 +40,7 @@ The deployed Edge Function has Supabase JWT verification disabled and uses a cus
 
 Each member row has token_expires_at and token_revoked_at. Tokens expire after 30 days without a successful me/heartbeat request; those requests extend idle expiry. The Settings reset action calls revoke_session before clearing the active token. The previous device token is preserved in localStorage as a recovery credential. Reclaiming an expired/revoked slot requires the room code, matching display name and proof of possession of the previous device token. A new token hash replaces the old one. Clearing browser site data removes the recovery credential and prevents automatic recovery.
 
-The production Edge Function yarper-api is ACTIVE at version 21. It reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
+The production Edge Function yarper-api is ACTIVE at version 22. It reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from server-side environment variables. Never put the service-role key in the browser or source repository.
 
 The SECURITY DEFINER RPCs use explicit search_path settings. Live ACL checks confirmed anon=false, authenticated=false and service_role=true for join, cleanup and rate-limit RPCs. The public application tables have RLS enabled and no direct anon/authenticated table grants were observed. Recheck after future migrations.
 
@@ -50,7 +50,7 @@ An authenticated member can permanently delete the entire couple space from Sett
 
 pg_cron 1.6.4 is installed. Active job yarper-rate-limit-cleanup runs daily at 03:15 and calls public.cleanup_yarper_rate_limits(), which deletes rate-limit bucket rows older than seven days. It does not delete room content. The cleanup function is executable only by service_role; cron invokes it under its scheduled database role.
 
-No automatic retention period is implemented for abandoned couple-room content.
+Authenticated me, heartbeat and snapshot requests are limited to 90 per member per five-minute window; the standard five-second polling interval remains below this limit.\n\nNo automatic retention period is implemented for abandoned couple-room content.
 
 ## Browser security and frontend observations
 
