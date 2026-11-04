@@ -17,7 +17,8 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] Supabase Edge Function yarper-api version 22 ACTIVE.
 - [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15.
 - [x] SQL smoke tests passed for missing/wrong recovery proof rejection, valid recovery and token rotation, normal second-player join, whole-room deletion cascades, and stale rate-limit bucket cleanup.
-- [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.\n- [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
+- [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.
+- [x] Authenticated whole-room deletion control deployed in Settings with explicit code confirmation and warning that both players lose access.
 - [x] Sensitive-information warning added beside free-text answers.
 - [x] Vercel security-header configuration deployed with CSP, HSTS, frame protection, MIME-sniffing protection, referrer policy and Permissions Policy.
 - [x] Supabase JS SDK pinned to 2.118.0 (MIT).
