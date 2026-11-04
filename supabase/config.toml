@@ -1,0 +1,4 @@
+project_id = "xjehryhkqvjpbduqumso"
+
+[functions.yarper-api]
+verify_jwt = false
