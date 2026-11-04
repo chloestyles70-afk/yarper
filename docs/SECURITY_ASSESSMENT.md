@@ -74,7 +74,9 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
 
 The me, heartbeat and snapshot actions now have per-member limits of 90 requests per five-minute window. The normal UI polls every five seconds, so this leaves reasonable headroom. The SQL allow-list and Edge Function are deployed; SQL smoke tests confirmed requests pass below the limit and heartbeat request 91 is rejected. Temporary test rows were deleted.
 
-- Live Supabase migration history reports 15 records after the sync-rate-limit migration.\n\n## 4. Remaining verification before a full security pass
+- Live Supabase migration history reports 15 records after the sync-rate-limit migration.
+
+## 4. Remaining verification before a full security pass
 
 - [x] Re-run the complete Node test suite after the latest warning and migration-filename changes — 14 passed, 0 failed.
 - [ ] Verify actual production response headers with a direct HTTP request.
