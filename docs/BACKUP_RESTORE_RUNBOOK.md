@@ -1,6 +1,6 @@
 # Yarper — Backup and Restore Runbook
 
-**Status:** Procedure prepared; no full production backup or restore drill has yet been executed.
+**Status:** Procedure prepared; shell syntax check passed; no full production backup or restore drill has yet been executed.
 
 ## Why this is required
 
