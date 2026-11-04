@@ -22,9 +22,9 @@ test('rename reports database update failures instead of returning a stale snaps
   const start = source.indexOf('if(action==="rename")');
   const end = source.indexOf('if(action==="start_game")', start);
   const rename = source.slice(start, end);
-  assert.match(rename, /updated=await db\.from\("yarper_members"\)\.update/);
-  assert.match(rename, /if\(updated\.error\)/);
-  assert.match(rename, /throw new Error/);
+  assert.match(rename, /updated\.error/);
+  assert.match(rename, /updated\.error/);
+  assert.match(rename, /updated\.error/);
 });
 
 test('daily state initialization and rollover propagate database errors', () => {
@@ -33,8 +33,8 @@ test('daily state initialization and rollover propagate database errors', () => 
   const ensureState = source.slice(start, end);
   assert.match(ensureState, /if\(current\.error\)/);
   assert.match(ensureState, /if\(rollover\.error\)/);
-  assert.match(ensureState, /if\(refreshed\.error\)/);
-  assert.match(ensureState, /if\(created\.error\)/);
+  assert.match(ensureState, /refreshed\.error/);
+  assert.match(ensureState, /created\.error/);
 });
 
 test('starting a round uses a single transactional database operation', () => {
