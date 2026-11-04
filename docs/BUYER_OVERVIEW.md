@@ -2,7 +2,7 @@
 
 ## Product
 
-Yarper is a mobile-first couples engagement app designed for two people to share prompts, playful challenges, answers and progress in a private digital space. It is live at https://yarper.vercel.app/.
+Yarper is a mobile-first couples engagement app designed for two people to share prompts, playful challenges, answers and progress in a private digital space. Live demo: https://yarper.vercel.app/
 
 ## What is included
 
@@ -16,20 +16,23 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 - Supabase-backed API and PostgreSQL data layer.
 - Vercel deployment connected to the source repository.
 
-## Current technical snapshot (4 November 2026)
+## Current technical snapshot
 
-- GitHub repository: `chloestyles70-afk/yarper` (currently private).
-- Production Vercel project: `yarper`; latest production deployment observed in READY state.
-- Supabase project: `Yarper`; status observed as ACTIVE_HEALTHY.
-- Active Edge Function: `yarper-api`, version 18.
-- Database: five public application tables and one private rate-limit table.
-- Applied migration history: 11 migrations.
-- Observed database rows at audit time: 9 couples, 18 member records, 9 state records, 11 game sessions and 13 reactions. These are database records, **not verified active-user, paying-customer or revenue metrics**; the owner must classify demo/test records before a buyer relies on them.
-- User-confirmed runtime checks from the owner: simultaneous game-answer handling, duplicate daily/streak reward prevention, join protection, XP duplicate prevention, duplicate game-session prevention and API error handling. These are not an independent penetration test or formal certification.
+- GitHub repository: chloestyles70-afk/yarper (private).
+- Frontend: static HTML, CSS and browser JavaScript in index.html.
+- Sync scheduler: sync-scheduler.js, with one checked-in Node.js unit-test file.
+- Backend: Supabase Edge Function named yarper-api. Its implementation source is not included in this Git repository.
+- Hosting: Vercel.
+- A previous infrastructure review dated 4 November 2026 recorded the production deployment as READY, Supabase project as ACTIVE_HEALTHY and the Edge Function at version 18. These observations must be rechecked before a transaction.
+- User-confirmed runtime checks from the owner include simultaneous game-answer handling, duplicate daily/streak reward prevention, join protection, XP duplicate prevention, duplicate game-session prevention and API error handling. These are not an independent penetration test or formal certification.
 
 ## Commercial status
 
-No verified revenue, paying-customer count, retention cohort, customer acquisition cost or independent valuation has been supplied. The previously discussed USD 2,500 figure is an owner-proposed asking-price target, not an appraisal or evidence of market value.
+Yarper is pre-revenue. No verified revenue, paying-customer count, retention cohort, customer acquisition cost, active-user analytics or independent valuation has been supplied. The seller's asking price is a negotiation position, not an appraisal or evidence of market value.
+
+## Code and originality status
+
+The checked-in frontend appears to be a custom static web application, but repository inspection alone cannot prove that all code, prompts, icons or other materials are original or properly assigned. The backend source is maintained separately and has not been included in this repository review. The third-party asset register and rights-holder declaration must be completed before making an originality or clean-IP representation.
 
 ## Sale scope to agree in writing
 
@@ -39,9 +42,11 @@ The buyer should receive a clean handover, not the seller's personal passwords. 
 
 ## Outstanding diligence
 
-- Verify ownership and transferability of all artwork, fonts, icons and any other non-original assets.
+- Complete the backend source and database migration review.
+- Verify ownership and transferability of all artwork, fonts, icons, prompts and any other non-original assets.
 - Confirm provider account/domain transfer requirements and ongoing hosting costs.
 - Classify existing database rows as demo, test or real user data; obtain consent or delete/anonymize data as legally appropriate before transfer.
 - Review privacy notice, terms of use, data retention and deletion procedures.
-- Complete independent security and functional testing on buyer's staging copy.
+- Complete independent security and functional testing on a buyer-controlled staging copy.
 - Confirm production domain and Vercel access configuration for public buyer demonstrations.
+- Agree a bounded post-sale support period, response times, exclusions and handover deliverables in writing.
