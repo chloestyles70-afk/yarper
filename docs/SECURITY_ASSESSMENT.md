@@ -72,7 +72,7 @@ The Edge Function Supabase JS SDK import is pinned to stable version 2.118.0 (MI
 
 ### Additional hardening — authenticated sync rate limits — FIX DEPLOYED
 
-The me, heartbeat and snapshot actions now have per-member limits of 90 requests per five-minute window. The normal UI polls every five seconds, so this leaves reasonable headroom. The SQL allow-list and Edge Function are deployed; SQL smoke tests confirmed requests pass below the limit and heartbeat request 91 is rejected. Temporary test rows were deleted.
+The me, heartbeat and snapshot actions now have per-member limits of 90 requests per five-minute window. The normal UI polls every five seconds, so this leaves reasonable headroom. The SQL allow-list and Edge Function are deployed; SQL smoke tests confirmed requests pass below the limit and heartbeat request 91 is rejected. Temporary test rows were deleted. The pg_cron cleanup function was also executed successfully by a temporary scheduled smoke job; that temporary job was then removed.
 
 - Live Supabase migration history reports 15 records after the sync-rate-limit migration.
 
