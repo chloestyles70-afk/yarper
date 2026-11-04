@@ -28,7 +28,7 @@
 12. **Streak reward:** Concurrent or repeated claims cannot award the same streak reward more than once.
 13. **Duplicate requests:** Repeat and concurrent requests for join, answer, round creation and reward claims do not create duplicate state or rewards.
 14. **Network interruption:** Offline state is visible or recoverable; reconnect triggers a fresh sync without duplicate actions.
-15. **Session lifecycle:** Verify token expiry, rotation and server-side revocation. Current source inspection did not find an expiry check or revoke/logout action; treat this scenario as blocked until implemented. Confirm that clearing localStorage alone does not count as server-side revocation.
+15. **Session lifecycle:** Verify a session expires after 30 days without heartbeat; successful heartbeat extends expiry; reset calls server-side revocation before clearing localStorage; a revoked token cannot access any action; a failed revoke leaves the browser token intact; expired/revoked recovery with the same room code and exact display name replaces the old token hash; old token then fails.
 16. **Mobile layout:** Test narrow screens, safe areas, keyboard overlays, scrolling, dialogs and touch targets.
 17. **Accessibility basics:** Keyboard focus is visible, controls have accessible names, reduced-motion preference is respected and text remains readable at zoom.
 18. **Data deletion:** Confirm the owner can export or delete a room and its related personal data in accordance with the published privacy terms.
