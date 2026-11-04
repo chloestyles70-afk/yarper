@@ -45,3 +45,9 @@ test('rate-limit bucket retention cleanup is scheduled and limited to abuse meta
   assert.ok(migration.includes("'15 3 * * *'"));
   assert.ok(!/DELETE FROM public\.yarper_(couples|members|game_sessions|reactions|state)/i.test(migration));
 });
+
+test('transient boot failures preserve a valid session instead of forcing recovery', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /catch\(e\)\{if\(\/expired\|revoked\|session\/i\.test\(e\.message\)\)/);
+  assert.match(html, /Could not reconnect\. Check your connection and reload\./);
+});
