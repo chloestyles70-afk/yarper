@@ -40,7 +40,7 @@ We do not currently identify an advertising or analytics SDK in the inspected ap
 
 ## 4. Sharing and service providers
 
-Yarper uses Supabase for database and backend hosting and Vercel for application hosting and delivery. These providers may process information to provide, secure and maintain their services. Before publication, the operator must confirm the applicable provider agreements, subprocessors, data-processing terms, hosting regions, backup retention and any cross-border transfer safeguards.
+Yarper uses Supabase for database and backend hosting and Vercel for application hosting and delivery. The Supabase database's primary region is eu-west-1. Supabase's published data-residency information says core database data and backups are hosted in the selected project region, while account/billing data, support access, telemetry/logs and subprocessors may involve other regions. The current Vercel production deployment reports iad1, but Vercel's published DPA describes primary processing facilities in the United States and processing by global subprocessors. The exact account plan and contractual terms must be confirmed by the operator. These provider arrangements may involve international processing; the operator must verify current agreements, subprocessors, data regions, backup retention and transfer safeguards before publication.
 
 We do not sell personal information as part of the current product design. This draft does not make a claim about independent provider processing; see each provider's applicable privacy terms.
 
@@ -51,7 +51,7 @@ We do not sell personal information as part of the current product design. This 
 - Room names, answers, reactions and progress remain until a player deletes the whole room or a future published inactivity-retention schedule applies.
 - Provider logs and backups may have separate retention periods set by the providers.
 
-The operator must set and publish a final inactivity-retention period for abandoned rooms before this notice is published.
+The operator must set and publish a final inactivity-retention period for abandoned rooms before this notice is published. Rate-limit bucket metadata older than seven days is removed by an active daily cleanup job.
 
 ## 6. Deleting a room
 
@@ -75,11 +75,11 @@ Depending on the laws that apply to you, you may have rights to request access, 
 
 Supabase and Vercel may process data in regions outside your country. The operator must confirm actual project regions and provider transfer terms, then complete this section with accurate information and any safeguards required by applicable law.
 
-## 11. Changes
+## 11. Ghana-specific review\n\nIf Yarper is operated from Ghana or offered to people in Ghana, the operator must obtain Ghana-specific legal advice on the Data Protection Act, 2012 (Act 843), including whether registration with the Data Protection Commission is required and what notices, safeguards and cross-border transfer measures apply. This draft does not determine the operator's legal obligations.\n\n## 12. Changes
 
 We may update this notice as the service changes. We will update the effective date and provide notice of material changes as required by applicable law.
 
-## 12. Contact
+## 13. Contact
 
 Privacy requests: [WORKING PRIVACY CONTACT EMAIL]  
 Operator: [FULL LEGAL NAME / BUSINESS NAME]  
