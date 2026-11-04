@@ -13,8 +13,8 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] SECURITY DEFINER functions inspected; fixed search_path and service-role-only execute grants confirmed for join, cleanup and rate-limit functions.
 - [x] Session expiry and revocation deployed; user-confirmed two-device gameplay and recovery tests remain recorded as owner-confirmed.
 - [x] Insecure room-code + display-name-only recovery replaced with previous-device-token proof-of-possession.
-- [x] Production migration 20261104155915 applied and repository filename aligned to the exact live migration version.
-- [x] Supabase Edge Function yarper-api version 22 ACTIVE.
+- [x] Production migration 20261104214835 applied and repository filename aligned to the exact live migration version.
+- [x] Supabase Edge Function yarper-api version 23 ACTIVE.
 - [x] pg_cron 1.6.4 installed; daily rate-limit cleanup job active at 03:15; a temporary scheduled smoke job executed successfully and was removed.
 - [x] SQL smoke tests passed for missing/wrong recovery proof rejection, valid recovery and token rotation, normal second-player join, whole-room deletion cascades, and stale rate-limit bucket cleanup.
 - [x] Authenticated sync and snapshot actions rate-limited to 90 requests per five minutes; SQL smoke test confirmed enforcement.
@@ -24,7 +24,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [x] Supabase JS SDK pinned to 2.118.0 (MIT).
 - [x] Privacy notice and Terms drafts prepared; not published because operator/jurisdiction details remain unresolved.
 - [x] Security assessment and user-data audit documented.
-- [x] Node 22 isolated sandbox test suite: 14 passed, 0 failed. This is not an independent penetration test.
+- [x] Node regression suite: 28 passed, 0 failed on the latest verified main build. This is not an independent penetration test.
 - [x] Latest Vercel production deployment READY; aliases include yarper.vercel.app.
 - [x] Vercel runtime-error query for the selected recent window returned no runtime errors.
 
@@ -34,7 +34,7 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Production response-header verification:** Vercel configuration is deployed; verify actual production HTTP response headers directly.
 - [ ] **Independent security assessment:** Cross-room authorization, token replay, invite-code abuse and XSS require controlled browser-based tests and independent penetration testing.
 - [ ] **Dependency inventory:** SDK version is pinned, but a full resolved transitive dependency graph / SBOM is not yet recorded.
-- [x] **Historical migration reconciliation:** All 15 applied migration files are present in the repository and their SQL was compared with the live Supabase statements; contents match. A clean-room rebuild remains pending.
+- [x] **Historical migration reconciliation:** All 16 applied migration files are present in the repository and their SQL was compared with the live Supabase statements; contents match. A clean-room rebuild remains pending.
 - [ ] **Frontend structure:** Most UI and application logic remains concentrated in one static index.html file.
 - [ ] **Automated test scope:** 14 Node tests pass, but they do not cover all multiplayer, rewards, security and browser flows.
 - [ ] **Third-party asset rights:** Rights-holder must confirm authorship, assignments and commercial transfer rights for code, prompts, icon, fonts and other media.
@@ -43,13 +43,13 @@ Audit date: 4 November 2026. Production deployment, Supabase migration/function 
 - [ ] **Provider privacy review:** Confirm Supabase/Vercel processing terms, subprocessors, regions, provider logs and backup retention.
 - [ ] **Ownership declaration / IP evidence:** User reports no other contributors; independent contributor history and original asset provenance remain to be evidenced.
 - [ ] **Hosting and domain transfer:** Verify buyer-controlled Vercel/Supabase transfer and billing arrangements.
-- [x] Encrypted Supabase backup script and restore runbook prepared; shell syntax checked.
+- [x] Encrypted Supabase backup script and restore runbook hardened; shell syntax and mocked export/encryption/checksum flow passed. No real backup has been created.
 - [ ] **Backup/restore and buyer clean-room deployment:** No production backup has been executed or restored. Supabase organization is on the Free plan, so do not assume automatic daily backups.
 
-## Required before publishing the Flippa listing
+## Buyer handover materials\n\n- [x] Buyer-controlled handover checklist prepared in docs/BUYER_HANDOVER_CHECKLIST.md.\n- [x] Direct dependency inventory and SBOM limitations documented in docs/DEPENDENCY_INVENTORY.md.\n\n## Required before publishing the Flippa listing
 
 - [ ] Complete rights-holder declaration and third-party asset register; verify contributor/history evidence.
-- [ ] Demonstrate a clean-room database setup from the now-complete 15-file migration history.
+- [ ] Demonstrate a clean-room database setup from the now-complete 16-file migration history.
 - [ ] Verify a clean Edge Function deploy from repository source.
 - [ ] Run and retain dated two-device functional test evidence on the latest production build.
 - [ ] Complete independent security testing, especially custom token authentication, recovery abuse and cross-room access.
