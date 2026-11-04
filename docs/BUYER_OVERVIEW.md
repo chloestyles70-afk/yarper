@@ -20,7 +20,7 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 
 - GitHub repository: chloestyles70-afk/yarper (private).
 - Frontend: static HTML, CSS and browser JavaScript in index.html.
-- Backend: deployed Supabase Edge Function yarper-api, version 19 after the session-lifecycle update; its source is now included in supabase/functions/yarper-api/index.ts.
+- Backend: deployed Supabase Edge Function yarper-api, version 20 after the session-lifecycle update; its source is now included in supabase/functions/yarper-api/index.ts.
 - Supabase project: Yarper, status ACTIVE_HEALTHY at the time of inspection.
 - Database: five public application tables and one private rate-limit table; 13 migration records after the session-lifecycle update.
 - RLS is enabled on all five public application tables. The inspected table grants showed access for service_role and no direct anon/authenticated table grants.
