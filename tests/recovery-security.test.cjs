@@ -62,9 +62,8 @@ test('authenticated sync and snapshot actions are rate-limited without breaking 
   assert.match(api, /me:\{limit:90,windowSeconds:300\}/);
   assert.match(api, /heartbeat:\{limit:90,windowSeconds:300\}/);
   assert.match(api, /snapshot:\{limit:90,windowSeconds:300\}/);
-  assert.match(api, /p_action NOT IN/);
   const migrationsDir = path.join(__dirname, '..', 'supabase', 'migrations');
   const migrations = fs.readdirSync(migrationsDir).filter(name => name.endsWith('.sql')).sort()
     .map(name => fs.readFileSync(path.join(migrationsDir, name), 'utf8')).join('\n');
-  assert.match(migrations, /'me','heartbeat','snapshot'/);
+  assert.match(migrations, /p_action NOT IN[\s\S]*'me','heartbeat','snapshot'/);
 });
