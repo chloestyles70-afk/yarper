@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.118.0";
 import { getSessionExpiry, isSessionActive } from "./session-policy.mjs";
 const SUPABASE_URL=Deno.env.get("SUPABASE_URL")!, SERVICE_KEY=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, db=createClient(SUPABASE_URL,SERVICE_KEY);
 const ALLOWED_ORIGIN="https://yarper.vercel.app";
