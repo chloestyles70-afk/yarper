@@ -42,7 +42,27 @@ async function allowMemberAction(memberId:string,action:string){
  if(error)throw new Error("Security check unavailable. Please try again shortly.");
  return data===true;
 }
-async function ensureState(cid:string){const r=await db.from("yarper_state").select("*").eq("couple_id",cid).maybeSingle();if(r.data){if(r.data.state_day!==dayKey()){await db.from("yarper_state").update({state_day:dayKey(),daily:DAILY[Math.floor(Math.random()*DAILY.length)],daily_done:false,streak_claimed:false,updated_at:new Date().toISOString()}).eq("couple_id",cid);return (await db.from("yarper_state").select("*").eq("couple_id",cid).single()).data}return r.data}return (await db.from("yarper_state").insert({couple_id:cid,daily:DAILY[Math.floor(Math.random()*DAILY.length)],state_day:dayKey()}).select("*").single()).data}
+async function ensureState(cid:string){
+ const current=await db.from("yarper_state").select("*").eq("couple_id",cid).maybeSingle();
+ if(current.error)throw new Error("Could not load couple state. Please try again.");
+ if(current.data){
+  if(current.data.state_day!==dayKey()){
+   const rollover=await db.from("yarper_state").update({state_day:dayKey(),daily:DAILY[Math.floor(Math.random()*DAILY.length)],daily_done:false,streak_claimed:false,updated_at:new Date().toISOString()}).eq("couple_id",cid).eq("state_day",current.data.state_day);
+   if(rollover.error)throw new Error("Could not refresh today's couple quest. Please try again.");
+   const refreshed=await db.from("yarper_state").select("*").eq("couple_id",cid).single();
+   if(refreshed.error||!refreshed.data)throw new Error("Could not reload today's couple state. Please try again.");
+   return refreshed.data;
+  }
+  return current.data;
+ }
+ const created=await db.from("yarper_state").insert({couple_id:cid,daily:DAILY[Math.floor(Math.random()*DAILY.length)],state_day:dayKey()}).select("*").single();
+ if(!created.error&&created.data)return created.data;
+ if(created.error?.code==="23505"){
+  const raced=await db.from("yarper_state").select("*").eq("couple_id",cid).maybeSingle();
+  if(!raced.error&&raced.data)return raced.data;
+ }
+ throw new Error("Could not initialize couple state. Please try again.");
+}
 async function snapshot(member:any){const state=await ensureState(member.couple_id);const mr=await db.from("yarper_members").select("id,display_name,role,online,last_seen,created_at").eq("couple_id",member.couple_id).order("created_at");const list=(mr.data??[]).map((m:any)=>({id:m.id,display_name:m.display_name,role:m.role,online:Date.now()-new Date(m.last_seen).getTime()<9000,last_seen:m.last_seen}));const me=list.find((m:any)=>m.id===member.id),partner=list.find((m:any)=>m.id!==member.id)||null;const game=(await db.from("yarper_game_sessions").select("*").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle()).data;const history=(await db.from("yarper_game_sessions").select("*").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(20)).data??[];const reactions=(await db.from("yarper_reactions").select("*").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(50)).data??[];const cr=await db.from("yarper_couples").select("code").eq("id",member.couple_id).single();return {couple_id:member.couple_id,code:cr.data?.code??null,connected:list.length===2,member_count:list.length,me,partner,state,game,history,reactions}}
 Deno.serve(async req=>{
  const origin=req.headers.get("origin");
@@ -56,7 +76,23 @@ Deno.serve(async req=>{
  let body:any;try{body=JSON.parse(rawBody)}catch{return json({error:"Invalid JSON request."},400)}
  if(!body||typeof body!=="object"||Array.isArray(body))return json({error:"Invalid request body."},400);
  const action=String(body.action||"");
-if(action==="create"){if(!(await allowAttempt(req,"create")))return json({error:"Too many couple creation attempts. Please try again later."},429);const name=cleanName(body.name);let couple:any=null;for(let i=0;i<8&&!couple;i++){const r=await db.from("yarper_couples").insert({code:randomCode()}).select("*").single();if(!r.error)couple=r.data}if(!couple)throw Error("Could not create a couple code. Please try again.");const token=randomToken(),hash=await sha256(token),r=await db.from("yarper_members").insert({couple_id:couple.id,device_token_hash:hash,display_name:name,role:"player1",online:true,last_seen:new Date().toISOString(),token_expires_at:getSessionExpiry(),token_revoked_at:null}).select("id,display_name,role,online,last_seen").single();if(r.error)throw r.error;await ensureState(couple.id);return json({token,code:couple.code,...await snapshot(r.data)})}
+if(action==="create"){
+ if(!(await allowAttempt(req,"create")))return json({error:"Too many couple creation attempts. Please try again later."},429);
+ const name=cleanName(body.name);let couple:any=null;
+ for(let i=0;i<8&&!couple;i++){const created=await db.from("yarper_couples").insert({code:randomCode()}).select("*").single();if(!created.error)couple=created.data}
+ if(!couple)throw new Error("Could not create a couple code. Please try again.");
+ const token=randomToken(),hash=await sha256(token);
+ try{
+  const member=await db.from("yarper_members").insert({couple_id:couple.id,device_token_hash:hash,display_name:name,role:"player1",online:true,last_seen:new Date().toISOString(),token_expires_at:getSessionExpiry(),token_revoked_at:null}).select("id,display_name,role,online,last_seen").single();
+  if(member.error||!member.data)throw new Error("Could not create your member profile. Please try again.");
+  await ensureState(couple.id);
+  return json({token,code:couple.code,...await snapshot(member.data)});
+ }catch(error){
+  const cleanup=await db.from("yarper_couples").delete().eq("id",couple.id);
+  if(cleanup.error)throw new Error("Couple setup failed and automatic cleanup could not be completed. Please contact support.");
+  throw error;
+ }
+}
 if(action==="join"){
  if(!(await allowAttempt(req,"join")))return json({error:"Too many join attempts. Please try again in a few minutes."},429);
  const name=cleanName(body.name),code=cleanCode(body.code),token=randomToken(),hash=await sha256(token);
@@ -79,8 +115,21 @@ const member=await memberFromToken(String(req.headers.get("x-yarper-token")||"")
 const rateLimited=await allowMemberAction(member.id,action);
 if(!rateLimited)return json({error:"Too many requests. Please wait before trying again.",retry_after_seconds:60},429);
 if(action==="me"||action==="heartbeat"){const now=new Date().toISOString(),refreshed=await db.from("yarper_members").update({online:true,last_seen:now,token_expires_at:getSessionExpiry(Date.parse(now))}).eq("id",member.id);if(refreshed.error)throw new Error("Could not refresh your session. Please try again.");return json(await snapshot((await db.from("yarper_members").select("*").eq("id",member.id).single()).data))}
-if(action==="rename"){const name=cleanName(body.name);await db.from("yarper_members").update({display_name:name,last_seen:new Date().toISOString(),online:true}).eq("id",member.id);return json(await snapshot((await db.from("yarper_members").select("*").eq("id",member.id).single()).data))}
-if(action==="start_game"){const mode=String(body.mode||"questions"),question=String(body.question||"").trim();if(!BANK[mode]||!question||question.length>300)throw Error("Invalid game prompt.");const shared=await db.from("yarper_state").select("current_turn,picker_ready").eq("couple_id",member.couple_id).single();if(shared.error)throw new Error("Could not check whose turn it is.");if(shared.data.current_turn!==member.role)return json({error:"It is your partner’s turn to choose the next prompt."},403);if(shared.data.picker_ready===false){const latest=await db.from("yarper_game_sessions").select("id,status").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error)throw new Error("Could not check the previous round.");if(latest.data?.status==="answered")return json({error:"Tap Next on the completed round before choosing again."},409);}const open=await db.from("yarper_game_sessions").select("id,status").eq("couple_id",member.couple_id).eq("status","waiting").maybeSingle();if(open.error)throw new Error("Could not check the current round. Please try again.");if(open.data)return json({error:"Finish the current round first."},409);const created=await db.from("yarper_game_sessions").insert({couple_id:member.couple_id,game_mode:mode,question,selected_by:member.role,status:"waiting"});if(created.error){if(created.error.code==="23505")return json({error:"A round was just started. Finish the current round first."},409);throw new Error("Could not start the round. Please try again.");}const turnUpdate=await db.from("yarper_state").update({current_turn:member.role==="player1"?"player2":"player1",picker_ready:false,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(turnUpdate.error)throw new Error("The round started, but turn status could not be updated. Refresh to sync.");return json(await snapshot(member))}
+if(action==="rename"){const name=cleanName(body.name),updated=await db.from("yarper_members").update({display_name:name,last_seen:new Date().toISOString(),online:true}).eq("id",member.id).select("*").single();if(updated.error||!updated.data)throw new Error("Could not update your profile. Please try again.");return json(await snapshot(updated.data))}
+if(action==="start_game"){
+ const mode=String(body.mode||"questions"),question=String(body.question||"").trim();
+ if(!BANK[mode]||!question||question.length>300)throw new Error("Invalid game prompt.");
+ const started=await db.rpc("yarper_start_game",{p_couple_id:member.couple_id,p_role:member.role,p_game_mode:mode,p_question:question});
+ if(started.error){
+  const message=started.error.message||"";
+  if(message.includes("NOT_YOUR_TURN"))return json({error:"It is your partner’s turn to choose the next prompt."},403);
+  if(message.includes("MUST_ADVANCE"))return json({error:"Tap Next on the completed round before choosing again."},409);
+  if(message.includes("ROUND_ALREADY_WAITING"))return json({error:"Finish the current round first."},409);
+  if(message.includes("INVALID_GAME"))return json({error:"Choose a valid game prompt."},400);
+  throw new Error("Could not start the round securely. Please try again.");
+ }
+ return json(await snapshot(member));
+}
 if(action==="advance_game"){const latest=await db.from("yarper_game_sessions").select("id,status").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error||!latest.data||latest.data.status!=="answered")return json({error:"Complete the current round before moving on."},409);const ready=await db.from("yarper_state").update({picker_ready:true,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(ready.error)throw new Error("Could not sync the next turn. Please try again.");return json(await snapshot(member))}
 if(action==="answer_game"){const gameId=String(body.game_id||""),answer=String(body.answer||"").trim();if(!gameId||!answer||answer.length>1000)throw Error("Write a response first.");const result=await db.rpc("yarper_answer_game",{p_game_id:gameId,p_couple_id:member.couple_id,p_role:member.role,p_answer:answer});if(result.error){const message=result.error.message||"";if(message.includes("ROUND_NOT_WAITING"))return json({error:"That round is no longer waiting."},409);if(message.includes("SELECTING_PLAYER_CANNOT_ANSWER"))return json({error:"Your partner needs to answer this round."},403);if(message.includes("INVALID_ANSWER"))return json({error:"Write a valid response first."},400);throw new Error("Could not save your answer securely. Please try again.");}return json(await snapshot(member))}
 if(action==="react"){const gameId=String(body.game_id||""),emoji=String(body.emoji||"");if(!["❤️","😂","🔥","🥰","😏","👀","👏","💚"].includes(emoji))throw Error("Reaction not available.");if(!(await db.from("yarper_game_sessions").select("id").eq("id",gameId).eq("couple_id",member.couple_id).maybeSingle()).data)throw Error("Round not found.");const saved=await db.from("yarper_reactions").insert({couple_id:member.couple_id,game_id:gameId,by_role:member.role,emoji});if(saved.error)throw new Error("Could not save your reaction. Please try again.");return json(await snapshot(member))}
