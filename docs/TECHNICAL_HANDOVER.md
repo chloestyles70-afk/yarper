@@ -16,7 +16,7 @@
 
 ## Repository and live migration boundary
 
-The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests and documentation. The live Supabase project reports 15 migration records. The most recent hardening migration is 20261104155915_secure_member_recovery_and_retention.sql, matching the exact version recorded in live migration history. Continue reconciling the complete historical migration set; a clean-room database rebuild from the repository has not yet been proven.
+The GitHub repository contains the static frontend, deployed Edge Function source, function configuration, scheduler, app manifest, SVG icon, tests, documentation and all 15 migration files recorded in live Supabase migration history. Each repository migration was compared with its stored live SQL statement; the SQL contents match. The most recent migrations are 20261104155915_secure_member_recovery_and_retention.sql and 20261104160725_rate_limit_sync_endpoints.sql. A clean-room database rebuild from the repository has not yet been proven.
 
 The frontend concentrates HTML, CSS and application JavaScript in index.html. This is deployable as a static site, but its monolithic structure increases maintenance and testing effort.
 
