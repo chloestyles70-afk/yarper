@@ -30,7 +30,7 @@
 - The recovery RPC rotates the stored token hash; the old token no longer matches.
 - If the user clears browser site data and loses the recovery credential, automatic recovery is not available.
 
-## Live migration history\n\nSupabase reports 15 applied migrations. The two latest security migrations are 20261104155915 (secure member recovery and rate-limit cleanup) and 20261104160725 (authenticated sync endpoint rate limits). Both filenames are aligned in the repository to the live migration versions.\n\n## Advisor findings
+## Live migration history\n\nSupabase reports 15 applied migrations. All 15 corresponding migration files are now in the repository and their SQL was compared with the live stored statements; contents match. The two latest security migrations are 20261104155915 (secure member recovery and rate-limit cleanup) and 20261104160725 (authenticated sync endpoint rate limits). A clean-room rebuild is still pending.\n\n## Advisor findings
 
 - Five informational RLS-enabled-without-policy notices on the five public application tables. This is consistent with the server-mediated access model only while direct client grants remain absent and the Edge Function correctly authorizes every action.
 - Three informational unused-index notices. No indexes were dropped.
