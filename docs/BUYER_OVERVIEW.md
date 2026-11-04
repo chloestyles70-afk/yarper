@@ -13,26 +13,27 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 - XP, levels, daily quest and streak reward mechanics.
 - Mini-game utilities and a timed challenge.
 - Responsive single-page web interface.
-- Supabase-backed API and PostgreSQL data layer.
+- Supabase Edge Function source and PostgreSQL-backed data layer.
 - Vercel deployment connected to the source repository.
 
-## Current technical snapshot
+## Current technical snapshot — 4 November 2026
 
 - GitHub repository: chloestyles70-afk/yarper (private).
 - Frontend: static HTML, CSS and browser JavaScript in index.html.
-- Sync scheduler: sync-scheduler.js, with one checked-in Node.js unit-test file.
-- Backend: Supabase Edge Function named yarper-api. Its implementation source is not included in this Git repository.
-- Hosting: Vercel.
-- A previous infrastructure review dated 4 November 2026 recorded the production deployment as READY, Supabase project as ACTIVE_HEALTHY and the Edge Function at version 18. These observations must be rechecked before a transaction.
+- Backend: deployed Supabase Edge Function yarper-api, version 18 at the time of inspection; its source is now included in supabase/functions/yarper-api/index.ts.
+- Supabase project: Yarper, status ACTIVE_HEALTHY at the time of inspection.
+- Database: five public application tables and one private rate-limit table; 12 migration records after the rate-limit fix.
+- RLS is enabled on all five public application tables. The inspected table grants showed access for service_role and no direct anon/authenticated table grants.
+- The five public tables returned informational RLS-enabled-without-policy advisor notices. This matches the current server-mediated access pattern only if the Edge Function remains the sole data path; it does not replace a review of function authorization.
 - User-confirmed runtime checks from the owner include simultaneous game-answer handling, duplicate daily/streak reward prevention, join protection, XP duplicate prevention, duplicate game-session prevention and API error handling. These are not an independent penetration test or formal certification.
 
 ## Commercial status
 
-Yarper is pre-revenue. No verified revenue, paying-customer count, retention cohort, customer acquisition cost, active-user analytics or independent valuation has been supplied. The seller's asking price is a negotiation position, not an appraisal or evidence of market value.
+Yarper is pre-revenue. No verified revenue, paying-customer count, retention cohort, customer acquisition cost or active-user analytics has been supplied. The seller's asking price is a negotiation position, not an appraisal or evidence of market value.
 
 ## Code and originality status
 
-The checked-in frontend appears to be a custom static web application, but repository inspection alone cannot prove that all code, prompts, icons or other materials are original or properly assigned. The backend source is maintained separately and has not been included in this repository review. The third-party asset register and rights-holder declaration must be completed before making an originality or clean-IP representation.
+The checked-in frontend and backend source are available for review. Repository inspection alone cannot prove that all code, prompts, icons or other materials are original or properly assigned. The rights-holder declaration and third-party asset register must be completed before making a clean-IP representation.
 
 ## Sale scope to agree in writing
 
@@ -42,11 +43,11 @@ The buyer should receive a clean handover, not the seller's personal passwords. 
 
 ## Outstanding diligence
 
-- Complete the backend source and database migration review.
+- Reconcile the checked-in migration with the live migration history and export the complete historical schema/migration set.
+- Pin the Edge Function dependency version and preserve a lockfile or equivalent reproducible dependency record.
 - Verify ownership and transferability of all artwork, fonts, icons, prompts and any other non-original assets.
 - Confirm provider account/domain transfer requirements and ongoing hosting costs.
 - Classify existing database rows as demo, test or real user data; obtain consent or delete/anonymize data as legally appropriate before transfer.
 - Review privacy notice, terms of use, data retention and deletion procedures.
-- Complete independent security and functional testing on a buyer-controlled staging copy.
-- Confirm production domain and Vercel access configuration for public buyer demonstrations.
+- Complete independent security and full functional testing on a buyer-controlled staging copy.
 - Agree a bounded post-sale support period, response times, exclusions and handover deliverables in writing.
