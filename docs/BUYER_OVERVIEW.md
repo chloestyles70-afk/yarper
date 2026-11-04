@@ -17,21 +17,21 @@ Yarper is a mobile-first couples engagement app designed for two people to share
 - Vercel deployment connected to the source repository.
 - 30-day idle session expiry, server-side revocation and proof-of-possession recovery.
 - Authenticated whole-room deletion from Settings, with a warning that both members' shared data and access are removed.
-- Daily cleanup of rate-limit bucket metadata older than seven days.
+- Daily cleanup of rate-limit bucket metadata older than seven days.\n- Per-member limits on me, heartbeat and snapshot requests: 90 per five-minute window.
 
 ## Current technical snapshot — 4 November 2026
 
 - GitHub repository: chloestyles70-afk/yarper (private).
 - Frontend: static HTML, CSS and browser JavaScript in index.html.
-- Backend: Supabase Edge Function yarper-api, version 21 ACTIVE; source is in supabase/functions/yarper-api/index.ts.
+- Backend: Supabase Edge Function yarper-api, version 22 ACTIVE; source is in supabase/functions/yarper-api/index.ts.
 - Supabase project: Yarper, status ACTIVE_HEALTHY; PostgreSQL 17; database region eu-west-1.
-- Database: five public application tables and one private rate-limit table; 14 live migration records.
+- Database: five public application tables and one private rate-limit table; 15 live migration records.
 - RLS is enabled on all five public application tables. The inspected table grants showed no direct anon/authenticated table grants.
 - Reviewed SECURITY DEFINER RPCs use fixed search paths and are executable by service_role, not anon/authenticated.
 - Device tokens expire after 30 days of inactivity; successful heartbeats extend expiry. Recovery of an expired/revoked slot now requires proof of possession of the previous device token, not just a room code and display name.
 - Daily pg_cron job yarper-rate-limit-cleanup is active at 03:15.
 - Vercel production deployment is READY and aliases include yarper.vercel.app.
-- Node 22 isolated sandbox tests: 13 passed, 0 failed at the time of the recorded run. The suite does not constitute comprehensive browser or security testing.
+- Node 22 isolated sandbox tests: 14 passed, 0 failed at the time of the recorded run. The suite does not constitute comprehensive browser or security testing.
 - The owner previously confirmed two-device gameplay and session recovery tests. Those checks are user-confirmed, not independently witnessed by the reviewer.
 
 ## Privacy and security status
