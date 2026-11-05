@@ -167,6 +167,48 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 }
 
 </style>
+
+<style id="yarper-theme-additions">
+:root[data-theme="light"]{
+ --bg:#f4f7fb;--card:#ffffff;--card2:#eef2f8;--line:#d9e1ec;--text:#172033;--muted:#64748b;
+ --shadow:0 24px 70px #24344a18;
+ color-scheme:light;
+}
+:root[data-theme="light"] body{background:#e9eef5;color:var(--text)}
+:root[data-theme="light"] .app{background:radial-gradient(520px 330px at 50% -8%,#d9f5f2 0,#f4f7fb 55%,var(--bg) 85%)}
+:root[data-theme="light"] .top{background:#f4f7fbeF;border-bottom-color:#17203318}
+:root[data-theme="light"] .gear,
+:root[data-theme="light"] .secondary,
+:root[data-theme="light"] .stat,
+:root[data-theme="light"] .historyCard,
+:root[data-theme="light"] .codeBox{background:#ffffff;border-color:var(--line);color:var(--text)}
+:root[data-theme="light"] .couple{background:radial-gradient(circle at 50% 0,#f3dff0,#ffffff 72%);border-color:#e7d7e8}
+:root[data-theme="light"] .score{background:linear-gradient(145deg,#f0eafa,#ffffff);border-color:var(--line)}
+:root[data-theme="light"] .mode{background:linear-gradient(145deg,#ffffff,#eef3f8);color:var(--text);border-color:var(--line)}
+:root[data-theme="light"] .mode.featured{background:linear-gradient(145deg,#e1f8f4,#f4fbff);border-color:#9bded5}
+:root[data-theme="light"] .quest{background:linear-gradient(145deg,#f4effb,#ffffff);border-color:var(--line)}
+:root[data-theme="light"] .nav{background:#ffffffed;border-color:var(--line)}
+:root[data-theme="light"] .nav button{color:#64748b}
+:root[data-theme="light"] .nav button.active{color:#172033}
+:root[data-theme="light"] .sheet{background:#ffffff;color:var(--text);border-color:var(--line)}
+:root[data-theme="light"] .pick,
+:root[data-theme="light"] .tool{background:linear-gradient(145deg,#f5f8fc,#ffffff);color:var(--text);border-color:var(--line)}
+:root[data-theme="light"] .field input,
+:root[data-theme="light"] .field textarea{background:#f8fafc;color:#172033;border-color:var(--line)}
+:root[data-theme="light"] .prompt{background:radial-gradient(circle at top,#f5e5f1,#f3f6fb 70%);border-color:var(--line)}
+:root[data-theme="light"] .gateBox{background:#ffffff;color:var(--text);border-color:var(--line)}
+:root[data-theme="light"] .connection{background:#ffffff;border-color:var(--line)}
+:root[data-theme="light"] .bar{background:#dce4ee}
+:root[data-theme="light"] .levelupCard{background:radial-gradient(circle at 50% 0,#f9e3ef,#ffffff 72%);color:#172033}
+:root[data-theme="light"] .levelupCard p{color:#536176}
+:root[data-theme="light"] .levelup{background:#e8edf5dd}
+:root[data-theme="light"] .toast{background:#172033;color:#fff}
+.themeChoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 18px}
+.themeChoice{min-height:48px;border:1px solid var(--line);border-radius:13px;background:#ffffff08;color:var(--text);font-size:11px;font-weight:850}
+.themeChoice[aria-pressed="true"]{border-color:var(--a);box-shadow:0 0 0 2px color-mix(in srgb,var(--a) 22%,transparent);background:color-mix(in srgb,var(--a) 10%,transparent)}
+:root[data-theme="light"] .themeChoice{background:#f8fafc;color:#172033}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -218,6 +260,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 </div><div id="toolResult" class="result">Pick a mini-game.</div><button id="toolTimerBtn" class="secondary hidden" onclick="startTimer()">Start 60-second timer</button><div id="timer" class="result hidden" style="font-size:30px;font-weight:950">60</div></div></div>
 
 <div id="settingsModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div class="eyebrow">PROFILE</div><h2>Your side</h2></div><button class="close" onclick="closeSettings()">×</button></div>
+<div class="sectionHead" style="margin-top:20px"><div><div class="eyebrow">APPEARANCE</div><h2 style="font-size:16px">Theme</h2></div></div>
+<div class="themeChoices" role="group" aria-label="Choose appearance">
+<button type="button" class="themeChoice" data-theme-choice="light" aria-pressed="false" onclick="setYarperTheme('light')">☀ Light</button>
+<button type="button" class="themeChoice" data-theme-choice="dark" aria-pressed="false" onclick="setYarperTheme('dark')">☾ Dark</button>
+<button type="button" class="themeChoice" data-theme-choice="system" aria-pressed="false" onclick="setYarperTheme('system')">◐ System</button>
+</div>
+<p class="muted" style="font-size:10px;line-height:1.5;margin:-8px 0 14px">System follows your device appearance automatically.</p>
 <div class="field"><label>DISPLAY NAME</label><input id="nameInput" maxlength="40"></div><button class="primary" onclick="saveName()">Save name</button><div class="codeBox"><small>YOUR COUPLE CODE</small><b id="settingsCode">------</b></div><button class="secondary" onclick="resetLocal()">Reset this device</button><p class="muted" style="font-size:10px;line-height:1.5">Reset keeps a recovery key on this browser so you can safely reclaim your place later. Clearing browser site data removes that key.</p><button class="secondary" style="border-color:#ff718e55;color:#ff9bad" onclick="deleteRoom()">Delete our couple space and all shared data</button><p class="muted" style="font-size:10px;line-height:1.5">Permanent: deletes both members, answers, reactions and progress. Your partner will lose access too.</p></div></div>
 
 <div id="gate" class="gate show"><div class="gateBox">
@@ -293,6 +342,31 @@ function loop(){clearTimeout(syncId);const delay=YarperSyncScheduler.getSyncDela
 async function boot(){if(!token){$("gate").classList.add("show");if(recoveryToken)connectMode("join");return}try{const d=await api("me");apply(d);if(unlocked||d.connected){$("gate").classList.remove("show")}else $("gate").classList.add("show")}catch(e){if(/expired|revoked|session/i.test(e.message)){recoveryToken=token||recoveryToken;if(recoveryToken)localStorage.setItem("yarperRecoveryToken",recoveryToken);localStorage.removeItem("yarperToken");token="";unlocked=false;$("gate").classList.add("show");connectMode("join")}else{$("gate").classList.add("show");toast("Could not reconnect. Check your connection and reload.")}}}
 document.addEventListener("visibilitychange",loop);window.addEventListener("focus",loop);window.addEventListener("pageshow",loop);window.addEventListener("online",loop);window.addEventListener("offline",loop);
 boot().finally(loop);
+</script>
+
+<script id="yarper-theme-controller">
+(function(){
+ const key="yarperThemePreference";
+ const media=window.matchMedia("(prefers-color-scheme: dark)");
+ function applyTheme(choice){
+   const resolved=choice==="system"?(media.matches?"dark":"light"):choice;
+   document.documentElement.dataset.theme=resolved;
+   const meta=document.querySelector('meta[name="theme-color"]');
+   if(meta)meta.content=resolved==="light"?"#f4f7fb":"#070b12";
+   document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===choice)));
+ }
+ window.setYarperTheme=function(choice){
+   if(!["light","dark","system"].includes(choice))return;
+   try{localStorage.setItem(key,choice)}catch(e){}
+   applyTheme(choice);
+ };
+ let saved="system";
+ try{saved=localStorage.getItem(key)||"system"}catch(e){}
+ applyTheme(saved);
+ const onSystemChange=()=>{let current="system";try{current=localStorage.getItem(key)||"system"}catch(e){}if(current==="system")applyTheme("system")};
+ if(media.addEventListener)media.addEventListener("change",onSystemChange);else if(media.addListener)media.addListener(onSystemChange);
+ window.addEventListener("storage",e=>{if(e.key===key)applyTheme(e.newValue||"system")});
+})();
 </script>
 </body>
 </html>
