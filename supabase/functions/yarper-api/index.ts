@@ -34,7 +34,8 @@ async function allowMemberAction(memberId:string,action:string){
   delete_room:{limit:2,windowSeconds:3600},
   me:{limit:90,windowSeconds:300},
   heartbeat:{limit:90,windowSeconds:300},
-  snapshot:{limit:90,windowSeconds:300}
+  snapshot:{limit:90,windowSeconds:300},
+  set_question_turn_mode:{limit:8,windowSeconds:3600}
  };
  const policy=limits[action];if(!policy)return true;
  const key=await sha256(memberId+"|yarper|member|"+action);
@@ -116,6 +117,17 @@ const rateLimited=await allowMemberAction(member.id,action);
 if(!rateLimited)return json({error:"Too many requests. Please wait before trying again.",retry_after_seconds:60},429);
 if(action==="me"||action==="heartbeat"){const now=new Date().toISOString(),refreshed=await db.from("yarper_members").update({online:true,last_seen:now,token_expires_at:getSessionExpiry(Date.parse(now))}).eq("id",member.id);if(refreshed.error)throw new Error("Could not refresh your session. Please try again.");return json(await snapshot((await db.from("yarper_members").select("*").eq("id",member.id).single()).data))}
 if(action==="rename"){const name=cleanName(body.name),updated=await db.from("yarper_members").update({display_name:name,last_seen:new Date().toISOString(),online:true}).eq("id",member.id).select("*").single();if(updated.error||!updated.data)throw new Error("Could not update your profile. Please try again.");return json(await snapshot(updated.data))}
+if(action==="set_question_turn_mode"){
+ const turnMode=String(body.turn_mode||"");
+ const asker=String(body.question_asker||"");
+ if(!["alternating","single_asker"].includes(turnMode)||!["player1","player2"].includes(asker))return json({error:"Choose a valid question turn style and asker."},400);
+ const pending=await db.from("yarper_game_sessions").select("id").eq("couple_id",member.couple_id).eq("status","waiting").limit(1).maybeSingle();
+ if(pending.error)throw new Error("Could not check the current round. Please try again.");
+ if(pending.data)return json({error:"Finish the current round before changing question settings."},409);
+ const saved=await db.from("yarper_state").update({question_turn_mode:turnMode,question_asker:asker,...(turnMode==="single_asker"?{current_turn:asker}:{}),updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);
+ if(saved.error)throw new Error("Could not save question settings. Please try again.");
+ return json(await snapshot(member));
+}
 if(action==="start_game"){
  const mode=String(body.mode||"questions"),question=String(body.question||"").trim();
  if(!BANK[mode]||!question||question.length>300)throw new Error("Invalid game prompt.");
@@ -130,7 +142,7 @@ if(action==="start_game"){
  }
  return json(await snapshot(member));
 }
-if(action==="advance_game"){const latest=await db.from("yarper_game_sessions").select("id,status,selected_by").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error||!latest.data||latest.data.status!=="answered"||!["player1","player2"].includes(latest.data.selected_by))return json({error:"Complete the current round before moving on."},409);const nextPicker=latest.data.selected_by==="player1"?"player2":"player1";const ready=await db.from("yarper_state").update({current_turn:nextPicker,picker_ready:true,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(ready.error)throw new Error("Could not sync the next turn. Please try again.");return json(await snapshot(member))}
+if(action==="advance_game"){const latest=await db.from("yarper_game_sessions").select("id,status,selected_by,game_mode").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error||!latest.data||latest.data.status!=="answered"||!["player1","player2"].includes(latest.data.selected_by))return json({error:"Complete the current round before moving on."},409);const current=await db.from("yarper_state").select("question_turn_mode,question_asker").eq("couple_id",member.couple_id).single();if(current.error||!current.data)throw new Error("Could not load question settings. Please try again.");const nextPicker=latest.data.game_mode==="questions"&&current.data.question_turn_mode==="single_asker"?current.data.question_asker:(latest.data.selected_by==="player1"?"player2":"player1");const ready=await db.from("yarper_state").update({current_turn:nextPicker,picker_ready:true,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(ready.error)throw new Error("Could not sync the next turn. Please try again.");return json(await snapshot(member))}
 if(action==="answer_game"){const gameId=String(body.game_id||""),answer=String(body.answer||"").trim();if(!gameId||!answer||answer.length>1000)throw Error("Write a response first.");const result=await db.rpc("yarper_answer_game",{p_game_id:gameId,p_couple_id:member.couple_id,p_role:member.role,p_answer:answer});if(result.error){const message=result.error.message||"";if(message.includes("ROUND_NOT_WAITING"))return json({error:"That round is no longer waiting."},409);if(message.includes("SELECTING_PLAYER_CANNOT_ANSWER"))return json({error:"Your partner needs to answer this round."},403);if(message.includes("INVALID_ANSWER"))return json({error:"Write a valid response first."},400);throw new Error("Could not save your answer securely. Please try again.");}return json(await snapshot(member))}
 if(action==="react"){const gameId=String(body.game_id||""),emoji=String(body.emoji||"");if(!["❤️","😂","🔥","🥰","😏","👀","👏","💚"].includes(emoji))throw Error("Reaction not available.");if(!(await db.from("yarper_game_sessions").select("id").eq("id",gameId).eq("couple_id",member.couple_id).maybeSingle()).data)throw Error("Round not found.");const saved=await db.from("yarper_reactions").insert({couple_id:member.couple_id,game_id:gameId,by_role:member.role,emoji});if(saved.error)throw new Error("Could not save your reaction. Please try again.");return json(await snapshot(member))}
 if(action==="complete_daily"){const result=await db.rpc("yarper_complete_daily",{p_couple_id:member.couple_id});if(result.error)throw new Error("Could not complete the daily reward securely. Please try again.");return json(await snapshot(member))}
