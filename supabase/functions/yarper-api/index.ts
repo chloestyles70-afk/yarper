@@ -124,8 +124,9 @@ if(action==="set_question_turn_mode"){
  const pending=await db.from("yarper_game_sessions").select("id").eq("couple_id",member.couple_id).eq("status","waiting").limit(1).maybeSingle();
  if(pending.error)throw new Error("Could not check the current round. Please try again.");
  if(pending.data)return json({error:"Finish the current round before changing question settings."},409);
- const saved=await db.from("yarper_state").update({question_turn_mode:turnMode,question_asker:asker,...(turnMode==="single_asker"?{current_turn:asker}:{}),updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);
- if(saved.error)throw new Error("Could not save question settings. Please try again.");
+ const saved=await db.from("yarper_state").update({question_turn_mode:turnMode,question_asker:asker,...(turnMode==="single_asker"?{current_turn:asker}:{}),updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id).select("question_turn_mode,question_asker").single();
+ if(saved.error||!saved.data)throw new Error("Question settings were not saved. Please try again.");
+ if(saved.data.question_turn_mode!==turnMode||saved.data.question_asker!==asker)throw new Error("The saved question settings did not match your selection. Please try again.");
  return json(await snapshot(member));
 }
 if(action==="start_game"){
