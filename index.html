@@ -318,16 +318,20 @@ button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!impo
 <div class="section"><button class="primary" onclick="claimStreak()">Claim today's streak bonus · +15 XP</button></div>
 </section>
 
-<nav class="nav"><button data-v="home" class="active" onclick="showView('home')"><i>⌂</i>Home</button><button data-v="coupleView" onclick="showView('coupleView')"><i>♥</i>Couple</button><button data-v="rewardsView" onclick="showView('rewardsView')"><i>✦</i>Progress</button><button onclick="openToolkit()"><i>☼</i>More</button></nav>
-</div>
-
-<div id="gameModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div id="gameMode" class="eyebrow">QUESTIONS</div><h2 id="gameTitle">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div></div></div>
-<div id="toolkitModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div class="eyebrow">COUPLE TOOLKIT</div><h2>Quick things for two</h2></div><button class="close" onclick="closeToolkit()">×</button></div><div class="toolgrid">
+<section id="moreView" class="view">
+<div class="profileHero"><div class="eyebrow">COUPLE TOOLKIT</div><div class="profileName">Quick things for two.</div><p style="color:var(--muted);font-size:11px;line-height:1.5">Little games and ideas to keep you connected.</p></div>
+<div class="section"><div class="sectionHead"><div><div class="eyebrow">MINI-GAMES</div><h2>Pick something fun</h2></div></div><div class="toolgrid">
 <button class="tool" onclick="toolPick('rather')"><span>🤔</span><b>Would You Rather</b><small>Instant couple debate.</small></button>
 <button class="tool" onclick="toolPick('compliment')"><span>💗</span><b>Compliment Me</b><small>Say something real.</small></button>
 <button class="tool" onclick="toolPick('date')"><span>🌙</span><b>Date Generator</b><small>Get a date idea.</small></button>
 <button class="tool" onclick="toolPick('dare')"><span>🔥</span><b>Quick Dare</b><small>60 seconds. Go.</small></button>
-</div><div id="toolResult" class="result">Pick a mini-game.</div><button id="toolTimerBtn" class="secondary hidden" onclick="startTimer()">Start 60-second timer</button><div id="timer" class="result hidden" style="font-size:30px;font-weight:950">60</div></div></div>
+</div><div id="toolResult" class="result">Choose a mini-game to get started.</div><button id="toolTimerBtn" class="secondary hidden" onclick="startTimer()">Start 60-second timer</button><div id="timer" class="result hidden" style="font-size:30px;font-weight:950">60</div></div>
+</section>
+<nav class="nav"><button data-v="home" class="active" onclick="showView('home')"><i>⌂</i>Home</button><button data-v="coupleView" onclick="showView('coupleView')"><i>♥</i>Couple</button><button data-v="rewardsView" onclick="showView('rewardsView')"><i>✦</i>Progress</button><button data-v="moreView" onclick="showView('moreView')"><i>☼</i>More</button></nav>
+</div>
+
+<div id="gameModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div id="gameMode" class="eyebrow">QUESTIONS</div><h2 id="gameTitle">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div></div></div>
+
 
 <div id="settingsModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div class="eyebrow">PROFILE</div><h2>Your side</h2></div><button class="close" onclick="closeSettings()">×</button></div>
 <div class="sectionHead" style="margin-top:20px"><div><div class="eyebrow">APPEARANCE</div><h2 style="font-size:16px">Theme</h2></div></div>
@@ -398,8 +402,8 @@ function closeGame(){$("gameModal").classList.remove("show")}
 async function completeDaily(){if(state.dailyDone)return;try{apply(await api("complete_daily"));toast("+25 XP · Quest complete")}catch(e){toast(e.message)}}
 async function claimStreak(){try{apply(await api("claim_streak"));toast("+15 XP · Streak bonus claimed")}catch(e){toast(e.message)}}
 function randomGame(){const k=Object.keys(BANK);startGame(k[Math.floor(Math.random()*k.length)])}
-function openToolkit(){$("toolkitModal").classList.add("show");$("toolResult").textContent="Pick a mini-game.";$("toolTimerBtn").classList.add("hidden");$("timer").classList.add("hidden")}
-function closeToolkit(){if(timerId)clearInterval(timerId);$("toolkitModal").classList.remove("show")}
+function openToolkit(){showView("moreView");$("toolResult").textContent="Choose a mini-game to get started.";$("toolTimerBtn").classList.add("hidden");$("timer").classList.add("hidden")}
+function closeToolkit(){if(timerId){clearInterval(timerId);timerId=null}showView("home")}
 function toolPick(t){const v=TOOL[t][Math.floor(Math.random()*TOOL[t].length)];$("toolResult").innerHTML="<b>"+(t==="rather"?"WOULD YOU RATHER?":"YOUR PICK")+"</b><br>"+esc(v);if(t==="dare")$("toolTimerBtn").classList.remove("hidden");else $("toolTimerBtn").classList.add("hidden")}
 function startTimer(){if(timerId)clearInterval(timerId);let n=60;$("timer").classList.remove("hidden");$("timer").textContent=n;timerId=setInterval(()=>{n--;$("timer").textContent=n;if(n<=0){clearInterval(timerId);timerId=null;toast("Time! ✨")}},1000)}
 function openSettings(){$("nameInput").value=state.me?.display_name||"";$("questionTurnMode").value=state.question_turn_mode||"alternating";$("questionAsker").innerHTML=[["player1","player2"].map(role=>"<option value='"+role+"'>"+(role===state.role?"You ("+esc(state.me?.display_name||"You")+")":esc(state.partner?.display_name||"Your partner"))+"</option>").join("")].join("");$("questionAsker").value=state.question_asker||"player1";toggleQuestionAsker();$("settingsModal").classList.add("show")}
