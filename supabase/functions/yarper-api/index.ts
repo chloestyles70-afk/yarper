@@ -15,7 +15,7 @@ function cleanCode(v:unknown){const c=String(v??"").trim().toUpperCase();if(!/^[
 async function allowAttempt(req:Request,action:"create"|"join"){
  const ip=(req.headers.get("cf-connecting-ip")||req.headers.get("x-real-ip")||(req.headers.get("x-forwarded-for")||"").split(",")[0]||"unknown").trim().slice(0,128);
  const key=await sha256(ip+"|yarper|"+action);
- const limit=action==="create"?5:15, windowSeconds=action==="create"?3600:600;
+ const limit=action==="create"?5:40, windowSeconds=action==="create"?3600:600;
  const {data,error}=await db.rpc("consume_yarper_rate_limit",{p_key:key,p_action:action,p_limit:limit,p_window_seconds:windowSeconds});
  if(error)throw new Error("Security check unavailable. Please try again shortly.");
  return data===true;
@@ -83,7 +83,7 @@ if(action==="create"){
  if(!couple)throw new Error("Could not create a couple code. Please try again.");
  const token=randomToken(),hash=await sha256(token);
  try{
-  const member=await db.from("yarper_members").insert({couple_id:couple.id,device_token_hash:hash,display_name:name,role:"player1",online:true,last_seen:new Date().toISOString(),token_expires_at:getSessionExpiry(),token_revoked_at:null}).select("id,display_name,role,online,last_seen").single();
+  const member=await db.from("yarper_members").insert({couple_id:couple.id,device_token_hash:hash,display_name:name,role:"player1",online:true,last_seen:new Date().toISOString(),token_expires_at:getSessionExpiry(),token_revoked_at:null}).select("id,couple_id,display_name,role,online,last_seen").single();
   if(member.error||!member.data)throw new Error("Could not create your member profile. Please try again.");
   await ensureState(couple.id);
   return json({token,code:couple.code,...await snapshot(member.data)});
@@ -130,7 +130,7 @@ if(action==="start_game"){
  }
  return json(await snapshot(member));
 }
-if(action==="advance_game"){const latest=await db.from("yarper_game_sessions").select("id,status").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error||!latest.data||latest.data.status!=="answered")return json({error:"Complete the current round before moving on."},409);const ready=await db.from("yarper_state").update({picker_ready:true,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(ready.error)throw new Error("Could not sync the next turn. Please try again.");return json(await snapshot(member))}
+if(action==="advance_game"){const latest=await db.from("yarper_game_sessions").select("id,status,selected_by").eq("couple_id",member.couple_id).order("created_at",{ascending:false}).limit(1).maybeSingle();if(latest.error||!latest.data||latest.data.status!=="answered"||!["player1","player2"].includes(latest.data.selected_by))return json({error:"Complete the current round before moving on."},409);const nextPicker=latest.data.selected_by==="player1"?"player2":"player1";const ready=await db.from("yarper_state").update({current_turn:nextPicker,picker_ready:true,updated_at:new Date().toISOString()}).eq("couple_id",member.couple_id);if(ready.error)throw new Error("Could not sync the next turn. Please try again.");return json(await snapshot(member))}
 if(action==="answer_game"){const gameId=String(body.game_id||""),answer=String(body.answer||"").trim();if(!gameId||!answer||answer.length>1000)throw Error("Write a response first.");const result=await db.rpc("yarper_answer_game",{p_game_id:gameId,p_couple_id:member.couple_id,p_role:member.role,p_answer:answer});if(result.error){const message=result.error.message||"";if(message.includes("ROUND_NOT_WAITING"))return json({error:"That round is no longer waiting."},409);if(message.includes("SELECTING_PLAYER_CANNOT_ANSWER"))return json({error:"Your partner needs to answer this round."},403);if(message.includes("INVALID_ANSWER"))return json({error:"Write a valid response first."},400);throw new Error("Could not save your answer securely. Please try again.");}return json(await snapshot(member))}
 if(action==="react"){const gameId=String(body.game_id||""),emoji=String(body.emoji||"");if(!["❤️","😂","🔥","🥰","😏","👀","👏","💚"].includes(emoji))throw Error("Reaction not available.");if(!(await db.from("yarper_game_sessions").select("id").eq("id",gameId).eq("couple_id",member.couple_id).maybeSingle()).data)throw Error("Round not found.");const saved=await db.from("yarper_reactions").insert({couple_id:member.couple_id,game_id:gameId,by_role:member.role,emoji});if(saved.error)throw new Error("Could not save your reaction. Please try again.");return json(await snapshot(member))}
 if(action==="complete_daily"){const result=await db.rpc("yarper_complete_daily",{p_couple_id:member.couple_id});if(result.error)throw new Error("Could not complete the daily reward securely. Please try again.");return json(await snapshot(member))}
