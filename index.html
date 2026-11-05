@@ -279,6 +279,91 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 :root[data-theme="dark"] button:disabled{opacity:.55;cursor:not-allowed}
 button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!important}
 </style>
+
+<style id="yarper-quest-visibility">
+/* Additive Couple Quest and question-prompt emphasis */
+.quest{
+  position:relative;
+  overflow:hidden;
+  border:1px solid #ffd16688;
+  background:radial-gradient(circle at 8% 0,#ffd16620,transparent 48%),linear-gradient(145deg,#211b2c,#101722);
+  box-shadow:0 12px 34px #ffd16618, inset 0 1px 0 #ffffff12;
+}
+.quest:before{
+  content:"DAILY COUPLE QUEST";
+  display:inline-flex;
+  margin-bottom:12px;
+  padding:6px 10px;
+  border:1px solid #ffd16666;
+  border-radius:99px;
+  background:#ffd16618;
+  color:#ffe19a;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1.5px;
+}
+.quest .qicon{
+  width:54px;height:54px;flex:0 0 54px;
+  border:1px solid #ffd16666;
+  background:linear-gradient(145deg,#ffd16635,#ff9f4330);
+  box-shadow:0 0 24px #ffd16622;
+  font-size:27px;
+}
+.quest .questRow{align-items:flex-start}
+.quest .questRow>div:last-child{flex:1;min-width:0}
+.quest .questRow b{display:block;font-size:16px;line-height:1.3;color:#fff2c7}
+.quest p#daily{
+  margin-top:8px;
+  color:#fff;
+  font-size:clamp(13px,3.5vw,15px);
+  font-weight:700;
+  line-height:1.55;
+}
+.quest #dailyBtn{
+  min-height:50px;
+  background:linear-gradient(100deg,#f6c453,#ff9e57);
+  color:#241707;
+  box-shadow:0 10px 26px #ffb84a35;
+}
+.pick{
+  border-width:1px;
+  background:linear-gradient(110deg,#162534,#111b29);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.pick strong{
+  display:block;
+  color:var(--text);
+  font-size:clamp(13px,3.6vw,15px);
+  font-weight:800;
+  line-height:1.5;
+}
+.pick span:first-child{
+  width:36px;height:36px;flex:0 0 36px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  color:#ff9fc5;
+  background:#ff7eb61c;
+  font-size:22px!important;
+}
+.pick:hover,.pick:focus-visible{
+  border-color:#ff9fc5;
+  box-shadow:0 0 0 3px #ff7eb61c,0 10px 25px #0004;
+  transform:translateY(-2px);
+}
+.prompt{
+  border-color:#ff9fc566;
+  box-shadow:0 14px 38px #ff7eb619,inset 0 1px 0 #ffffff12;
+}
+.prompt h3{
+  color:#fff;
+  font-size:clamp(25px,6vw,30px);
+  font-weight:900;
+  letter-spacing:-.6px;
+  text-shadow:0 2px 18px #ff7eb633;
+}
+@media(prefers-reduced-motion:reduce){.pick{transition:none}}
+</style>
+
 </head>
 <body>
 <div class="app">
