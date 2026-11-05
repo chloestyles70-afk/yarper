@@ -209,6 +209,76 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 :root[data-theme="light"] .themeChoice{background:#f8fafc;color:#172033}
 </style>
 
+
+<style id="yarper-theme-button-contrast">
+/* Additive theme-aware button contrast: keeps every control visually distinct. */
+:root[data-theme="dark"] button:not(.primary):not(.levelupClose){
+ color:#f7fbff;
+}
+:root[data-theme="dark"] .secondary,
+:root[data-theme="dark"] .gear,
+:root[data-theme="dark"] .close,
+:root[data-theme="dark"] .pick,
+:root[data-theme="dark"] .tool,
+:root[data-theme="dark"] .react,
+:root[data-theme="dark"] .themeChoice{
+ background:#172333;
+ border:1px solid #52627a;
+ color:#f7fbff;
+}
+:root[data-theme="dark"] .nav button{color:#aebbd0}
+:root[data-theme="dark"] .nav button.active{
+ color:#07131b;background:#35dfca;border-radius:12px;
+}
+:root[data-theme="dark"] .mode{
+ border-color:#52627a;color:#f7fbff;
+}
+:root[data-theme="dark"] .mode.featured{border-color:#35dfca;background:linear-gradient(145deg,#12413f,#10232b)}
+:root[data-theme="dark"] .secondary:hover,
+:root[data-theme="dark"] .gear:hover,
+:root[data-theme="dark"] .close:hover,
+:root[data-theme="dark"] .pick:hover,
+:root[data-theme="dark"] .tool:hover,
+:root[data-theme="dark"] .react:hover,
+:root[data-theme="dark"] .themeChoice:hover{
+ border-color:#35dfca;background:#203449;
+}
+:root[data-theme="light"] button:not(.primary):not(.levelupClose){
+ color:#172033;
+}
+:root[data-theme="light"] .secondary,
+:root[data-theme="light"] .gear,
+:root[data-theme="light"] .close,
+:root[data-theme="light"] .pick,
+:root[data-theme="light"] .tool,
+:root[data-theme="light"] .react,
+:root[data-theme="light"] .themeChoice{
+ background:#ffffff;border:1px solid #aebdce;color:#172033;
+}
+:root[data-theme="light"] .nav button{color:#536176}
+:root[data-theme="light"] .nav button.active{
+ color:#ffffff;background:#263b55;border-radius:12px;
+}
+:root[data-theme="light"] .mode{color:#172033;border-color:#aebdce}
+:root[data-theme="light"] .mode.featured{border-color:#399d91}
+:root[data-theme="light"] .secondary:hover,
+:root[data-theme="light"] .gear:hover,
+:root[data-theme="light"] .close:hover,
+:root[data-theme="light"] .pick:hover,
+:root[data-theme="light"] .tool:hover,
+:root[data-theme="light"] .react:hover,
+:root[data-theme="light"] .themeChoice:hover{
+ border-color:#287f78;background:#e6f5f3;
+}
+:root[data-theme="light"] .primary{
+ color:#102033;background:linear-gradient(100deg,#65e8d4,#a9aaff);
+ border:1px solid #6078a0;
+}
+:root[data-theme="light"] .levelupClose{color:#ffffff}
+:root[data-theme="light"] button:disabled{opacity:.55;cursor:not-allowed}
+:root[data-theme="dark"] button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!important}
+</style>
 </head>
 <body>
 <div class="app">
