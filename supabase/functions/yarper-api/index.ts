@@ -3,10 +3,22 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.118.0";
 import { getSessionExpiry, isSessionActive } from "./session-policy.mjs";
 const SUPABASE_URL=Deno.env.get("SUPABASE_URL")!, SERVICE_KEY=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, db=createClient(SUPABASE_URL,SERVICE_KEY);
 const ALLOWED_ORIGIN="https://yarper.vercel.app";
-const cors={"Access-Control-Allow-Origin":ALLOWED_ORIGIN,"Vary":"Origin","Access-Control-Allow-Headers":"content-type, x-yarper-token, x-yarper-recovery-token","Access-Control-Allow-Methods":"POST, OPTIONS","Content-Type":"application/json","Cache-Control":"no-store"};
+const cors={"Access-Control-Allow-Origin":ALLOWED_ORIGIN,"Vary":"Origin","Access-Control-Allow-Headers":"content-type, authorization, x-yarper-token, x-yarper-recovery-token","Access-Control-Allow-Methods":"POST, OPTIONS","Content-Type":"application/json","Cache-Control":"no-store"};
 const BANK:Record<string,string[]>={questions:["What is one small thing I do that always makes you smile?","What memory of us would you replay if you could?","What should we try together before this year ends?","When do you feel closest to me?","What is one thing you appreciate about us?","What would your perfect day with me look like?","What song feels like us right now?","What silly habit of mine do you secretly love?"],challenges:["Give your partner three genuine compliments without repeating a word.","Hold eye contact for 30 seconds and try not to laugh.","Create a secret handshake in one minute.","Do your funniest impression of your partner.","Pick a song and dance together for 30 seconds.","Give each other a three-word pep talk.","Take a ridiculous couple selfie.","Invent a two-person victory celebration."],truth:["Truth: What first caught your attention about me?","Dare: Give your partner a dramatic movie-style compliment.","Truth: When do you feel most loved by me?","Dare: Let your partner choose your silly nickname for the next hour.","Truth: What is one dream you have for us?","Dare: Give a 10-second runway walk.","Truth: What is one thing you want more of in our relationship?","Dare: Make up a ridiculous couple slogan."],cards:["Finish this sentence: I knew we were special when…","Who is more dramatic? Defend your answer.","Choose one: movie night, food adventure, or late-night walk.","Name one thing you appreciate about your partner today.","Describe our relationship using three words.","Pick an emoji for our relationship today and explain it.","Who would survive longer in a zombie apocalypse?","Plan a tiny-budget surprise date in 60 seconds."],date:["Cozy night: snacks, blankets, music and five questions for each other.","Adventure night: choose somewhere neither of you has tried.","At-home luxury: dress up and turn dinner into a fancy date.","Memory lane: choose an old photo and retell the story behind it.","Chaos night: funny videos, snacks and silly challenges."]};
 const DAILY=["Give each other one compliment you have never said before.","Spend five minutes talking with your phones face down.","Choose one song that represents your relationship today.","Tell your partner one thing you are looking forward to together.","Take one photo that captures today's mood."];
 function json(body:unknown,status=200){return new Response(JSON.stringify(body),{status,headers:cors})}
+async function authenticatedUser(req:Request){
+ const header=req.headers.get("authorization")||"";
+ if(!header.startsWith("Bearer "))return null;
+ const publicKey=Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||"";
+ if(!publicKey)return null;
+ try{
+  const authClient=createClient(SUPABASE_URL,publicKey,{auth:{persistSession:false,autoRefreshToken:false}});
+  const {data,error}=await authClient.auth.getUser(header.slice(7));
+  return error?null:data.user;
+ }catch{return null}
+}
+
 function randomCode(){const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let out="";crypto.getRandomValues(new Uint8Array(6)).forEach(n=>out+=chars[n%chars.length]);return out}
 function randomToken(){const b=new Uint8Array(32);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,"0")).join("")}
 async function sha256(v:string){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return Array.from(new Uint8Array(d),x=>x.toString(16).padStart(2,"0")).join("")}
@@ -78,6 +90,7 @@ Deno.serve(async req=>{
  if(!body||typeof body!=="object"||Array.isArray(body))return json({error:"Invalid request body."},400);
  const action=String(body.action||"");
 if(action==="create"){
+ if(!(await authenticatedUser(req)))return json({error:"Sign in to your Yarper account before creating a couple space."},401);
  if(!(await allowAttempt(req,"create")))return json({error:"Too many couple creation attempts. Please try again later."},429);
  const name=cleanName(body.name);let couple:any=null;
  for(let i=0;i<8&&!couple;i++){const created=await db.from("yarper_couples").insert({code:randomCode()}).select("*").single();if(!created.error)couple=created.data}
@@ -95,6 +108,7 @@ if(action==="create"){
  }
 }
 if(action==="join"){
+ if(!(await authenticatedUser(req)))return json({error:"Sign in to your Yarper account before joining a couple space."},401);
  if(!(await allowAttempt(req,"join")))return json({error:"Too many join attempts. Please try again in a few minutes."},429);
  const name=cleanName(body.name),code=cleanCode(body.code),token=randomToken(),hash=await sha256(token);
  const recoveryToken=String(req.headers.get("x-yarper-recovery-token")||"");
