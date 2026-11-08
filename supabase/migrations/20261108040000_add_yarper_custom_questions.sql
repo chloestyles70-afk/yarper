@@ -19,6 +19,7 @@ alter table public.yarper_custom_questions enable row level security;
 
 -- Custom questions are accessed only through the token-authenticated Edge Function.
 revoke all on table public.yarper_custom_questions from public, anon, authenticated;
+grant select, insert, update, delete on table public.yarper_custom_questions to service_role;
 
 create table if not exists private.yarper_custom_question_rate_limits (
   member_id uuid primary key references public.yarper_members(id) on delete cascade,
