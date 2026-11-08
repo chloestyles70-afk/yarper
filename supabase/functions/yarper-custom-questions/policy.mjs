@@ -2,7 +2,7 @@ export const CUSTOM_QUESTION_MODES = Object.freeze(["questions", "challenges", "
 export const CUSTOM_QUESTION_VISIBILITIES = Object.freeze(["private", "shared"]);
 
 export function cleanCustomQuestion(value) {
-  const question = String(value ?? "").replace(/\\s+/g, " ").trim();
+  const question = String(value ?? "").replace(/\s+/g, " ").trim();
   if (question.length < 5 || question.length > 240) {
     throw new Error("Your question must be between 5 and 240 characters.");
   }
