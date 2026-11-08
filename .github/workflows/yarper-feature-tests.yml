@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feature/custom-questions
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
