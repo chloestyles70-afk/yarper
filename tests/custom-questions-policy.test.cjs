@@ -38,6 +38,7 @@ test('only the creator can manage their own question', async () => {
 test('question text is trimmed and validated', async () => {
   const { cleanCustomQuestion } = await policy();
   assert.equal(cleanCustomQuestion('  What makes you smile?  '), 'What makes you smile?');
+  assert.equal(cleanCustomQuestion('  What   makes\\n you smile?  '), 'What makes you smile?');
   assert.throws(() => cleanCustomQuestion('no'), /between 5 and 240/);
   assert.throws(() => cleanCustomQuestion('x'.repeat(241)), /between 5 and 240/);
 });
