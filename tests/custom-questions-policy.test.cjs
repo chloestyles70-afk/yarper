@@ -41,3 +41,11 @@ test('question text is trimmed and validated', async () => {
   assert.throws(() => cleanCustomQuestion('no'), /between 5 and 240/);
   assert.throws(() => cleanCustomQuestion('x'.repeat(241)), /between 5 and 240/);
 });
+
+test('custom-question sessions expire and revoked sessions are rejected', async () => {
+  const { isSessionActive } = await policy();
+  const now = Date.parse('2026-11-08T12:00:00.000Z');
+  assert.equal(isSessionActive('2026-11-09T12:00:00.000Z', null, now), true);
+  assert.equal(isSessionActive('2026-11-08T12:00:00.000Z', null, now), false);
+  assert.equal(isSessionActive('2026-11-09T12:00:00.000Z', '2026-11-07T12:00:00.000Z', now), false);
+});
