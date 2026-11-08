@@ -7,23 +7,26 @@ import {
   cleanCustomQuestion,
   isCustomQuestionEligible,
   isSessionActive,
+  isAllowedCustomQuestionOrigin,
 } from "./policy.mjs";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const db = createClient(SUPABASE_URL, SERVICE_KEY);
-const ALLOWED_ORIGIN = "https://yarper.vercel.app";
-const cors = {
-  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-  "Vary": "Origin",
-  "Access-Control-Allow-Headers": "content-type, authorization, x-yarper-token",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json",
-  "Cache-Control": "no-store",
-};
+const PRODUCTION_ORIGIN = "https://yarper.vercel.app";
 
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), { status, headers: cors });
+function corsHeaders(origin: string | null) {
+  const allowedOrigin = origin && isAllowedCustomQuestionOrigin(origin)
+    ? origin
+    : PRODUCTION_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Vary": "Origin",
+    "Access-Control-Allow-Headers": "content-type, authorization, x-yarper-token",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  };
 }
 
 async function sha256(value: string) {
@@ -63,22 +66,25 @@ function validateVisibility(value: unknown) {
 
 async function handle(req: Request) {
   const origin = req.headers.get("origin");
-  if (origin && origin !== ALLOWED_ORIGIN) return json({ error: "Origin not allowed." }, 403);
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-  if (req.method !== "POST") return json({ error: "Method not allowed." }, 405);
+  const headers = corsHeaders(origin);
+  const respond = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), { status, headers });
+  if (origin && !isAllowedCustomQuestionOrigin(origin)) return respond({ error: "Origin not allowed." }, 403);
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers });
+  if (req.method !== "POST") return respond({ error: "Method not allowed." }, 405);
   if (!req.headers.get("content-type")?.toLowerCase().includes("application/json")) {
-    return json({ error: "Content-Type must be application/json." }, 415);
+    return respond({ error: "Content-Type must be application/json." }, 415);
   }
 
   const raw = await req.text();
-  if (raw.length > 8192) return json({ error: "Request is too large." }, 413);
+  if (raw.length > 8192) return respond({ error: "Request is too large." }, 413);
 
   try {
     const body = JSON.parse(raw);
     const member = await authenticate(String(req.headers.get("x-yarper-token") || ""));
     const rate = await db.rpc("consume_yarper_custom_question_rate_limit", { p_member_id: member.id, p_limit: 80, p_window_seconds: 600 });
     if (rate.error) throw new Error("Security check unavailable. Please try again shortly.");
-    if (rate.data !== true) return json({ error: "Too many custom-question requests. Please wait a moment." }, 429);
+    if (rate.data !== true) return respond({ error: "Too many custom-question requests. Please wait a moment." }, 429);
     const action = String(body.action || "");
 
     if (action === "list") {
@@ -88,7 +94,7 @@ async function handle(req: Request) {
         .eq("creator_member_id", member.id)
         .order("created_at", { ascending: false });
       if (result.error) throw new Error("Could not load your custom questions.");
-      return json({ questions: result.data || [] });
+      return respond({ questions: result.data || [] });
     }
 
     if (action === "pool") {
@@ -102,7 +108,7 @@ async function handle(req: Request) {
       const eligible = (result.data || []).filter((question) =>
         isCustomQuestionEligible(question, member, gameMode)
       ).map(({ id, question, visibility }) => ({ id, question, visibility }));
-      return json({ questions: eligible });
+      return respond({ questions: eligible });
     }
 
     if (action === "create") {
@@ -114,7 +120,7 @@ async function handle(req: Request) {
         .eq("couple_id", member.couple_id)
         .eq("creator_member_id", member.id);
       if (count.error) throw new Error("Could not check your question limit.");
-      if ((count.count || 0) >= 100) return json({ error: "You can save up to 100 questions." }, 409);
+      if ((count.count || 0) >= 100) return respond({ error: "You can save up to 100 questions." }, 409);
 
       const created = await db.from("yarper_custom_questions")
         .insert({
@@ -127,12 +133,12 @@ async function handle(req: Request) {
         .select("id,question,game_mode,visibility,created_at,updated_at")
         .single();
       if (created.error || !created.data) throw new Error("Could not save your question.");
-      return json({ question: created.data }, 201);
+      return respond({ question: created.data }, 201);
     }
 
     if (action === "update") {
       const id = String(body.id || "");
-      if (!/^[0-9a-f-]{36}$/i.test(id)) return json({ error: "Question not found." }, 404);
+      if (!/^[0-9a-f-]{36}$/i.test(id)) return respond({ error: "Question not found." }, 404);
       const question = cleanCustomQuestion(body.question);
       const gameMode = validateMode(body.game_mode);
       const visibility = validateVisibility(body.visibility);
@@ -142,7 +148,7 @@ async function handle(req: Request) {
         .eq("couple_id", member.couple_id)
         .maybeSingle();
       if (existing.error || !existing.data || !canManageCustomQuestion(existing.data, member)) {
-        return json({ error: "You can only edit your own questions." }, 403);
+        return respond({ error: "You can only edit your own questions." }, 403);
       }
       const updated = await db.from("yarper_custom_questions")
         .update({ question, game_mode: gameMode, visibility, updated_at: new Date().toISOString() })
@@ -152,19 +158,19 @@ async function handle(req: Request) {
         .select("id,question,game_mode,visibility,created_at,updated_at")
         .single();
       if (updated.error || !updated.data) throw new Error("Could not update your question.");
-      return json({ question: updated.data });
+      return respond({ question: updated.data });
     }
 
     if (action === "delete") {
       const id = String(body.id || "");
-      if (!/^[0-9a-f-]{36}$/i.test(id)) return json({ error: "Question not found." }, 404);
+      if (!/^[0-9a-f-]{36}$/i.test(id)) return respond({ error: "Question not found." }, 404);
       const existing = await db.from("yarper_custom_questions")
         .select("id,couple_id,creator_member_id")
         .eq("id", id)
         .eq("couple_id", member.couple_id)
         .maybeSingle();
       if (existing.error || !existing.data || !canManageCustomQuestion(existing.data, member)) {
-        return json({ error: "You can only delete your own questions." }, 403);
+        return respond({ error: "You can only delete your own questions." }, 403);
       }
       const removed = await db.from("yarper_custom_questions")
         .delete()
@@ -174,14 +180,14 @@ async function handle(req: Request) {
         .select("id")
         .maybeSingle();
       if (removed.error || !removed.data) throw new Error("Could not delete your question.");
-      return json({ deleted: true });
+      return respond({ deleted: true });
     }
 
-    return json({ error: "Unknown custom-question action." }, 400);
+    return respond({ error: "Unknown custom-question action." }, 400);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something went wrong.";
     const status = /session is missing|Session expired|Reconnect to your couple/.test(message) ? 401 : 400;
-    return json({ error: message }, status);
+    return respond({ error: message }, status);
   }
 }
 
