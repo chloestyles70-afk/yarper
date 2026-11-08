@@ -1,12 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.118.0";
-import { isSessionActive } from "../yarper-api/session-policy.mjs";
 import {
   CUSTOM_QUESTION_MODES,
   CUSTOM_QUESTION_VISIBILITIES,
   canManageCustomQuestion,
   cleanCustomQuestion,
   isCustomQuestionEligible,
+  isSessionActive,
 } from "./policy.mjs";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
