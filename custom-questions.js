@@ -217,12 +217,6 @@
     const customArea = document.createElement("div");
     customArea.id = "customPromptArea";
     stage.appendChild(customArea);
-    const manage = document.createElement("button");
-    manage.type = "button";
-    manage.className = "secondary";
-    manage.textContent = "✍ Add or manage your own questions";
-    manage.addEventListener("click", () => window.openCustomQuestions(true));
-    stage.appendChild(manage);
     renderCustomPicker(customArea, mode);
   };
 
