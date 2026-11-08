@@ -21,5 +21,7 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - name: Install Supabase Edge Runtime type dependency
+        run: npm install --no-save --package-lock=false openai@^4.52.5
       - name: Type-check custom questions Edge Function
-        run: deno check --no-check=remote supabase/functions/yarper-custom-questions/index.ts
+        run: deno check supabase/functions/yarper-custom-questions/index.ts
