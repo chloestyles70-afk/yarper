@@ -49,3 +49,13 @@ test('custom-question sessions expire and revoked sessions are rejected', async 
   assert.equal(isSessionActive('2026-11-08T12:00:00.000Z', null, now), false);
   assert.equal(isSessionActive('2026-11-09T12:00:00.000Z', '2026-11-07T12:00:00.000Z', now), false);
 });
+
+test('custom-question CORS allows production and this project preview deployments only', async () => {
+  const { isAllowedCustomQuestionOrigin } = await policy();
+  assert.equal(isAllowedCustomQuestionOrigin('https://yarper.vercel.app'), true);
+  assert.equal(isAllowedCustomQuestionOrigin('https://yarper-dmk7082oi-chloestyles70-8029.vercel.app'), true);
+  assert.equal(isAllowedCustomQuestionOrigin('https://yarper-another-preview-chloestyles70-8029.vercel.app'), true);
+  assert.equal(isAllowedCustomQuestionOrigin('https://evil-yarper-dmk7082oi-chloestyles70-8029.vercel.app'), false);
+  assert.equal(isAllowedCustomQuestionOrigin('https://yarper.vercel.app.evil.example'), false);
+  assert.equal(isAllowedCustomQuestionOrigin('http://yarper-dmk7082oi-chloestyles70-8029.vercel.app'), false);
+});
