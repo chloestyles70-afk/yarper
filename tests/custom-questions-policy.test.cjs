@@ -6,11 +6,11 @@ const policy = () => import('../supabase/functions/yarper-custom-questions/polic
 const player1 = { id: 'member-one', couple_id: 'couple-a' };
 const player2 = { id: 'member-two', couple_id: 'couple-a' };
 
-test('private questions can only be selected by their creator and are sent to the partner', async () => {
+test('private questions are available only to the creator’s partner, never the creator', async () => {
   const { isCustomQuestionEligible } = await policy();
   const question = { couple_id: 'couple-a', game_mode: 'questions', visibility: 'private', creator_member_id: player1.id };
-  assert.equal(isCustomQuestionEligible(question, player1, 'questions'), true);
-  assert.equal(isCustomQuestionEligible(question, player2, 'questions'), false);
+  assert.equal(isCustomQuestionEligible(question, player1, 'questions'), false);
+  assert.equal(isCustomQuestionEligible(question, player2, 'questions'), true);
 });
 
 test('shared questions are eligible for both partners', async () => {
