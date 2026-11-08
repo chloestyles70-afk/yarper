@@ -30,3 +30,8 @@ export function isSessionActive(expiresAt, revokedAt = null, now = Date.now()) {
   const expiry = typeof expiresAt === "number" ? expiresAt : Date.parse(expiresAt);
   return Number.isFinite(expiry) && expiry > now;
 }
+
+export function isAllowedCustomQuestionOrigin(origin) {
+  if (origin === "https://yarper.vercel.app") return true;
+  return /^https:\/\/yarper-[a-z0-9-]+-chloestyles70-8029\.vercel\.app$/.test(String(origin ?? ""));
+}
