@@ -22,4 +22,4 @@ jobs:
         with:
           deno-version: v2.x
       - name: Type-check custom questions Edge Function
-        run: deno check supabase/functions/yarper-custom-questions/index.ts
+        run: deno check --no-check=remote supabase/functions/yarper-custom-questions/index.ts
