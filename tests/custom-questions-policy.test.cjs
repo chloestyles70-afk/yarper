@@ -1,0 +1,43 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+
+const policy = () => import('../supabase/functions/yarper-custom-questions/policy.mjs');
+
+const player1 = { id: 'member-one', couple_id: 'couple-a' };
+const player2 = { id: 'member-two', couple_id: 'couple-a' };
+
+test('private questions are delivered only to the other partner', async () => {
+  const { isCustomQuestionEligible } = await policy();
+  const question = { couple_id: 'couple-a', game_mode: 'questions', visibility: 'private', creator_member_id: player1.id };
+  assert.equal(isCustomQuestionEligible(question, player1, 'questions'), false);
+  assert.equal(isCustomQuestionEligible(question, player2, 'questions'), true);
+});
+
+test('shared questions are eligible for both partners', async () => {
+  const { isCustomQuestionEligible } = await policy();
+  const question = { couple_id: 'couple-a', game_mode: 'questions', visibility: 'shared', creator_member_id: player1.id };
+  assert.equal(isCustomQuestionEligible(question, player1, 'questions'), true);
+  assert.equal(isCustomQuestionEligible(question, player2, 'questions'), true);
+});
+
+test('questions cannot cross couple boundaries or game categories', async () => {
+  const { isCustomQuestionEligible } = await policy();
+  const question = { couple_id: 'couple-a', game_mode: 'questions', visibility: 'shared', creator_member_id: player1.id };
+  assert.equal(isCustomQuestionEligible(question, { id: 'other', couple_id: 'couple-b' }, 'questions'), false);
+  assert.equal(isCustomQuestionEligible(question, player2, 'truth'), false);
+});
+
+test('only the creator can manage their own question', async () => {
+  const { canManageCustomQuestion } = await policy();
+  const question = { id: 'q1', couple_id: 'couple-a', creator_member_id: player1.id };
+  assert.equal(canManageCustomQuestion(question, player1), true);
+  assert.equal(canManageCustomQuestion(question, player2), false);
+  assert.equal(canManageCustomQuestion(question, { id: 'other', couple_id: 'couple-b' }), false);
+});
+
+test('question text is trimmed and validated', async () => {
+  const { cleanCustomQuestion } = await policy();
+  assert.equal(cleanCustomQuestion('  What makes you smile?  '), 'What makes you smile?');
+  assert.throws(() => cleanCustomQuestion('no'), /between 5 and 240/);
+  assert.throws(() => cleanCustomQuestion('x'.repeat(241)), /between 5 and 240/);
+});
