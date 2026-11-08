@@ -1,0 +1,30 @@
+name: Yarper feature tests
+
+on:
+  push:
+    branches:
+      - feature/custom-questions
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run repository test suite
+        run: npm test
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Install Supabase Edge Runtime type dependency
+        run: npm install --no-save --package-lock=false openai@^4.52.5
+      - name: Type-check custom questions Edge Function
+        run: deno check supabase/functions/yarper-custom-questions/index.ts

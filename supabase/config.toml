@@ -2,3 +2,6 @@ project_id = "xjehryhkqvjpbduqumso"
 
 [functions.yarper-api]
 verify_jwt = false
+
+[functions.yarper-custom-questions]
+verify_jwt = false

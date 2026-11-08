@@ -367,6 +367,7 @@ button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!impo
 @media(prefers-reduced-motion:reduce){.pick{transition:none}}
 </style>
 
+<link rel="stylesheet" href="/custom-questions.css">
 </head>
 <body>
 <div class="app">
@@ -386,6 +387,7 @@ button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!impo
 <button class="mode" onclick="startGame('cards')"><i class="emoji">🃏</i><b>Couple Cards</b><span>Quick picks and mini-games.</span><strong class="arrow">↗</strong></button>
 <button class="mode wide" onclick="startGame('date')"><i class="emoji">🌙</i><b>Date Night</b><span>Turn an ordinary night into your night.</span><strong class="arrow">↗</strong></button>
 </div></div>
+<div class="custom-question-launch"><button class="secondary" type="button" onclick="openCustomQuestions(false)">✍ Create and manage your own questions</button></div>
 
 <div class="section"><div class="quest"><div class="questRow"><div class="qicon">✨</div><div><b>Today's couple quest</b><p id="daily">Loading your daily quest…</p></div></div><button id="dailyBtn" class="primary" onclick="completeDaily()">+25 XP · Complete today's quest</button></div></div>
 <div class="section"><div class="sectionHead"><div><div class="eyebrow">RECENT MOMENTS</div><h2>Your rounds</h2></div></div><div id="homeHistory" class="history"></div></div>
@@ -418,9 +420,20 @@ button:focus-visible{outline:3px solid #e4b84f!important;outline-offset:3px!impo
 <nav class="nav"><button data-v="home" class="active" onclick="showView('home')"><i>⌂</i>Home</button><button data-v="coupleView" onclick="showView('coupleView')"><i>♥</i>Couple</button><button data-v="rewardsView" onclick="showView('rewardsView')"><i>✦</i>Progress</button><button data-v="moreView" onclick="showView('moreView')"><i>☼</i>More</button></nav>
 </div>
 
-<div id="gameModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div id="gameMode" class="eyebrow">QUESTIONS</div><h2 id="gameTitle">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div></div></div>
+<div id="gameModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div id="gameMode" class="eyebrow">QUESTIONS</div><h2 id="gameTitle">Choose a prompt</h2></div><button class="close" onclick="closeGame()">×</button></div><div id="gameStage"></div><button class="secondary" type="button" onclick="openCustomQuestions(true)">✍ Add or manage your own questions</button></div></div>
 
 
+<div id="customQuestionsModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div class="eyebrow">YOUR QUESTIONS</div><h2>Make it personal.</h2></div><button class="close" type="button" onclick="closeCustomQuestions()">×</button></div>
+<h3 id="customQuestionFormTitle" style="font-size:15px;margin:18px 0 4px">Write your own</h3>
+<div class="field"><label>YOUR QUESTION OR PROMPT</label><textarea id="customQuestionText" maxlength="240" placeholder="Type something you want to ask your partner…" rows="4"></textarea></div>
+<div class="field"><label>GAME CATEGORY</label><select id="customQuestionMode" style="width:100%;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);padding:12px;min-height:46px"><option value="questions">Questions</option><option value="challenges">Challenges</option><option value="truth">Truth or Dare</option><option value="cards">Couple Cards</option><option value="date">Date Night</option></select></div>
+<div class="field"><label>WHO CAN SEE IT?</label><select id="customQuestionVisibility" style="width:100%;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);padding:12px;min-height:46px"><option value="private">Private · only my partner receives it</option><option value="shared">Shared · both of us can pick it</option></select></div>
+<p class="custom-help">Private questions stay hidden from the person who wrote them. Your partner receives them during the matching game. Each partner manages their own questions.</p>
+<div class="custom-form-actions"><button id="customQuestionSave" class="primary" type="button" onclick="saveCustomQuestion()">Save question</button><button id="customQuestionCancel" class="secondary hidden" type="button" onclick="cancelCustomQuestionEdit()">Cancel edit</button></div>
+<p id="customQuestionFormStatus" class="custom-status" role="status" aria-live="polite"></p>
+<div class="sectionHead" style="margin-top:23px"><div><div class="eyebrow">YOUR COLLECTION</div><h2 style="font-size:16px">Saved questions</h2></div></div>
+<p id="customQuestionStatus" class="custom-status" role="status" aria-live="polite">Loading…</p><div id="customQuestionList"></div>
+<button class="secondary" type="button" onclick="closeCustomQuestions()">Done</button></div></div>
 <div id="settingsModal" class="modal"><div class="sheet"><div class="sheetTop"><div><div class="eyebrow">PROFILE</div><h2>Your side</h2></div><button class="close" onclick="closeSettings()">×</button></div>
 <div class="sectionHead" style="margin-top:20px"><div><div class="eyebrow">APPEARANCE</div><h2 style="font-size:16px">Theme</h2></div></div>
 <div class="themeChoices" role="group" aria-label="Choose appearance">
@@ -516,6 +529,8 @@ document.addEventListener("visibilitychange",loop);window.addEventListener("focu
 boot();
 loop();
 </script>
+
+<script src="/custom-questions.js"></script>
 
 <script id="yarper-theme-controller">
 (function(){
