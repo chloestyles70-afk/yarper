@@ -24,3 +24,9 @@ export function canManageCustomQuestion(question, member) {
     question.creator_member_id === member.id
   );
 }
+
+export function isSessionActive(expiresAt, revokedAt = null, now = Date.now()) {
+  if (revokedAt) return false;
+  const expiry = typeof expiresAt === "number" ? expiresAt : Date.parse(expiresAt);
+  return Number.isFinite(expiry) && expiry > now;
+}
