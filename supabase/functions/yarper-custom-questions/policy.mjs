@@ -13,7 +13,7 @@ export function isCustomQuestionEligible(question, member, gameMode) {
   if (!question || !member || question.couple_id !== member.couple_id) return false;
   if (question.game_mode !== gameMode) return false;
   if (question.visibility === "shared") return true;
-  return question.visibility === "private" && question.creator_member_id === member.id;
+  return question.visibility === "private" && question.creator_member_id !== member.id;
 }
 
 export function canManageCustomQuestion(question, member) {
