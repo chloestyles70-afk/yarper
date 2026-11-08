@@ -76,6 +76,9 @@ async function handle(req: Request) {
   try {
     const body = JSON.parse(raw);
     const member = await authenticate(String(req.headers.get("x-yarper-token") || ""));
+    const rate = await db.rpc("consume_yarper_custom_question_rate_limit", { p_member_id: member.id, p_limit: 80, p_window_seconds: 600 });
+    if (rate.error) throw new Error("Security check unavailable. Please try again shortly.");
+    if (rate.data !== true) return json({ error: "Too many custom-question requests. Please wait a moment." }, 429);
     const action = String(body.action || "");
 
     if (action === "list") {
