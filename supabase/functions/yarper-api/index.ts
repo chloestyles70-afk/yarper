@@ -90,7 +90,6 @@ Deno.serve(async req=>{
  if(!body||typeof body!=="object"||Array.isArray(body))return json({error:"Invalid request body."},400);
  const action=String(body.action||"");
 if(action==="create"){
- if(!(await authenticatedUser(req)))return json({error:"Sign in to your Yarper account before creating a couple space."},401);
  if(!(await allowAttempt(req,"create")))return json({error:"Too many couple creation attempts. Please try again later."},429);
  const name=cleanName(body.name);let couple:any=null;
  for(let i=0;i<8&&!couple;i++){const created=await db.from("yarper_couples").insert({code:randomCode()}).select("*").single();if(!created.error)couple=created.data}
@@ -108,7 +107,6 @@ if(action==="create"){
  }
 }
 if(action==="join"){
- if(!(await authenticatedUser(req)))return json({error:"Sign in to your Yarper account before joining a couple space."},401);
  if(!(await allowAttempt(req,"join")))return json({error:"Too many join attempts. Please try again in a few minutes."},429);
  const name=cleanName(body.name),code=cleanCode(body.code),token=randomToken(),hash=await sha256(token);
  const recoveryToken=String(req.headers.get("x-yarper-recovery-token")||"");
